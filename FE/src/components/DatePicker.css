@@ -1,0 +1,63 @@
+/** @format */
+
+.custom-datepicker {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-datepicker .react-datepicker {
+  width: 100%;
+}
+
+.custom-datepicker .react-datepicker__header {
+  width: 100%;
+}
+.custom-datepicker-header {
+  background-color: #caedff;
+}
+.custom-datepicker .react-datepicker__current-month {
+  width: 100%;
+}
+
+.custom-datepicker .react-datepicker__month-container {
+  width: 100%;
+}
+
+.custom-datepicker .react-datepicker__month {
+  width: 100%;
+}
+
+.custom-datepicker .react-datepicker__week {
+  width: 100%;
+}
+
+.custom-datepicker .react-datepicker__day-names {
+  width: 100%;
+}
+
+.custom-datepicker .react-datepicker__week {
+  width: 100%;
+}
+
+.custom-datepicker .react-datepicker__day {
+  width: 14.28%; /* Set width for each day */
+}
+
+.custom-datepicker .react-datepicker__month {
+  width: 100%;
+}
+
+.custom-datepicker .react-datepicker__day--selected {
+  background-color: #04abff !important;
+  color: white;
+}
+.react-datepicker__day--in-range {
+  background-color: #04abff !important; /* Đặt màu nền */
+  color: white; /* Đặt màu chữ */
+}
+.custom-datepicker .react-datepicker__day--keyboard-selected {
+  background-color: #04abff !important;
+  color: white;
+}

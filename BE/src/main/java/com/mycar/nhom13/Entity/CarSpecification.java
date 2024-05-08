@@ -1,0 +1,43 @@
+package com.mycar.nhom13.Entity;
+
+import org.springframework.data.jpa.domain.Specification;
+import jakarta.persistence.criteria.Predicate;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CarSpecification {
+    public static Specification<Car> filterByCriteria(
+            String brand, List<String> types, Integer minPrice, Integer maxPrice, 
+            List<String> fuels, String province) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (brand != null && !brand.isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("brand"), brand));
+            }
+
+            if (types != null && !types.isEmpty()) {
+                predicates.add(root.get("type").in(types));
+            }
+
+            if (minPrice != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("cost"), minPrice));
+            }
+
+            if (maxPrice != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("cost"), maxPrice));
+            }
+
+            if (fuels != null && !fuels.isEmpty()) {
+                predicates.add(root.get("fuel").in(fuels));
+            }
+
+            if (province != null && !province.isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.join("location").get("province"), province));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+}

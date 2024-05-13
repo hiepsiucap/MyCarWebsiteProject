@@ -94,7 +94,7 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "MATK") 
-    private TaiKhoan taiKhoan;
+    private User user;
 
 	public Long getMaXe() {
 		return maXe;
@@ -248,12 +248,12 @@ public class Car {
 		this.dieuKhoan = dieuKhoan;
 	}
 
-	public TaiKhoan getTaiKhoan() {
-		return taiKhoan;
+	public User getTaiKhoan() {
+		return user;
 	}
 
-	public void setTaiKhoan(TaiKhoan taiKhoan) {
-		this.taiKhoan = taiKhoan;
+	public void setTaiKhoan(User user) {
+		this.user = user;
 	}
     
     

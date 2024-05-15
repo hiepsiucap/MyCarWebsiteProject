@@ -30,17 +30,12 @@ public class CookiesAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        Cookie[] cookies = request.getCookies();
-        Cookie cookieAuth = null;
-        for (int i =0; i< cookies.length; i++){
-            if(cookies[i].getName().equals(COOKIE_NAME)){
-                cookieAuth = cookies[i];
-                break;
-            }
-        }
-        if (cookieAuth != null) {
-            String token = cookieAuth.getValue();
-            System.out.println(token);
+        Optional<Cookie> cookieAuth = Stream.of(Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]))
+                .filter(cookie -> COOKIE_NAME.equals(cookie.getName()))
+                .findFirst();
+
+        if (cookieAuth.isPresent()) {
+            String token = cookieAuth.get().getValue();
             SecurityContextHolder.getContext().setAuthentication(
                     userAuthProvider.validateCookies(token));
         }

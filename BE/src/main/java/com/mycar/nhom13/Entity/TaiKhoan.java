@@ -124,8 +124,4 @@ public class TaiKhoan {
                 ", CCCD='" + CCCD + '\'' +
                 '}';
     }
-
-    public void setTenTk(String username) {
-        this.TenTK = username;
-    }
 }

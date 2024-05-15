@@ -1,262 +1,276 @@
 package com.mycar.nhom13.Entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "XE") 
+@Table(name = "Cars")
 public class Car {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    @Column(name = "MAXE")
-    @JsonProperty("MaXe")
-    private Long maXe;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "car_id")
+    private Long carId;
 
-    @Column(name = "THONGTINXE")
-    @JsonProperty("ThongTinXe")
-    private String thongTinXe;
+    @Column(name = "license_plates")
+    private String licensePlates;
 
-    @Column(name = "CHONGOI")
-    @JsonProperty("ChoNgoi")
-    private String choNgoi;
+    @Column(name = "brand")
+    private String brand;
 
-    @Column(name = "NHIENLIEUTH")
-    @JsonProperty("NhienLieuThu")
-    private Double nhienLieuThu; 
+    @Column(name = "model")
+    private String model;
 
-    @Column(name = "NHIENLIEU")
-    @JsonProperty("LoaiNhienLieu")
-    private String loaiNhienLieu; 
-
-    @Column(name = "HOPSO")
-    @JsonProperty("HopSo")
-    private String hopSo;
-
-    @Column(name = "GIA")
-    @JsonProperty("Gia")
-    private Long gia;
-
-    @Column(name = "MOTA")
-    @JsonProperty("MoTa")
-    private String moTa;
-
-    @Column(name = "DANHGIA")
-    @JsonProperty("DanhGia")
-    private String danhGia;
-
-    @Column(name = "VITRI")
-    @JsonProperty("ViTri")
-    private String viTri;
-
-    @Column(name = "ANH")
-    @JsonProperty("Anh")
-    private byte[] anh;
-
-    @Column(name = "TRANGTHAI")
-    @JsonProperty("TrangThai")
-    private String trangThai;
-
-    @Column(name = "LUOTCHOTHUE")
-    @JsonProperty("LuotChoThue")
-    private Integer luotChoThue;
-
-    @Column(name = "LUOTDANHGIA")
-    @JsonProperty("LuotDanhGia")
-    private Integer luotDanhGia;
-
-    @Column(name = "DANHGIATRUNGBINH")
-    @JsonProperty("DanhGiaTrungBinh")
-    private Double danhGiaTrungBinh;
-
-    @Column(name = "GIAYTOXE")
-    @JsonProperty("GiayToXe")
-    private String giayToXe;
-
-    @Column(name = "GIACHOTHUE")
-    @JsonProperty("GiaChoThue")
-    private Long giaChoThue;
-
-    @Column(name = "THONGTINLIENQUAN")
-    @JsonProperty("ThongTinLienQuan")
-    private String thongTinLienQuan;
-
-    @Column(name = "DIEUKHOAN")
-    @JsonProperty("DieuKhoan")
-    private String dieuKhoan;
-
-    @ManyToOne
-    @JoinColumn(name = "MATK") 
-    private User user;
-
-	public Long getMaXe() {
-		return maXe;
-	}
-
-	public void setMaXe(Long maXe) {
-		this.maXe = maXe;
-	}
-
-	public String getThongTinXe() {
-		return thongTinXe;
-	}
-
-	public void setThongTinXe(String thongTinXe) {
-		this.thongTinXe = thongTinXe;
-	}
-
-	public String getChoNgoi() {
-		return choNgoi;
-	}
-
-	public void setChoNgoi(String choNgoi) {
-		this.choNgoi = choNgoi;
-	}
-
-	public Double getNhienLieuThu() {
-		return nhienLieuThu;
-	}
-
-	public void setNhienLieuThu(Double nhienLieuThu) {
-		this.nhienLieuThu = nhienLieuThu;
-	}
-
-	public String getLoaiNhienLieu() {
-		return loaiNhienLieu;
-	}
-
-	public void setLoaiNhienLieu(String loaiNhienLieu) {
-		this.loaiNhienLieu = loaiNhienLieu;
-	}
-
-	public String getHopSo() {
-		return hopSo;
-	}
-
-	public void setHopSo(String hopSo) {
-		this.hopSo = hopSo;
-	}
-
-	public Long getGia() {
-		return gia;
-	}
-
-	public void setGia(Long gia) {
-		this.gia = gia;
-	}
-
-	public String getMoTa() {
-		return moTa;
-	}
-
-	public void setMoTa(String moTa) {
-		this.moTa = moTa;
-	}
-
-	public String getDanhGia() {
-		return danhGia;
-	}
-
-	public void setDanhGia(String danhGia) {
-		this.danhGia = danhGia;
-	}
-
-	public String getViTri() {
-		return viTri;
-	}
-
-	public void setViTri(String viTri) {
-		this.viTri = viTri;
-	}
-
-	public byte[] getAnh() {
-		return anh;
-	}
-
-	public void setAnh(byte[] anh) {
-		this.anh = anh;
-	}
-
-	public String getTrangThai() {
-		return trangThai;
-	}
-
-	public void setTrangThai(String trangThai) {
-		this.trangThai = trangThai;
-	}
-
-	public Integer getLuotChoThue() {
-		return luotChoThue;
-	}
-
-	public void setLuotChoThue(Integer luotChoThue) {
-		this.luotChoThue = luotChoThue;
-	}
-
-	public Integer getLuotDanhGia() {
-		return luotDanhGia;
-	}
-
-	public void setLuotDanhGia(Integer luotDanhGia) {
-		this.luotDanhGia = luotDanhGia;
-	}
-
-	public Double getDanhGiaTrungBinh() {
-		return danhGiaTrungBinh;
-	}
-
-	public void setDanhGiaTrungBinh(Double danhGiaTrungBinh) {
-		this.danhGiaTrungBinh = danhGiaTrungBinh;
-	}
-
-	public String getGiayToXe() {
-		return giayToXe;
-	}
-
-	public void setGiayToXe(String giayToXe) {
-		this.giayToXe = giayToXe;
-	}
-
-	public Long getGiaChoThue() {
-		return giaChoThue;
-	}
-
-	public void setGiaChoThue(Long giaChoThue) {
-		this.giaChoThue = giaChoThue;
-	}
-
-	public String getThongTinLienQuan() {
-		return thongTinLienQuan;
-	}
-
-	public void setThongTinLienQuan(String thongTinLienQuan) {
-		this.thongTinLienQuan = thongTinLienQuan;
-	}
-
-	public String getDieuKhoan() {
-		return dieuKhoan;
-	}
-
-	public void setDieuKhoan(String dieuKhoan) {
-		this.dieuKhoan = dieuKhoan;
-	}
-
-	public User getTaiKhoan() {
-		return user;
-	}
-
-	public void setTaiKhoan(User user) {
-		this.user = user;
-	}
+    @Column(name = "year")
+    private int year;
     
-    
+    @Column(name = "user_id")
+    private Long userId;
 
+
+    @Column(name = "color")
+    private String color;
+
+    @Column(name = "mileage")
+    private int mileage;
     
+    @Column(name ="type")
+    private String type;
+    
+    @Column(name = "gear")
+    private String gear;
+    
+    @Column(name = "fuel")
+    private String fuel;
+    
+    @Column(name = "consumption")
+    private String consumption;
+
+    @Column(name = "description", length = 2000)
+    private String description;
+
+    @Column(name = "review")
+    private long review;
+
+    @Column(name = "number_of_review")
+    private int numberOfReview;
+
+    @Column(name = "image")
+    private String image;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "seat")
+    private int seat;
+
+    @Column(name = "cost")
+    private int cost;
+    
+    @Column(name = "number_of_rental")
+    private int numberOfRental;
+    
+    @Column(name = "location_id")
+    private int locationId;
+
+	public Car() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Car(Long carId, String licensePlates, String brand, String model, int year, Long userId, String color,
+			int mileage, String type, String gear, String fuel, String consumption, String description, long review,
+			int numberOfReview, String image, String status, int seat, int cost, int numberOfRental, int locationId) {
+		super();
+		this.carId = carId;
+		this.licensePlates = licensePlates;
+		this.brand = brand;
+		this.model = model;
+		this.year = year;
+		this.userId = userId;
+		this.color = color;
+		this.mileage = mileage;
+		this.type = type;
+		this.gear = gear;
+		this.fuel = fuel;
+		this.consumption = consumption;
+		this.description = description;
+		this.review = review;
+		this.numberOfReview = numberOfReview;
+		this.image = image;
+		this.status = status;
+		this.seat = seat;
+		this.cost = cost;
+		this.numberOfRental = numberOfRental;
+		this.locationId = locationId;
+	}
+
+	public Long getCarId() {
+		return carId;
+	}
+
+	public void setCarId(Long carId) {
+		this.carId = carId;
+	}
+
+	public String getLicensePlates() {
+		return licensePlates;
+	}
+
+	public void setLicensePlates(String licensePlates) {
+		this.licensePlates = licensePlates;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public int getMileage() {
+		return mileage;
+	}
+
+	public void setMileage(int mileage) {
+		this.mileage = mileage;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getGear() {
+		return gear;
+	}
+
+	public void setGear(String gear) {
+		this.gear = gear;
+	}
+
+	public String getFuel() {
+		return fuel;
+	}
+
+	public void setFuel(String fuel) {
+		this.fuel = fuel;
+	}
+
+	public String getConsumption() {
+		return consumption;
+	}
+
+	public void setConsumption(String consumption) {
+		this.consumption = consumption;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public long getReview() {
+		return review;
+	}
+
+	public void setReview(long review) {
+		this.review = review;
+	}
+
+	public int getNumberOfReview() {
+		return numberOfReview;
+	}
+
+	public void setNumberOfReview(int numberOfReview) {
+		this.numberOfReview = numberOfReview;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getSeat() {
+		return seat;
+	}
+
+	public void setSeat(int seat) {
+		this.seat = seat;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
+	public int getNumberOfRental() {
+		return numberOfRental;
+	}
+
+	public void setNumberOfRental(int numberOfRental) {
+		this.numberOfRental = numberOfRental;
+	}
+
+	public int getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(int locationId) {
+		this.locationId = locationId;
+	}
+
 }
+

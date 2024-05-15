@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="`user`")
@@ -14,7 +15,7 @@ import java.util.Date;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="user_id")
     @JsonProperty("userId")
     private int userId;
@@ -35,6 +36,10 @@ public class User {
     @Column(name="driver_license")
     @JsonProperty("driverLicense")
     private String driverLicense;
+
+    @Column(name="driver_license_check")
+    @JsonProperty("driverLicenseCheck")
+    private String driverLicenseCheck;
     @Column(name="password")
     @JsonProperty("password")
     private String password;
@@ -45,24 +50,26 @@ public class User {
     @JsonProperty("avatar")
     private String avatar;
     @Column(name="create_date")
-    @JsonProperty("create_date")
-    private LocalDate create_date;
-
+    @JsonProperty("createDate")
+    private LocalDate createDate;
+    @OneToMany( mappedBy = "user")
+    List<Car> cars;
     public User(){
 
     }
 
-    public User(int userId, String firstName, String lastName, String email, String phoneNumber, String driverLicense, String password, String role, String avatar, LocalDate create_date) {
+    public User(int userId, String firstName, String lastName, String email, String phoneNumber, String driverLicense, String driverLicenseCheck, String password, String role, String avatar, LocalDate createDate) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.driverLicense = driverLicense;
+        this.driverLicenseCheck = driverLicenseCheck;
         this.password = password;
         this.role = role;
         this.avatar = avatar;
-        this.create_date = create_date;
+        this.createDate = createDate;
     }
 
     public void setUserId(int userId) {
@@ -101,8 +108,20 @@ public class User {
         this.avatar = avatar;
     }
 
-    public void setCreate_date(LocalDate create_date) {
-        this.create_date = create_date;
+    public String getDriverLicenseCheck() {
+        return driverLicenseCheck;
+    }
+
+    public void setDriverLicenseCheck(String driverLicenseCheck) {
+        this.driverLicenseCheck = driverLicenseCheck;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 
     public int getUserId() {
@@ -141,7 +160,11 @@ public class User {
         return avatar;
     }
 
-    public LocalDate getCreate_date() {
-        return create_date;
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 }

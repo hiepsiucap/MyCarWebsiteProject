@@ -13,4 +13,6 @@ public interface TaiKhoanService {
     TaiKhoan save(TaiKhoan taikhoan);
 
     TaiKhoan update(long id, Map<String, Object> fields);
+
+    TaiKhoan findByTenTK(String TenTK);
 }

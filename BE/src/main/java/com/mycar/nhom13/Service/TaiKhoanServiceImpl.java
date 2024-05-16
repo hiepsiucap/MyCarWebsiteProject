@@ -53,6 +53,9 @@ public class TaiKhoanServiceImpl implements  TaiKhoanService{
         }
         return null;
 
-
+    }
+    @Override
+    public TaiKhoan findByTenTK(String TenTk){
+        return repository.findByTenTK(TenTk);
     }
 }

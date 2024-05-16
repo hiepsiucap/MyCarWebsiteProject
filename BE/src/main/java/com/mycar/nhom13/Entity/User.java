@@ -1,6 +1,7 @@
 package com.mycar.nhom13.Entity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -16,36 +17,27 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id")
-    @JsonProperty("userId")
     private int userId;
     @Column(name="first_name")
-    @JsonProperty("firstName")
     private String firstName;
 
     @Column(name="last_name")
-    @JsonProperty("lastName")
     private String lastName;
 
     @Column(name="email")
-    @JsonProperty("email")
     private String email;
     @Column(name="phone_number")
-    @JsonProperty("phoneNumber")
     private String phoneNumber;
     @Column(name="driver_license")
-    @JsonProperty("driverLicense")
     private String driverLicense;
     @Column(name="password")
-    @JsonProperty("password")
+    @JsonIgnore
     private String password;
     @Column(name="role")
-    @JsonProperty("role")
     private String role;
     @Column(name="avatar")
-    @JsonProperty("avatar")
     private String avatar;
     @Column(name="create_date")
-    @JsonProperty("create_date")
     private LocalDate create_date;
 
     public User(){

@@ -1,6 +1,8 @@
 package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Entity.Car;
+import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
+import com.mycar.nhom13.ExceptionHandler.UserNotFoundException;
 import com.mycar.nhom13.Repository.CarRepository;
 import com.mycar.nhom13.Service.CarService;
 
@@ -42,7 +44,7 @@ public class CarMgmtController {
 	public ResponseEntity<Car> getCarById(@PathVariable Long id) {
 		Car car = carService.findByCarId(id);
 		if(car == null) {
-			return ResponseEntity.notFound().build();
+			throw new CarNotFoundException("Car id " + id +" not found");
 		}
 		return ResponseEntity.ok(car);
 	}
@@ -57,7 +59,7 @@ public class CarMgmtController {
 	public ResponseEntity<Car> patchCar(@PathVariable long id, @RequestBody Map<String, Object> fields) {
 	    Car updatedCar = carService.update(id, fields);
 	    if(updatedCar == null) {
-	    	System.out.print("Khong tim thay xe nay!");
+			throw new CarNotFoundException("Car id " + id +" not found");
 	    }
 	    return new ResponseEntity<>(updatedCar, new HttpHeaders(), HttpStatus.OK);
 	}

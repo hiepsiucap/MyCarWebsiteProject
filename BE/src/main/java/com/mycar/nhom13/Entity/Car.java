@@ -43,13 +43,13 @@ public class Car {
     private String fuel;
     
     @Column(name = "consumption")
-    private String consumption;
+    private double consumption;
 
     @Column(name = "description", length = 2000)
     private String description;
 
     @Column(name = "review")
-    private long review;
+    private double review;
 
     @Column(name = "number_of_review")
     private int numberOfReview;
@@ -78,8 +78,8 @@ public class Car {
 	}
 
 	public Car(Long carId, String licensePlates, String brand, String model, int year, Long userId, String color,
-			int mileage, String type, String gear, String fuel, String consumption, String description, long review,
-			int numberOfReview, String image, String status, int seat, int cost, int numberOfRental, int locationId) {
+			   int mileage, String type, String gear, String fuel, double consumption, String description, long review,
+			   int numberOfReview, String image, String status, int seat, int cost, int numberOfRental, int locationId) {
 		super();
 		this.carId = carId;
 		this.licensePlates = licensePlates;
@@ -192,11 +192,11 @@ public class Car {
 		this.fuel = fuel;
 	}
 
-	public String getConsumption() {
+	public double getConsumption() {
 		return consumption;
 	}
 
-	public void setConsumption(String consumption) {
+	public void setConsumption(double consumption) {
 		this.consumption = consumption;
 	}
 
@@ -208,11 +208,11 @@ public class Car {
 		this.description = description;
 	}
 
-	public long getReview() {
+	public double getReview() {
 		return review;
 	}
 
-	public void setReview(long review) {
+	public void setReview(double review) {
 		this.review = review;
 	}
 

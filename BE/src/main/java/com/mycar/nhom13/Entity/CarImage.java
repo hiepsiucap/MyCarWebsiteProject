@@ -2,7 +2,8 @@ package com.mycar.nhom13.Entity;
 
 import jakarta.persistence.*;
 
-@Entity(name ="Car_Images")
+@Entity
+@Table(name ="Car_Images")
 public class CarImage {
     @Id()
     @GeneratedValue(strategy = GenerationType.AUTO)

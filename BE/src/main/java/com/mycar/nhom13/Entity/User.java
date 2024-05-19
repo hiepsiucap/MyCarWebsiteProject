@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="`user`")
@@ -39,6 +40,9 @@ public class User {
     private String avatar;
     @Column(name="create_date")
     private LocalDate create_date;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Rental> rentals;
 
     public User(){
 
@@ -55,6 +59,14 @@ public class User {
         this.role = role;
         this.avatar = avatar;
         this.create_date = create_date;
+    }
+
+    public List<com.mycar.nhom13.Entity.Rental> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(List<com.mycar.nhom13.Entity.Rental> rentals) {
+        this.rentals = rentals;
     }
 
     public void setUserId(int userId) {

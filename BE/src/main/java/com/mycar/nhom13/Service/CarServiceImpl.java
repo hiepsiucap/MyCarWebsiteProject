@@ -1,6 +1,7 @@
 package com.mycar.nhom13.Service;
 
 import com.mycar.nhom13.Entity.Car;
+import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
 import com.mycar.nhom13.Repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,16 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> findByStatus(String status) {
-        return carRepository.findByStatus("active");
+        return carRepository.findByStatus(status);
     }
-
 	@Override
 	public Car findByCarId(Long id) {
-		return carRepository.findByCarId(id);
+		Car car = carRepository.findByCarId(id);
+		if(car != null) {
+			return car;
+		}else {
+			throw new CarNotFoundException("Car id " + id +" not found");
+		}
 	}
 	
 	@Override
@@ -49,6 +54,8 @@ public class CarServiceImpl implements CarService {
 			  });
             return carRepository.save(car);
 		}
-		return null;
+		else {
+			throw new CarNotFoundException("Car id " + id +" not found");
+		}
 	}
 }

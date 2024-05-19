@@ -2,8 +2,7 @@ package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Entity.Car;
 import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
-import com.mycar.nhom13.ExceptionHandler.UserNotFoundException;
-import com.mycar.nhom13.Repository.CarRepository;
+
 import com.mycar.nhom13.Service.CarService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +24,22 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*") 
-@RequestMapping("/api")
+@RequestMapping("/api/cars")
 public class CarMgmtController {
+	
 	@Autowired
-	private CarRepository carRepository;
 	private CarService carService;
 
 	public CarMgmtController(CarService carService) {
 		this.carService = carService;
 	}
 
-	@GetMapping({"/cars", "/cars/"})
+	@GetMapping("")
 	public List<Car> getActiveCars() {
-		return carRepository.findByStatus("active");
+		return carService.findByStatus("active");
 	}
 
-	@GetMapping("/cars/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Car> getCarById(@PathVariable Long id) {
 		Car car = carService.findByCarId(id);
 		if(car == null) {
@@ -49,13 +48,13 @@ public class CarMgmtController {
 		return ResponseEntity.ok(car);
 	}
 	
-	@PostMapping("/cars")
+	@PostMapping("")
 	public ResponseEntity<Car> postCar(@RequestBody Car car){
 	    Car savedCar = carService.save(car);
 	    return ResponseEntity.created(URI.create("/cars/" + savedCar.getCarId())).body(savedCar);
 	}
 	
-	@PatchMapping("/cars/{id}")
+	@PatchMapping("/{id}")
 	public ResponseEntity<Car> patchCar(@PathVariable long id, @RequestBody Map<String, Object> fields) {
 	    Car updatedCar = carService.update(id, fields);
 	    if(updatedCar == null) {

@@ -1,6 +1,7 @@
 package com.mycar.nhom13.Entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Cars")
@@ -11,87 +12,102 @@ public class Car {
     @Column(name = "car_id")
     private Long carId;
 
-    @Column(name = "license_plates")
+    @Column(name = "license_plates", nullable = false, length = 10)
     private String licensePlates;
 
-    @Column(name = "brand")
+    @Column(name = "brand", length = 255)
     private String brand;
 
-    @Column(name = "model")
+    @Column(name = "model", length = 255)
     private String model;
 
     @Column(name = "year")
-    private int year;
-    
-    @Column(name = "user_id")
-    private Long userId;
-
+    private Long year;
 
     @Column(name = "color")
     private String color;
 
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "mileage")
-    private int mileage;
-    
-    @Column(name ="type")
+    private Long mileage;
+
+    @Column(name = "type", length = 50)
     private String type;
-    
-    @Column(name = "gear")
-    private String gear;
-    
-    @Column(name = "fuel")
+
+    @Column(name = "fuel", length = 10)
     private String fuel;
-    
+
+    @Column(name = "gear", length = 20)
+    private String gear;
+
     @Column(name = "consumption")
-    private double consumption;
+    private Double consumption;
 
     @Column(name = "description", length = 2000)
     private String description;
 
     @Column(name = "review")
-    private double review;
+    private Long review;
 
     @Column(name = "number_of_review")
-    private int numberOfReview;
+    private Long numberOfReview;
 
-    @Column(name = "image")
+    @Column(name = "image", length = 255)
     private String image;
 
-    @Column(name = "status")
+    @Column(name = "status", length = 10)
     private String status;
 
     @Column(name = "seat")
-    private int seat;
+    private Long seat;
+
+    @Column(name = "number_of_rental")
+    private Long numberOfRental;
 
     @Column(name = "cost")
-    private int cost;
-    
-    @Column(name = "number_of_rental")
-    private int numberOfRental;
-    
-    @Column(name = "location_id")
-    private int locationId;
+    private Long cost;
+
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
+
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CarCalendar> carCalendars;
+
+	@Override
+	public String toString() {
+		return "Car [carId=" + carId + ", licensePlates=" + licensePlates + ", brand=" + brand + ", model=" + model
+				+ ", year=" + year + ", color=" + color + ", user=" + user + ", mileage=" + mileage + ", type=" + type
+				+ ", fuel=" + fuel + ", gear=" + gear + ", consumption=" + consumption + ", description=" + description
+				+ ", review=" + review + ", numberOfReview=" + numberOfReview + ", image=" + image + ", status="
+				+ status + ", seat=" + seat + ", numberOfRental=" + numberOfRental + ", cost=" + cost + ", location="
+				+ location + ", carCalendars=" + carCalendars + "]";
+	}
 
 	public Car() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Car(Long carId, String licensePlates, String brand, String model, int year, Long userId, String color,
-			   int mileage, String type, String gear, String fuel, double consumption, String description, long review,
-			   int numberOfReview, String image, String status, int seat, int cost, int numberOfRental, int locationId) {
+	public Car(Long carId, String licensePlates, String brand, String model, Long year, String color, User user,
+			Long mileage, String type, String fuel, String gear, Double consumption, String description,
+			Long review, Long numberOfReview, String image, String status, Long seat, Long numberOfRental, Long cost,
+			Location location, List<CarCalendar> carCalendars) {
 		super();
 		this.carId = carId;
 		this.licensePlates = licensePlates;
 		this.brand = brand;
 		this.model = model;
 		this.year = year;
-		this.userId = userId;
 		this.color = color;
+		this.user = user;
 		this.mileage = mileage;
 		this.type = type;
-		this.gear = gear;
 		this.fuel = fuel;
+		this.gear = gear;
 		this.consumption = consumption;
 		this.description = description;
 		this.review = review;
@@ -99,11 +115,12 @@ public class Car {
 		this.image = image;
 		this.status = status;
 		this.seat = seat;
-		this.cost = cost;
 		this.numberOfRental = numberOfRental;
-		this.locationId = locationId;
+		this.cost = cost;
+		this.location = location;
+		this.carCalendars = carCalendars;
 	}
-
+	
 	public Long getCarId() {
 		return carId;
 	}
@@ -136,20 +153,12 @@ public class Car {
 		this.model = model;
 	}
 
-	public int getYear() {
+	public Long getYear() {
 		return year;
 	}
 
-	public void setYear(int year) {
+	public void setYear(Long year) {
 		this.year = year;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
 	}
 
 	public String getColor() {
@@ -160,11 +169,19 @@ public class Car {
 		this.color = color;
 	}
 
-	public int getMileage() {
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Long getMileage() {
 		return mileage;
 	}
 
-	public void setMileage(int mileage) {
+	public void setMileage(Long mileage) {
 		this.mileage = mileage;
 	}
 
@@ -176,14 +193,6 @@ public class Car {
 		this.type = type;
 	}
 
-	public String getGear() {
-		return gear;
-	}
-
-	public void setGear(String gear) {
-		this.gear = gear;
-	}
-
 	public String getFuel() {
 		return fuel;
 	}
@@ -192,11 +201,19 @@ public class Car {
 		this.fuel = fuel;
 	}
 
-	public double getConsumption() {
+	public String getGear() {
+		return gear;
+	}
+
+	public void setGear(String gear) {
+		this.gear = gear;
+	}
+
+	public Double getConsumption() {
 		return consumption;
 	}
 
-	public void setConsumption(double consumption) {
+	public void setConsumption(Double consumption) {
 		this.consumption = consumption;
 	}
 
@@ -208,19 +225,19 @@ public class Car {
 		this.description = description;
 	}
 
-	public double getReview() {
+	public Long getReview() {
 		return review;
 	}
 
-	public void setReview(double review) {
+	public void setReview(Long review) {
 		this.review = review;
 	}
 
-	public int getNumberOfReview() {
+	public Long getNumberOfReview() {
 		return numberOfReview;
 	}
 
-	public void setNumberOfReview(int numberOfReview) {
+	public void setNumberOfReview(Long numberOfReview) {
 		this.numberOfReview = numberOfReview;
 	}
 
@@ -240,49 +257,48 @@ public class Car {
 		this.status = status;
 	}
 
-	public int getSeat() {
+	public Long getSeat() {
 		return seat;
 	}
 
-	public void setSeat(int seat) {
+	public void setSeat(Long seat) {
 		this.seat = seat;
 	}
 
-	public int getCost() {
-		return cost;
-	}
-
-	public void setCost(int cost) {
-		this.cost = cost;
-	}
-
-	public int getNumberOfRental() {
+	public Long getNumberOfRental() {
 		return numberOfRental;
 	}
 
-	public void setNumberOfRental(int numberOfRental) {
+	public void setNumberOfRental(Long numberOfRental) {
 		this.numberOfRental = numberOfRental;
 	}
 
-	public int getLocationId() {
-		return locationId;
+	public Long getCost() {
+		return cost;
 	}
 
-	public void setLocationId(int locationId) {
-		this.locationId = locationId;
+	public void setCost(Long cost) {
+		this.cost = cost;
 	}
 
-	@Override
-	public String toString() {
-		return "Car [carId=" + carId + ", licensePlates=" + licensePlates + ", brand=" + brand + ", model=" + model
-				+ ", year=" + year + ", userId=" + userId + ", color=" + color + ", mileage=" + mileage + ", type="
-				+ type + ", gear=" + gear + ", fuel=" + fuel + ", consumption=" + consumption + ", description="
-				+ description + ", review=" + review + ", numberOfReview=" + numberOfReview + ", image=" + image
-				+ ", status=" + status + ", seat=" + seat + ", cost=" + cost + ", numberOfRental=" + numberOfRental
-				+ ", locationId=" + locationId + "]";
+	public Location getLocation() {
+		return location;
 	}
-	
-	
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public List<CarCalendar> getCarCalendars() {
+		return carCalendars;
+	}
+
+	public void setCarCalendars(List<CarCalendar> carCalendars) {
+		this.carCalendars = carCalendars;
+	}
+
 
 }
+
+
 

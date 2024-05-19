@@ -272,5 +272,17 @@ public class Car {
 		this.locationId = locationId;
 	}
 
+	@Override
+	public String toString() {
+		return "Car [carId=" + carId + ", licensePlates=" + licensePlates + ", brand=" + brand + ", model=" + model
+				+ ", year=" + year + ", userId=" + userId + ", color=" + color + ", mileage=" + mileage + ", type="
+				+ type + ", gear=" + gear + ", fuel=" + fuel + ", consumption=" + consumption + ", description="
+				+ description + ", review=" + review + ", numberOfReview=" + numberOfReview + ", image=" + image
+				+ ", status=" + status + ", seat=" + seat + ", cost=" + cost + ", numberOfRental=" + numberOfRental
+				+ ", locationId=" + locationId + "]";
+	}
+	
+	
+
 }
 

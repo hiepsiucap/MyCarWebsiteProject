@@ -16,7 +16,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name="user_id")
     private int userId;
     @Column(name="first_name")
@@ -32,7 +32,6 @@ public class User {
     @Column(name="driver_license")
     private String driverLicense;
     @Column(name="password")
-    @JsonIgnore
     private String password;
     @Column(name="role")
     private String role;

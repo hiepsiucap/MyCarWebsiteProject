@@ -41,12 +41,7 @@ public class RentalController {
 
         Rental savedRental =rentalService.save(rental);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedRental.getRentalId())
-                .toUri();
         return new ResponseEntity<>(savedRental,new HttpHeaders(), HttpStatus.CREATED);
-        //return ResponseEntity.created(location).build();
     }
 
     @PatchMapping("/rentals/{id}")

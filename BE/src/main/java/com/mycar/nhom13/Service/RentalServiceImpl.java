@@ -1,9 +1,7 @@
 package com.mycar.nhom13.Service;
 
 import com.mycar.nhom13.Entity.Rental;
-import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.Repository.RentalRepository;
-import com.mycar.nhom13.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -41,7 +39,7 @@ public class RentalServiceImpl implements  RentalService{
         if( rental != null) {
 
             fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(User.class, key);
+                Field field = ReflectionUtils.findField(Rental.class, key);
                 field.setAccessible(true);
 
                 ReflectionUtils.setField(field, rental, value);

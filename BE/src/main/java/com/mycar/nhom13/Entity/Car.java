@@ -13,9 +13,9 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq")
     @SequenceGenerator(name = "car_seq", sequenceName = "car_seq", allocationSize = 1)
     @Column(name = "car_id")
-    private Long carId;
+    private int carId;
 
-    @Column(name = "license_plates", nullable = false, length = 10)
+    @Column(name = "license_plates", length = 10)
     private String licensePlates;
 
     @Column(name = "brand", length = 255)
@@ -25,7 +25,7 @@ public class Car {
     private String model;
 
     @Column(name = "year")
-    private Long year;
+    private int year;
 
     @Column(name = "color")
     private String color;
@@ -35,7 +35,7 @@ public class Car {
     private User user;
 
     @Column(name = "mileage")
-    private Long mileage;
+    private int mileage;
 
     @Column(name = "type", length = 50)
     private String type;
@@ -47,16 +47,16 @@ public class Car {
     private String gear;
 
     @Column(name = "consumption")
-    private Double consumption;
+    private Float consumption;
 
     @Column(name = "description", length = 2000)
     private String description;
 
     @Column(name = "review")
-    private Long review;
+    private Float review;
 
     @Column(name = "number_of_review")
-    private Long numberOfReview;
+    private int numberOfReview;
 
     @Column(name = "image", length = 255)
     private String image;
@@ -65,13 +65,13 @@ public class Car {
     private String status;
 
     @Column(name = "seat")
-    private Long seat;
+    private int seat;
 
     @Column(name = "number_of_rental")
-    private Long numberOfRental;
+    private int numberOfRental;
 
     @Column(name = "cost")
-    private Long cost;
+    private int cost;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
@@ -97,9 +97,9 @@ public class Car {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Car(Long carId, String licensePlates, String brand, String model, Long year, String color, User user,
-			Long mileage, String type, String fuel, String gear, Double consumption, String description,
-			Long review, Long numberOfReview, String image, String status, Long seat, Long numberOfRental, Long cost,
+	public Car(int carId, String licensePlates, String brand, String model, int year, String color, User user,
+			int mileage, String type, String fuel, String gear, Float consumption, String description,
+			Float review, int numberOfReview, String image, String status, int seat, int numberOfRental, int cost,
 			Location location, List<CarCalendar> carCalendars) {
 		super();
 		this.carId = carId;
@@ -126,11 +126,11 @@ public class Car {
 		this.carCalendars = carCalendars;
 	}
 	
-	public Long getCarId() {
+	public int getCarId() {
 		return carId;
 	}
 
-	public void setCarId(Long carId) {
+	public void setCarId(int carId) {
 		this.carId = carId;
 	}
 
@@ -158,11 +158,11 @@ public class Car {
 		this.model = model;
 	}
 
-	public Long getYear() {
+	public int getYear() {
 		return year;
 	}
 
-	public void setYear(Long year) {
+	public void setYear(int year) {
 		this.year = year;
 	}
 
@@ -182,11 +182,11 @@ public class Car {
 		this.user = user;
 	}
 
-	public Long getMileage() {
+	public int getMileage() {
 		return mileage;
 	}
 
-	public void setMileage(Long mileage) {
+	public void setMileage(int mileage) {
 		this.mileage = mileage;
 	}
 
@@ -214,11 +214,11 @@ public class Car {
 		this.gear = gear;
 	}
 
-	public Double getConsumption() {
+	public Float getConsumption() {
 		return consumption;
 	}
 
-	public void setConsumption(Double consumption) {
+	public void setConsumption(Float consumption) {
 		this.consumption = consumption;
 	}
 
@@ -230,19 +230,19 @@ public class Car {
 		this.description = description;
 	}
 
-	public Long getReview() {
+	public Float getReview() {
 		return review;
 	}
 
-	public void setReview(Long review) {
+	public void setReview(Float review) {
 		this.review = review;
 	}
 
-	public Long getNumberOfReview() {
+	public int getNumberOfReview() {
 		return numberOfReview;
 	}
 
-	public void setNumberOfReview(Long numberOfReview) {
+	public void setNumberOfReview(int numberOfReview) {
 		this.numberOfReview = numberOfReview;
 	}
 
@@ -262,27 +262,27 @@ public class Car {
 		this.status = status;
 	}
 
-	public Long getSeat() {
+	public int getSeat() {
 		return seat;
 	}
 
-	public void setSeat(Long seat) {
+	public void setSeat(int seat) {
 		this.seat = seat;
 	}
 
-	public Long getNumberOfRental() {
+	public int getNumberOfRental() {
 		return numberOfRental;
 	}
 
-	public void setNumberOfRental(Long numberOfRental) {
+	public void setNumberOfRental(int numberOfRental) {
 		this.numberOfRental = numberOfRental;
 	}
 
-	public Long getCost() {
+	public int getCost() {
 		return cost;
 	}
 
-	public void setCost(Long cost) {
+	public void setCost(int cost) {
 		this.cost = cost;
 	}
 

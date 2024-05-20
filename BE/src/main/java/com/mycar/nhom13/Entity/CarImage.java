@@ -6,7 +6,8 @@ import jakarta.persistence.*;
 @Table(name ="Car_Images")
 public class CarImage {
     @Id()
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_seq")
+    @SequenceGenerator(name = "image_seq", sequenceName = "image_seq", allocationSize = 1)
     @Column(name = "image_id")
     public int imageId;
     @Column(name="image")

@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 @Table(name = "Reviews")
 public class Review {
     @Id
-    @GeneratedValue(strategy =GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_seq")
+    @SequenceGenerator(name = "review_seq", sequenceName = "review_seq", allocationSize = 1)
     @Column(name = "review_id")
     private int reviewId;
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,

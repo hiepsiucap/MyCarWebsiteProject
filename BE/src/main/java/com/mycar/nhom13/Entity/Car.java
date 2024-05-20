@@ -3,6 +3,8 @@ package com.mycar.nhom13.Entity;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "Cars")
 public class Car {
@@ -27,7 +29,7 @@ public class Car {
     @Column(name = "color")
     private String color;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -70,11 +72,13 @@ public class Car {
     @Column(name = "cost")
     private Long cost;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "location_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "car")
+    @JsonManagedReference
     private List<CarCalendar> carCalendars;
 
 	@Override

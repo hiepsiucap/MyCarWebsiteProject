@@ -34,7 +34,7 @@ public class CarMgmtController {
 		this.carService = carService;
 	}
 
-	@GetMapping
+	@GetMapping("")
 	public List<Car> getActiveCars() {
 		return carService.findByStatus("active");
 	}

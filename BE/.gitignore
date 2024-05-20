@@ -1,0 +1,7 @@
+/target/
+
+# Ignore pom.xml
+pom.xml
+
+# Ignore all .properties files
+application.properties

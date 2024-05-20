@@ -1,0 +1,81 @@
+package com.mycar.nhom13.Entity;
+
+import jakarta.persistence.*;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+@Entity
+@Table(name = "Car_calendars")
+public class CarCalendar {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "calender_id")
+    private Long calendarId;
+
+    @ManyToOne
+    @JoinColumn(name = "car_id", referencedColumnName = "car_id")
+    @JsonBackReference
+    private Car car;
+
+    @Column(name = "start_date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
+
+    @Column(name = "end_date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
+    
+    @Override
+	public String toString() {
+		return "CarCalendar [calendarId=" + calendarId + ", car=" + car + ", startDate=" + startDate + ", endDate="
+				+ endDate + "]";
+	}
+
+	public CarCalendar(Long calendarId, Car car, Date startDate, Date endDate) {
+		super();
+		this.calendarId = calendarId;
+		this.car = car;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+
+	public CarCalendar() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Long getCalendarId() {
+        return calendarId;
+    }
+
+    public void setCalendarId(Long calendarId) {
+        this.calendarId = calendarId;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+}
+

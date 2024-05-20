@@ -5,10 +5,6 @@ import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
 
 import com.mycar.nhom13.Service.CarService;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,29 +37,6 @@ public class CarMgmtController {
 	public CarMgmtController(CarService carService) {
 		this.carService = carService;
 	}
-	
-	
-	@GetMapping("/rental-status/{status}")
-    public ResponseEntity<List<Car>> getCarsByRentalStatus(@PathVariable String status, HttpServletRequest request) {
-        String userIdStr = (String) request.getAttribute("userId");
-        if (userIdStr == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
-        Long userId;
-        try {
-            userId = Long.parseLong(userIdStr);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-
-        List<Car> cars = carService.findCarsByRentalStatus(status, userId);
-        if (cars.isEmpty()) {
-            throw new CarNotFoundException("No cars found with rental status: " + status);
-        }
-        return ResponseEntity.ok(cars);
-    }
-
 
 	@GetMapping("")
 	public ResponseEntity<Page<Car>> getActiveCars(@RequestParam(defaultValue = "0") int page) {

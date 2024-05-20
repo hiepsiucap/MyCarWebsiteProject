@@ -6,6 +6,9 @@ import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
 import com.mycar.nhom13.Service.CarService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
@@ -35,8 +39,10 @@ public class CarMgmtController {
 	}
 
 	@GetMapping("")
-	public List<Car> getActiveCars() {
-		return carService.findByStatus("active");
+	public ResponseEntity<Page<Car>> getActiveCars(@RequestParam(defaultValue = "0") int page) {
+	    Pageable pageable = PageRequest.of(page, 10);
+	    Page<Car> carsPage = carService.findByStatus("active", pageable);
+	    return ResponseEntity.ok(carsPage);
 	}
 
 	@GetMapping("/{id}")

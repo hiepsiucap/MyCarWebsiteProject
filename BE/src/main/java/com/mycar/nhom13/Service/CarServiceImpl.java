@@ -4,6 +4,8 @@ import com.mycar.nhom13.Entity.Car;
 import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
 import com.mycar.nhom13.Repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -21,10 +23,6 @@ public class CarServiceImpl implements CarService {
     	this.carRepository=carRepository;
     }
 
-    @Override
-    public List<Car> findByStatus(String status) {
-        return carRepository.findByStatus(status);
-    }
 	@Override
 	public Car findByCarId(Long id) {
 		Car car = carRepository.findByCarId(id);
@@ -58,4 +56,9 @@ public class CarServiceImpl implements CarService {
 			throw new CarNotFoundException("Car id " + id +" not found");
 		}
 	}
+	
+    @Override
+    public Page<Car> findByStatus(String status, Pageable pageable) {
+        return carRepository.findByStatus("active", pageable);
+    }
 }

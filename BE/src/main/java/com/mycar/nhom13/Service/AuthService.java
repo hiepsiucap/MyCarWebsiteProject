@@ -1,7 +1,7 @@
 package com.mycar.nhom13.Service;
 
 import com.mycar.nhom13.Dto.LoginDTO;
-import com.mycar.nhom13.Entity.TaiKhoan;
+import com.mycar.nhom13.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +19,7 @@ import java.util.Objects;
 public class AuthService {
 
     @Autowired
-    private TaiKhoanService userService;
+    private UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${security.jwt.token.secret-key:secret-key}")
@@ -29,39 +29,37 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public TaiKhoan authenticate(LoginDTO loginDTO) {
+    public User authenticate(LoginDTO loginDTO) {
 
-        TaiKhoan user = userService.findByTenTK(loginDTO.getUsername());
+        User user = userService.findByEmail(loginDTO.getEmail());
 
-        if (passwordEncoder.matches((loginDTO.getPassword()), user.getMatKhau())) {
+        if (passwordEncoder.matches((loginDTO.getPassword()), user.getPassword())) {
             return user;
         }
         throw new RuntimeException("Invalid password");
     }
 
-    public TaiKhoan findByLogin(String login) {
-        TaiKhoan user = userService.findByTenTK(login);
+    public User findByLogin(String login) {
+        User user = userService.findByEmail(login);
         if (user == null) {
             throw new RuntimeException("Invalid login");
         }
         else return user;
     }
 
-    public String createToken(TaiKhoan user) {
-        System.out.println(user.getMaTK() + "&" + user.getTenTK() + "&" + calculateHmac(user));
-        return user.getMaTK() + "&" + user.getTenTK() + "&" + calculateHmac(user);
+    public String createToken(User user) {
+        System.out.println(user.getUserId() + "&" + user.getEmail() + "&" + calculateHmac(user));
+        return user.getUserId() + "&" + user.getEmail() + "&" + calculateHmac(user);
     }
 
-    public TaiKhoan findByToken(String token) {
+    public User findByToken(String token) {
         String[] parts = token.split("&");
 
         long userId = Long.valueOf(parts[0]).longValue();
         String login = parts[1];
         String hmac = parts[2];
 
-        System.out.println(login);
-
-        TaiKhoan user = findByLogin(login);
+        User user = findByLogin(login);
 
 //        if (!hmac.equals(calculateHmac(user)) || userId != user.getMaTK()) {
 //            throw new RuntimeException("Invalid Cookie value");
@@ -71,9 +69,9 @@ public class AuthService {
     }
 
 
-    private String calculateHmac(TaiKhoan user) {
+    private String calculateHmac(User user) {
         byte[] secretKeyBytes = Objects.requireNonNull(secretKey).getBytes(StandardCharsets.UTF_8);
-        byte[] valueBytes = Objects.requireNonNull(user.getMaTK() + "&" + user.getTenTK()).getBytes(StandardCharsets.UTF_8);
+        byte[] valueBytes = Objects.requireNonNull(user.getUserId() + "&" + user.getEmail()).getBytes(StandardCharsets.UTF_8);
 
         try {
             Mac mac = Mac.getInstance("HmacSHA512");

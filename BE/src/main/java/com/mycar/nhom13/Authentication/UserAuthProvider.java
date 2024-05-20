@@ -2,6 +2,7 @@ package com.mycar.nhom13.Authentication;
 
 import com.mycar.nhom13.Dto.LoginDTO;
 import com.mycar.nhom13.Entity.TaiKhoan;
+import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.Service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,12 +40,12 @@ public class UserAuthProvider{
 //    }
 
     public Authentication validateLogin(LoginDTO loginDTO){
-        TaiKhoan user = authService.authenticate(loginDTO);
+        User user = authService.authenticate(loginDTO);
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 
     public Authentication validateCookies(String cookies){
-        TaiKhoan user = authService.findByToken(cookies);
+        User user = authService.findByToken(cookies);
         return new PreAuthenticatedAuthenticationToken(user, null, Collections.emptyList());
     }
 }

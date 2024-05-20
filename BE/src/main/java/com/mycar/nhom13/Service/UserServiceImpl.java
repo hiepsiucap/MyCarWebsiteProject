@@ -26,10 +26,14 @@ public class UserServiceImpl implements  UserService{
     public User findById(int id) {
         return repository.findById(id);
     }
+    @Override
+    public User findByEmail(String email){
+        return repository.findByEmail(email);
+    }
 
     @Override
-    public User save(User User) {
-        return repository.save(User);
+    public User save(User user) {
+        return repository.save(user);
     }
 
     @Override

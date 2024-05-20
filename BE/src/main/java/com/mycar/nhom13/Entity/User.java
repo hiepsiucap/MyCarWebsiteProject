@@ -11,8 +11,8 @@ import java.util.List;
 
 @Entity
 @Table(name="`user`")
-//@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE,
-//        setterVisibility=JsonAutoDetect.Visibility.NONE, creatorVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE,
+        setterVisibility=JsonAutoDetect.Visibility.NONE, creatorVisibility=JsonAutoDetect.Visibility.NONE)
 public class User {
 
     @Id
@@ -32,7 +32,6 @@ public class User {
     @Column(name="driver_license")
     private String driverLicense;
     @Column(name="password")
-    @JsonIgnore
     private String password;
     @Column(name="role")
     private String role;

@@ -1,18 +1,14 @@
 package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Entity.Review;
-import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.UserNotFoundException;
 import com.mycar.nhom13.Service.ReviewService;
-import com.mycar.nhom13.Service.ReviewServiceImpl;
-import com.mycar.nhom13.Service.UserService;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +35,7 @@ public class ReviewController {
         return review;
     }
 
-    @PostMapping("/reviews/{id}")
+    @PostMapping("rentals/{id}/reviews")
     public ResponseEntity<Review> postReview(@RequestBody Review review,@PathVariable int id){
 
         Review savedReview =reviewService.save(review,id);

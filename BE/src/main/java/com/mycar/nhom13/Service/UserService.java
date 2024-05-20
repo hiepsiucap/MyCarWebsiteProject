@@ -14,4 +14,6 @@ public interface UserService {
     User save(User user);
 
     User update(int id, Map<String, Object> fields);
+
+    User findByEmail(String email);
 }

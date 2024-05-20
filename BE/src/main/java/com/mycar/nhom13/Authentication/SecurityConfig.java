@@ -11,8 +11,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-//@Configuration
-//@EnableWebSecurity
+@Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final UserAuthEntryPoint userAuthEntryPoint;

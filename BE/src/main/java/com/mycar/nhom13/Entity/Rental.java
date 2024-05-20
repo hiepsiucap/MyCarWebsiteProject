@@ -3,18 +3,16 @@ package com.mycar.nhom13.Entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
-@Table(name ="rentals")
+@Table(name ="Rentals")
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "rental_id")
     private int rentalId;
 
-    //private Car car;
-    //private String pick_up_location_id INT NOT NULL,
-    //drop_off_location_id INT NOT NULL,
     @Column(name="pick_up_date")
     private LocalDate pickUpDate;
     @Column(name = "pick_up_hours")
@@ -34,7 +32,18 @@ public class Rental {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private User user;
+    @OneToOne
+    @JoinColumn(name ="car_id")
+    private Car car;
 
+    @OneToMany(mappedBy = "rental")
+    private List<Report> report;
+    @ManyToOne
+    @JoinColumn(name = "pick_up_location_id")
+    private Location pickUpLocation;
+    @ManyToOne
+    @JoinColumn(name = "drop_off_location_id")
+    private Location dropOffLocation;
 
     public Rental(){
 
@@ -131,5 +140,37 @@ public class Rental {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public void setReport(List<Report> report) {
+        this.report = report;
+    }
+
+    public List<Report> getReport() {
+        return report;
+    }
+
+    public Location getPickUpLocation() {
+        return pickUpLocation;
+    }
+
+    public void setPickUpLocation(Location pickUpLocation) {
+        this.pickUpLocation = pickUpLocation;
+    }
+
+    public Location getDropOffLocation() {
+        return dropOffLocation;
+    }
+
+    public void setDropOffLocation(Location dropOffLocation) {
+        this.dropOffLocation = dropOffLocation;
     }
 }

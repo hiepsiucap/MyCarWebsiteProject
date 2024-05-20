@@ -1,17 +1,14 @@
 package com.mycar.nhom13.RestController;
 
-import com.mycar.nhom13.Entity.TaiKhoan;
+
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.UserNotFoundException;
-import com.mycar.nhom13.Service.TaiKhoanService;
 import com.mycar.nhom13.Service.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -50,10 +47,6 @@ public class UserController {
 
         User savedUser =userService.save(user);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedUser.getUserId())
-                .toUri();
         return new ResponseEntity<>(savedUser,new HttpHeaders(), HttpStatus.CREATED);
         //return ResponseEntity.created(location).build();
     }

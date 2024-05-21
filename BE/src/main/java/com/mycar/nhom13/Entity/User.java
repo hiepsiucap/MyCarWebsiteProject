@@ -39,6 +39,8 @@ public class User {
     private String phoneNumber;
     @Column(name="driver_license")
     private String driverLicense;
+    @Column(name="driver_license_check")
+    private String driverLicenseCheck="N";
     @Column(name="password")
     @Size(min=6,message = "Mật khẩu phải có ít nhất 6 kí tự.")
     private String password;
@@ -158,5 +160,21 @@ public class User {
 
     public LocalDate getCreate_date() {
         return create_date;
+    }
+
+    public String getDriverLicenseCheck() {
+        return driverLicenseCheck;
+    }
+
+    public void setDriverLicenseCheck(String driverLicenseCheck) {
+        this.driverLicenseCheck = driverLicenseCheck;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 }

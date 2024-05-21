@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +26,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +62,7 @@ public class CarMgmtController {
     }
 
 	@GetMapping("/{id}")
-	public ResponseEntity<MappingJacksonValue> getCarById(@PathVariable long id) {
+	public ResponseEntity<MappingJacksonValue> getCarById(@PathVariable int id) {
 	    Car car = carService.findByCarId(id);
 	    if (car == null) {
 	        throw new ResourceNotFoundException("Car id " + id + " not found");
@@ -133,6 +135,35 @@ public class CarMgmtController {
 	    }
 	    return new ResponseEntity<>(updatedCar, new HttpHeaders(), HttpStatus.OK);
 	}
+
+    @PostMapping("/{id}/thumbnail")
+    public ResponseEntity<Car> uploadThumbnail(@RequestParam("image") MultipartFile file,
+                                               @PathVariable("id") int id) throws IOException {
+
+        Car savedCar = carService.saveThumbnail(file,id);
+        return new ResponseEntity<>(savedCar, new HttpHeaders(), HttpStatus.OK);
+
+
+    }
+
+    @PostMapping("/{id}/images")
+    public ResponseEntity<Car> uploadImages(@RequestParam("image1") MultipartFile file1,
+                                            @RequestParam("image2") MultipartFile file2,
+                                            @RequestParam("image3") MultipartFile file3,
+                                            @RequestParam("image4") MultipartFile file4,
+                                            @RequestParam("image5") MultipartFile file5,
+                                            @PathVariable("id") int id) throws IOException {
+        List<MultipartFile> files=new ArrayList<>();
+        files.add(file1);
+        files.add(file2);
+        files.add(file3);
+        files.add(file4);
+        files.add(file5);
+        Car savedCar = carService.saveImages(files,id);
+        return new ResponseEntity<>(savedCar, new HttpHeaders(), HttpStatus.OK);
+
+
+    }
 	
 	
 	

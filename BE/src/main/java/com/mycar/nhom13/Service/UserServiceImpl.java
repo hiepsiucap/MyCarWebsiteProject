@@ -30,7 +30,10 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public User findById(int id) {
-        return userRepository.findById(id);
+        User user = userRepository.findById(id);
+        if(user == null)
+            throw new ResourceNotFoundException("User id " + id +" not found");
+        return user;
     }
     @Override
     public User findByEmail(String email){

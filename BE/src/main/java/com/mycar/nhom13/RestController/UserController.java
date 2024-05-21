@@ -4,6 +4,8 @@ package com.mycar.nhom13.RestController;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,16 +34,13 @@ public class UserController {
     public User retrieveUser(@PathVariable int id){
         User user = userService.findById(id);
 
-        if(user == null)
-            throw new ResourceNotFoundException("User id " + id +" not found");
         return user;
     }
-    @GetMapping("/users/currentuser")
-    public User retrieveCurrentUser(@RequestBody int id){
+    @GetMapping("/users/current")
+    public User retrieveCurrentUser(HttpServletRequest request){
+        int id=getUserIdFromCookie(request);
         User user = userService.findById(id);
 
-        if(user == null)
-            throw new ResourceNotFoundException("User id " + id +" not found");
         return user;
     }
     @PostMapping("/users")
@@ -50,33 +49,46 @@ public class UserController {
         User savedUser =userService.save(user);
 
         return new ResponseEntity<>(savedUser,new HttpHeaders(), HttpStatus.CREATED);
-        //return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody Map<String, Object> fields) {
+    @PatchMapping("/users")
+    public ResponseEntity<User> updateUser(HttpServletRequest request, @RequestBody Map<String, Object> fields) {
+        int id=getUserIdFromCookie(request);
         User updatedUser = userService.update(id, fields);
-        if (updatedUser == null)
-            throw new ResourceNotFoundException("User id: " + id + " not found");
+
         return new ResponseEntity<>(updatedUser, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @PostMapping("/users/{id}/license")
+    @PostMapping("/users/license")
     public ResponseEntity<User> uploadLicense(@RequestParam("image") MultipartFile file,
-                                              @PathVariable("id") int id) throws IOException {
-
+                                              HttpServletRequest request) throws IOException {
+        int id=getUserIdFromCookie(request);
         User savedUser = userService.saveLicense(file,id);
         return new ResponseEntity<>(savedUser, new HttpHeaders(), HttpStatus.OK);
 
 
     }
 
-    @PostMapping("/users/{id}/avatar")
+    @PostMapping("/users/avatar")
     public ResponseEntity<User> uploadAvatar(@RequestParam("image") MultipartFile file,
-                                             @PathVariable("id") int id) throws IOException {
-
+                                             HttpServletRequest request) throws IOException {
+        int id=getUserIdFromCookie(request);
         User savedUser = userService.saveAvatar(file,id);
         return new ResponseEntity<>(savedUser, new HttpHeaders(), HttpStatus.OK);
 
+    }
+
+    private int getUserIdFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("auth_by_cookie")) {
+                    String cookieValue = cookie.getValue();
+                    String[] parts = cookieValue.split("&");
+                    return Integer.parseInt(parts[0]);
+                }
+            }
+        }
+        return 0;
     }
 }

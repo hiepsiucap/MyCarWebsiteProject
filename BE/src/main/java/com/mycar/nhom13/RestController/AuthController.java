@@ -64,6 +64,7 @@ public class AuthController {
         user.setLastName(registerDto.getLastName());
         user.setPhoneNumber(registerDto.getPhoneNumber());
         user.setCreate_date(LocalDate.now());
+        user.setRole("User");
         userService.save(user);
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);

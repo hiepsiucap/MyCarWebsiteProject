@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface CarRepository extends JpaRepository<Car,Integer>, JpaSpecificationExecutor<Car>{
     
-    Car findByCarId(int id);
+    Car findByCarId(Long id);
     
     Page<Car> findByStatus(String status, Pageable pageable);
     

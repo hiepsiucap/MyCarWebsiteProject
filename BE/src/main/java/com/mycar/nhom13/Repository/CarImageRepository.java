@@ -8,5 +8,4 @@ import java.util.Optional;
 
 public interface CarImageRepository extends JpaRepository<CarImage,Integer> {
 
-    Optional<CarImage> findByName(String fileName);
 }

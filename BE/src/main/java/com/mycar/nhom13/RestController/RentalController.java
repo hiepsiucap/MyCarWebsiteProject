@@ -1,15 +1,13 @@
 package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Entity.Rental;
-import com.mycar.nhom13.ExceptionHandler.UserNotFoundException;
+import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.RentalService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +30,7 @@ public class RentalController {
         Rental rental = rentalService.findById(id);
 
         if(rental == null)
-            throw new UserNotFoundException("User id " + id +" not found");
+            throw new ResourceNotFoundException("User id " + id +" not found");
         return rental;
     }
 
@@ -48,7 +46,7 @@ public class RentalController {
     public ResponseEntity<Rental> updateRental(@PathVariable int id, @RequestBody Map<String, Object> fields) {
         Rental updatedRental = rentalService.update(id, fields);
         if (updatedRental == null)
-            throw new UserNotFoundException("User id: " + id + " not found");
+            throw new ResourceNotFoundException("User id: " + id + " not found");
         return new ResponseEntity<>(updatedRental, new HttpHeaders(), HttpStatus.OK);
     }
 }

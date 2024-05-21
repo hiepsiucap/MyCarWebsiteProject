@@ -2,6 +2,9 @@ package com.mycar.nhom13.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "Reviews")
@@ -16,7 +19,9 @@ public class Review {
     @JoinColumn(name = "rental_id")
     @JsonIgnore
     private Rental rental;
+    @Pattern(regexp = "[1-5]",message = "Số đánh giá không hợp lệ.")
     private int rate;
+    @Size(min=1,message = "Nội dung không được để trống.")
     private String details;
 
     public Review(){

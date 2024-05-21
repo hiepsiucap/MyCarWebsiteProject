@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.CharBuffer;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 @RestController
@@ -62,7 +63,7 @@ public class AuthController {
         user.setFirstName(registerDto.getFirstName());
         user.setLastName(registerDto.getLastName());
         user.setPhoneNumber(registerDto.getPhoneNumber());
-
+        user.setCreate_date(LocalDate.now());
         userService.save(user);
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);

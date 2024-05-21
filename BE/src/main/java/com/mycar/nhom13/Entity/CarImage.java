@@ -1,5 +1,6 @@
 package com.mycar.nhom13.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,24 +14,20 @@ public class CarImage {
     @Column(name="image")
     public String image;
 
-    public String name;
+    @ManyToOne
+    @JoinColumn(name="car_id")
+    @JsonIgnore
+    public Car car;
 
     public CarImage(){
 
     }
-    public CarImage(int imageId, String image, String name) {
+    public CarImage(int imageId, String image) {
         this.imageId = imageId;
         this.image = image;
-        this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getImageId() {
         return imageId;
@@ -46,5 +43,13 @@ public class CarImage {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 }

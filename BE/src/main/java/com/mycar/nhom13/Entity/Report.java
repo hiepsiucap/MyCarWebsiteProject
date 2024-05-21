@@ -2,6 +2,9 @@ package com.mycar.nhom13.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "Reports")
@@ -18,6 +21,7 @@ public class Report {
     @Column(name = "state")
     private String state;
     @Column(name = "details")
+    @Size(min=1, message = "Nội dung không được để trống")
     private String details;
 
     public Report(){

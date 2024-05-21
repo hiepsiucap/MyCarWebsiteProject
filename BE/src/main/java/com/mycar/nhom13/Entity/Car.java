@@ -77,7 +77,8 @@ public class Car {
     @JoinColumn(name = "location_id")
     private Location location;
 
-
+	@OneToMany( mappedBy ="car")
+	private List<CarImage> images;
     @OneToMany(mappedBy = "car")
     @JsonManagedReference
     private List<CarCalendar> carCalendars;
@@ -302,7 +303,13 @@ public class Car {
 		this.carCalendars = carCalendars;
 	}
 
+	public List<CarImage> getImages() {
+		return images;
+	}
 
+	public void setImages(List<CarImage> images) {
+		this.images = images;
+	}
 }
 
 

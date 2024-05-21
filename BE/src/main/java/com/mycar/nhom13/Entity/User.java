@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -20,23 +24,28 @@ public class User {
     @Column(name="user_id")
     private int userId;
     @Column(name="first_name")
+    @Size(min=1,message = "Tên không đươợc trống")
     private String firstName;
 
     @Column(name="last_name")
+    @Size(min=1,message = "Họ không đươợc trống")
     private String lastName;
 
     @Column(name="email")
+    @Email(message = "Email không hợp lệ.")
     private String email;
     @Column(name="phone_number")
+    @Pattern(regexp = "[0-9]{10}", message = "Số điện thoại không hợp lệ.")
     private String phoneNumber;
     @Column(name="driver_license")
     private String driverLicense;
     @Column(name="password")
+    @Size(min=6,message = "Mật khẩu phải có ít nhất 6 kí tự.")
     private String password;
     @Column(name="role")
     private String role;
     @Column(name="avatar")
-    private String avatar;
+    private String avatar="https://res.cloudinary.com/drvzczhve/image/upload/v1716280708/users/user_avatar/Default_avatar_profile_ch8bzy.jpg";
     @Column(name="create_date")
     private LocalDate create_date;
     @OneToMany(mappedBy = "user")

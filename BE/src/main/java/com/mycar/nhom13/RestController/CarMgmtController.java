@@ -1,8 +1,8 @@
 package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Entity.Car;
-import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
 
+import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.CarService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,10 +62,10 @@ public class CarMgmtController {
     }
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Car> getCarById(@PathVariable Long id) {
+	public ResponseEntity<Car> getCarById(@PathVariable int id) {
 		Car car = carService.findByCarId(id);
 		if(car == null) {
-			throw new CarNotFoundException("Car id " + id +" not found");
+			throw new ResourceNotFoundException("Car id " + id +" not found");
 		}
 		return ResponseEntity.ok(car);
 	}
@@ -76,7 +79,7 @@ public class CarMgmtController {
 
         List<Car> cars = carService.findCarsByRentalStatus(status, userIdStr);
         if (cars.isEmpty()) {
-            throw new CarNotFoundException("No cars found with rental status: " + status);
+            throw new ResourceNotFoundException("No cars found with rental status: " + status);
         }
         return ResponseEntity.ok(cars);
     }
@@ -88,13 +91,43 @@ public class CarMgmtController {
 	}
 	
 	@PatchMapping("/{id}")
-	public ResponseEntity<Car> patchCar(@PathVariable long id, @RequestBody Map<String, Object> fields) {
+	public ResponseEntity<Car> patchCar(@PathVariable int id, @RequestBody Map<String, Object> fields) {
 	    Car updatedCar = carService.update(id, fields);
 	    if(updatedCar == null) {
-			throw new CarNotFoundException("Car id " + id +" not found");
+			throw new ResourceNotFoundException("Car id " + id +" not found");
 	    }
 	    return new ResponseEntity<>(updatedCar, new HttpHeaders(), HttpStatus.OK);
 	}
+
+	@PostMapping("/{id}/thumbnail")
+	public ResponseEntity<Car> uploadThumbnail(@RequestParam("image") MultipartFile file,
+											   @PathVariable("id") int id) throws IOException {
+
+		Car savedCar = carService.saveThumbnail(file,id);
+		return new ResponseEntity<>(savedCar, new HttpHeaders(), HttpStatus.OK);
+
+
+	}
+
+	@PostMapping("/{id}/images")
+	public ResponseEntity<Car> uploadImages(@RequestParam("image1") MultipartFile file1,
+											@RequestParam("image2") MultipartFile file2,
+											@RequestParam("image3") MultipartFile file3,
+											@RequestParam("image4") MultipartFile file4,
+											@RequestParam("image5") MultipartFile file5,
+											@PathVariable("id") int id) throws IOException {
+		List<MultipartFile> files=new ArrayList<>();
+		files.add(file1);
+		files.add(file2);
+		files.add(file3);
+		files.add(file4);
+		files.add(file5);
+		Car savedCar = carService.saveImages(files,id);
+		return new ResponseEntity<>(savedCar, new HttpHeaders(), HttpStatus.OK);
+
+
+	}
+
 }
 
 

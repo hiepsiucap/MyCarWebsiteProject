@@ -2,13 +2,15 @@ package com.mycar.nhom13.RestController;
 
 
 import com.mycar.nhom13.Entity.User;
-import com.mycar.nhom13.ExceptionHandler.UserNotFoundException;
+import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public class UserController {
         User user = userService.findById(id);
 
         if(user == null)
-            throw new UserNotFoundException("User id " + id +" not found");
+            throw new ResourceNotFoundException("User id " + id +" not found");
         return user;
     }
     @GetMapping("/users/currentuser")
@@ -39,7 +41,7 @@ public class UserController {
         User user = userService.findById(id);
 
         if(user == null)
-            throw new UserNotFoundException("User id " + id +" not found");
+            throw new ResourceNotFoundException("User id " + id +" not found");
         return user;
     }
     @PostMapping("/users")
@@ -55,7 +57,26 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody Map<String, Object> fields) {
         User updatedUser = userService.update(id, fields);
         if (updatedUser == null)
-            throw new UserNotFoundException("User id: " + id + " not found");
+            throw new ResourceNotFoundException("User id: " + id + " not found");
         return new ResponseEntity<>(updatedUser, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @PostMapping("/users/{id}/license")
+    public ResponseEntity<User> uploadLicense(@RequestParam("image") MultipartFile file,
+                                              @PathVariable("id") int id) throws IOException {
+
+        User savedUser = userService.saveLicense(file,id);
+        return new ResponseEntity<>(savedUser, new HttpHeaders(), HttpStatus.OK);
+
+
+    }
+
+    @PostMapping("/users/{id}/avatar")
+    public ResponseEntity<User> uploadAvatar(@RequestParam("image") MultipartFile file,
+                                             @PathVariable("id") int id) throws IOException {
+
+        User savedUser = userService.saveAvatar(file,id);
+        return new ResponseEntity<>(savedUser, new HttpHeaders(), HttpStatus.OK);
+
     }
 }

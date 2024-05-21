@@ -1,8 +1,9 @@
 package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Entity.Report;
-import com.mycar.nhom13.ExceptionHandler.UserNotFoundException;
+import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.ReportService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,12 +31,12 @@ public class ReportController {
         Report report = reportService.findById(id);
 
         if(report == null)
-            throw new UserNotFoundException("User id " + id +" not found");
+            throw new ResourceNotFoundException("User id " + id +" not found");
         return report;
     }
 
-    @PostMapping("rentals/{id}/reports")
-    public ResponseEntity<Report> postReports(@RequestBody Report report,@PathVariable int id){
+    @PostMapping("/rentals/{id}/reports")
+    public ResponseEntity<Report> postReports(@RequestBody @Valid Report report, @PathVariable int id){
 
         Report savedReport =reportService.save(report,id);
 
@@ -46,7 +47,7 @@ public class ReportController {
     public ResponseEntity<Report> updateReview(@PathVariable int id, @RequestBody Map<String, Object> fields) {
         Report updatedReport = reportService.update(id, fields);
         if (updatedReport == null)
-            throw new UserNotFoundException("User id: " + id + " not found");
+            throw new ResourceNotFoundException("User id: " + id + " not found");
         return new ResponseEntity<>(updatedReport, new HttpHeaders(), HttpStatus.OK);
     }
 }

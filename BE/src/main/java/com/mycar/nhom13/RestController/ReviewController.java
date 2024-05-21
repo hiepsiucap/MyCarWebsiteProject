@@ -1,9 +1,10 @@
 package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Entity.Review;
-import com.mycar.nhom13.ExceptionHandler.UserNotFoundException;
+import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.ReviewService;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,12 +32,12 @@ public class ReviewController {
         Review review = reviewService.findById(id);
 
         if(review == null)
-            throw new UserNotFoundException("User id " + id +" not found");
+            throw new ResourceNotFoundException("User id " + id +" not found");
         return review;
     }
 
-    @PostMapping("rentals/{id}/reviews")
-    public ResponseEntity<Review> postReview(@RequestBody Review review,@PathVariable int id){
+    @PostMapping("/rentals/{id}/reviews")
+    public ResponseEntity<Review> postReview(@RequestBody @Valid Review review, @PathVariable int id){
 
         Review savedReview =reviewService.save(review,id);
 
@@ -47,7 +48,7 @@ public class ReviewController {
     public ResponseEntity<Review> updateReview(@PathVariable int id, @RequestBody Map<String, Object> fields) {
         Review updatedReview = reviewService.update(id, fields);
         if (updatedReview == null)
-            throw new UserNotFoundException("User id: " + id + " not found");
+            throw new ResourceNotFoundException("User id: " + id + " not found");
         return new ResponseEntity<>(updatedReview, new HttpHeaders(), HttpStatus.OK);
     }
 }

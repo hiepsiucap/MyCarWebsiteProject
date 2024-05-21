@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 public interface CarService {
 
@@ -18,4 +19,6 @@ public interface CarService {
 	Car update(long id, Map<String, Object> fields);
     
 	Page<Car> findByStatus(String status, Pageable pageable);
+	
+	List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId);
 }

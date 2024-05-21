@@ -6,6 +6,7 @@ import com.mycar.nhom13.Repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -60,5 +61,9 @@ public class CarServiceImpl implements CarService {
     @Override
     public Page<Car> findByStatus(String status, Pageable pageable) {
         return carRepository.findByStatus("active", pageable);
+    }
+    
+    public List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId){
+    	return carRepository.findCarsByRentalStatus(status, userId);
     }
 }

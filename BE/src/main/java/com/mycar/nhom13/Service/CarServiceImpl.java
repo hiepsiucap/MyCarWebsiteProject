@@ -2,7 +2,7 @@ package com.mycar.nhom13.Service;
 
 import com.mycar.nhom13.Entity.Car;
 import com.mycar.nhom13.Entity.CarSpecification;
-import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
+import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +31,7 @@ public class CarServiceImpl implements CarService {
 		if(car != null) {
 			return car;
 		}else {
-			throw new CarNotFoundException("Car id " + id +" not found");
+			throw new ResourceNotFoundException("Car id " + id +" not found");
 		}
 	}
 	
@@ -55,7 +55,7 @@ public class CarServiceImpl implements CarService {
             return carRepository.save(car);
 		}
 		else {
-			throw new CarNotFoundException("Car id " + id +" not found");
+			throw new ResourceNotFoundException("Car id " + id +" not found");
 		}
 	}
 	
@@ -83,7 +83,7 @@ public class CarServiceImpl implements CarService {
             car.setStatus("pause");
             carRepository.save(car);
         } else {
-            throw new CarNotFoundException("Car id " + id + " not found");
+            throw new ResourceNotFoundException("Car id " + id + " not found");
         }
     }
     

@@ -3,8 +3,7 @@ package com.mycar.nhom13.RestController;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.mycar.nhom13.Entity.Car;
-import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
-
+import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.CarService;
 
 import jakarta.servlet.http.Cookie;
@@ -64,7 +63,7 @@ public class CarMgmtController {
 	public ResponseEntity<MappingJacksonValue> getCarById(@PathVariable long id) {
 	    Car car = carService.findByCarId(id);
 	    if (car == null) {
-	        throw new CarNotFoundException("Car id " + id + " not found");
+	        throw new ResourceNotFoundException("Car id " + id + " not found");
 	    }
 	    
 	    MappingJacksonValue mapping = new MappingJacksonValue(car);
@@ -94,7 +93,7 @@ public class CarMgmtController {
 
         List<Car> cars = carService.findCarsByRentalStatus(status, userId);
         if (cars.isEmpty()) {
-            throw new CarNotFoundException("No cars found with rental status: " + status);
+            throw new ResourceNotFoundException("No cars found with rental status: " + status);
         }
 
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image", "user");
@@ -130,7 +129,7 @@ public class CarMgmtController {
 	public ResponseEntity<Car> patchCar(@PathVariable int id, @RequestBody Map<String, Object> fields) {
 	    Car updatedCar = carService.update(id, fields);
 	    if(updatedCar == null) {
-			throw new CarNotFoundException("Car id " + id +" not found");
+			throw new ResourceNotFoundException("Car id " + id +" not found");
 	    }
 	    return new ResponseEntity<>(updatedCar, new HttpHeaders(), HttpStatus.OK);
 	}

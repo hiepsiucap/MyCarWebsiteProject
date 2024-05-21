@@ -21,4 +21,8 @@ public interface CarService {
 	Page<Car> findByStatus(String status, Pageable pageable);
 	
 	List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId);
+	
+    public List<Car> filterCars(
+            String brand, List<String> types, Integer minPrice, Integer maxPrice, 
+            List<String> fuels, String province); 
 }

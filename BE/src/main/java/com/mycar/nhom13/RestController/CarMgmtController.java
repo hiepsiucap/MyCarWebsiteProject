@@ -46,6 +46,17 @@ public class CarMgmtController {
 	    Page<Car> carsPage = carService.findByStatus("active", pageable);
 	    return ResponseEntity.ok(carsPage);
 	}
+	
+    @GetMapping("/conditions")
+    public List<Car> getCars(
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) List<String> type,
+            @RequestParam(required = false) Integer minprice,
+            @RequestParam(required = false) Integer maxprice,
+            @RequestParam(required = false) List<String> fuel,
+            @RequestParam(required = false) String province) {
+        return carService.filterCars(brand, type, minprice, maxprice, fuel, province);
+    }
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Car> getCarById(@PathVariable Long id) {

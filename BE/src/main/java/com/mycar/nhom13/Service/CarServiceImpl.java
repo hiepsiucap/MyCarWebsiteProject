@@ -1,6 +1,7 @@
 package com.mycar.nhom13.Service;
 
 import com.mycar.nhom13.Entity.Car;
+import com.mycar.nhom13.Entity.CarSpecification;
 import com.mycar.nhom13.ExceptionHandler.CarNotFoundException;
 import com.mycar.nhom13.Repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,17 @@ public class CarServiceImpl implements CarService {
         return carRepository.findByStatus("active", pageable);
     }
     
+    @Override
     public List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId){
     	return carRepository.findCarsByRentalStatus(status, userId);
     }
+    
+    @Override
+    public List<Car> filterCars(
+            String brand, List<String> types, Integer minPrice, Integer maxPrice, 
+            List<String> fuels, String province) {
+        return carRepository.findAll(CarSpecification.filterByCriteria(brand, types, minPrice, maxPrice, fuels, province));
+    }
+    
+    
 }

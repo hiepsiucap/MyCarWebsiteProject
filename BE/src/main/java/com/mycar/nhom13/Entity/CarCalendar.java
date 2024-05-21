@@ -13,7 +13,7 @@ public class CarCalendar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "calender_id")
-    private Long calendarId;
+    private int calendarId;
 
     @ManyToOne
     @JoinColumn(name = "car_id", referencedColumnName = "car_id")
@@ -36,7 +36,7 @@ public class CarCalendar {
 				+ endDate + "]";
 	}
 
-	public CarCalendar(Long calendarId, Car car, Date startDate, Date endDate) {
+	public CarCalendar(int calendarId, Car car, Date startDate, Date endDate) {
 		super();
 		this.calendarId = calendarId;
 		this.car = car;
@@ -49,11 +49,11 @@ public class CarCalendar {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Long getCalendarId() {
+	public int getCalendarId() {
         return calendarId;
     }
 
-    public void setCalendarId(Long calendarId) {
+    public void setCalendarId(int calendarId) {
         this.calendarId = calendarId;
     }
 

@@ -12,7 +12,7 @@ public class CarCalendar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "calender_id")
+    @Column(name = "calendar_id")
     private int calendarId;
 
     @ManyToOne

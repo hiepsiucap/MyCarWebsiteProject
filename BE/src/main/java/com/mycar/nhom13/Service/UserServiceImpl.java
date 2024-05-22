@@ -1,8 +1,11 @@
 package com.mycar.nhom13.Service;
 
+import com.mycar.nhom13.Dto.ChangePasswordDTO;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
+import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
 import com.mycar.nhom13.Repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,9 +22,13 @@ public class UserServiceImpl implements  UserService{
 
     private final CloudinaryService cloudinaryService;
 
-    public UserServiceImpl(UserRepository userRepository,CloudinaryService cloudinaryService){
+    private final PasswordEncoder passwordEncoder;
+
+
+    public UserServiceImpl(UserRepository userRepository,CloudinaryService cloudinaryService,PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.cloudinaryService = cloudinaryService;
+        this.passwordEncoder=passwordEncoder;
     }
     @Override
     public List<User> findAll() {
@@ -81,4 +88,34 @@ public class UserServiceImpl implements  UserService{
         user.setAvatar(url);
         return userRepository.save(user);
     }
+
+    @Override
+    public User checkLicense(int staffId, int id,boolean check) {
+        User staff = userRepository.findById(staffId);
+        if(staff.getRole().equals("User")){
+            throw new UnAuthenticated("No permission");
+        }
+        else{
+            String checked=(check)?"Y":"N";
+            User user = userRepository.findById(id);
+            user.setDriverLicenseCheck(checked);
+            return userRepository.save(user);
+        }
+    }
+
+    @Override
+    public boolean changePassword(ChangePasswordDTO changePasswordDto, int id) {
+        User currentUser = userRepository.findById(id);
+        if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), currentUser.getPassword())) {
+            return false;
+        }
+
+        // Cập nhật mật khẩu mới
+        currentUser.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+        userRepository.save(currentUser);
+
+        return true;
+    }
+
+
 }

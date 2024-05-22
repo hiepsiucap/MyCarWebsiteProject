@@ -1,8 +1,8 @@
 package com.mycar.nhom13.RestController;
 
 
+import com.mycar.nhom13.Dto.ChangePasswordDTO;
 import com.mycar.nhom13.Entity.User;
-import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -78,6 +78,23 @@ public class UserController {
 
     }
 
+    @PostMapping("/users/licensecheck")
+    public ResponseEntity<User> checkLicense(HttpServletRequest request, @RequestParam("id") int id,@RequestParam("check") boolean check){
+        int staffId=getUserIdFromCookie(request);
+        User checked = userService.checkLicense(staffId,id,check);
+        return new ResponseEntity<>(checked, new HttpHeaders(), HttpStatus.OK);
+    }
+    @PostMapping("/users/changepassword")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordDTO changePasswordDto, HttpServletRequest httpServletRequest) {
+        int id = getUserIdFromCookie(httpServletRequest);
+        boolean isPasswordChanged = userService.changePassword(changePasswordDto,id);
+        if (isPasswordChanged) {
+            return ResponseEntity.ok("Password changed successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid current password");
+        }
+    }
+
     private int getUserIdFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -91,4 +108,6 @@ public class UserController {
         }
         return 0;
     }
+
+
 }

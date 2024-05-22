@@ -40,9 +40,10 @@ public class User {
     @Column(name="driver_license")
     private String driverLicense;
     @Column(name="driver_license_check")
-    private String driverLicenseCheck="N";
+    private String driverLicenseCheck;
     @Column(name="password")
     @Size(min=6,message = "Mật khẩu phải có ít nhất 6 kí tự.")
+    @JsonIgnore
     private String password;
     @Column(name="role")
     private String role;

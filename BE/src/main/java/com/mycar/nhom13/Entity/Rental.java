@@ -10,7 +10,7 @@ import java.util.List;
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rental_seq")
-    @SequenceGenerator(name = "rental_seq", sequenceName = "rental_seq", allocationSize = 1)
+    @SequenceGenerator(name = "rental_seq", sequenceName = "rental_seq", initialValue = 50,allocationSize = 1)
     @Column(name = "rental_id")
     private int rentalId;
 
@@ -28,16 +28,19 @@ public class Rental {
     private int totalCost;
     @Column(name = "rental_status")
     private String rentalStatus;
-    @OneToOne(mappedBy = "rental")
+    @OneToOne(mappedBy = "rental",cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH})
     private Review review;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.REFRESH})
     @JoinColumn(name = "customer_id")
     private User user;
-    @OneToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.REFRESH})
     @JoinColumn(name ="car_id")
     private Car car;
 
-    @OneToMany(mappedBy = "rental")
+    @OneToMany(mappedBy = "rental",cascade = CascadeType.ALL)
     private List<Report> report;
     @ManyToOne
     @JoinColumn(name = "pick_up_location_id")

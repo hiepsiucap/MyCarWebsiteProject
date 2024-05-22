@@ -1,8 +1,11 @@
 package com.mycar.nhom13.RestController;
 
+import com.mycar.nhom13.Dto.RentalDTO;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.RentalService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,32 +24,51 @@ public class RentalController {
         this.rentalService=rentalService;
     }
     @GetMapping("/rentals")
-    public List<Rental> retrieveAllRentals(){
-        return rentalService.findAll();
+    public ResponseEntity<List<Rental>> retrieveAllRentals(){
+        return new ResponseEntity<>(rentalService.findAll(),new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("/rentals/{id}")
-    public Rental retrieveRental(@PathVariable int id){
-        Rental rental = rentalService.findById(id);
+    public ResponseEntity<Rental> retrieveRental(@PathVariable int id){
 
-        if(rental == null)
-            throw new ResourceNotFoundException("User id " + id +" not found");
-        return rental;
+        return new ResponseEntity<>(rentalService.findById(id),new HttpHeaders(), HttpStatus.OK);
+
     }
 
     @PostMapping("/rentals")
-    public ResponseEntity<Rental> postRental(@RequestBody Rental rental){
-
-        Rental savedRental =rentalService.save(rental);
+    public ResponseEntity<Rental> postRental(@RequestBody RentalDTO rentalDTO, HttpServletRequest request) throws Exception {
+        int id = getUserIdFromCookie(request);
+        Rental savedRental =rentalService.save(rentalDTO,id);
 
         return new ResponseEntity<>(savedRental,new HttpHeaders(), HttpStatus.CREATED);
     }
 
     @PatchMapping("/rentals/{id}")
-    public ResponseEntity<Rental> updateRental(@PathVariable int id, @RequestBody Map<String, Object> fields) {
-        Rental updatedRental = rentalService.update(id, fields);
-        if (updatedRental == null)
-            throw new ResourceNotFoundException("User id: " + id + " not found");
+    public ResponseEntity<Rental> updateRentalStatus(@PathVariable int id, @RequestParam("status") String status,HttpServletRequest request) {
+        int userId = getUserIdFromCookie(request);
+        Rental updatedRental = rentalService.updateStatus(id, status, userId);
+
         return new ResponseEntity<>(updatedRental, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/rentals/{id}")
+    public ResponseEntity<String> deleteRental(@PathVariable int id) {
+        String result = rentalService.remove(id);
+
+        return new ResponseEntity<>(result, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    private int getUserIdFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("auth_by_cookie")) {
+                    String cookieValue = cookie.getValue();
+                    String[] parts = cookieValue.split("&");
+                    return Integer.parseInt(parts[0]);
+                }
+            }
+        }
+        return 0;
     }
 }

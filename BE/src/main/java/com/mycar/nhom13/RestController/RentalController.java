@@ -29,7 +29,7 @@ public class RentalController {
     }
 
     @GetMapping("/rentals/{id}")
-    public ResponseEntity<Rental> retrieveRental(@PathVariable int id){
+    public ResponseEntity<Rental> retrieveRental(@PathVariable int id)  {
 
         return new ResponseEntity<>(rentalService.findById(id),new HttpHeaders(), HttpStatus.OK);
 

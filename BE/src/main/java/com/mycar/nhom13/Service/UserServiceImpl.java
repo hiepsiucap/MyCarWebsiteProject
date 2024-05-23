@@ -54,7 +54,7 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public User update(int id, Map<String, Object> fields) {
-        User user = userRepository.findById(id);
+        User user = this.findById(id);
 
         if( user != null) {
 
@@ -71,16 +71,17 @@ public class UserServiceImpl implements  UserService{
 
     }
     public User saveLicense(MultipartFile file, int id) throws IOException {
-        User user = userRepository.findById(id);
+        User user = this.findById(id);
         if(user == null) throw new ResourceNotFoundException("User id: "+ id +" not found");
         String imageName = "user_id_"+user.getUserId();
         String folder="users/user_license";
         String url = cloudinaryService.uploadImage(file,folder,imageName);
         user.setDriverLicense(url);
+        user.setDriverLicenseCheck(null);
         return userRepository.save(user);
     }
     public User saveAvatar(MultipartFile file, int id) throws IOException {
-        User user = userRepository.findById(id);
+        User user = this.findById(id);
         if(user == null) throw new ResourceNotFoundException("User id: "+ id +" not found");
         String imageName = "user_id_"+user.getUserId();
         String folder="users/user_avatar";
@@ -91,7 +92,7 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public User checkLicense(int staffId, int id,boolean check) {
-        User staff = userRepository.findById(staffId);
+        User staff = this.findById(staffId);
         if(staff.getRole().equals("User")){
             throw new UnAuthenticated("No permission");
         }
@@ -105,12 +106,11 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public boolean changePassword(ChangePasswordDTO changePasswordDto, int id) {
-        User currentUser = userRepository.findById(id);
+        User currentUser = this.findById(id);
         if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), currentUser.getPassword())) {
             return false;
         }
 
-        // Cập nhật mật khẩu mới
         currentUser.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
         userRepository.save(currentUser);
 

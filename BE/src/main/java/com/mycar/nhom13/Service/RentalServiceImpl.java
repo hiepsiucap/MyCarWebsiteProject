@@ -41,7 +41,10 @@ public class RentalServiceImpl implements  RentalService{
     public Rental findById(int id) {
         Rental rental=rentalRepository.findById(id);
         if(rental == null)
-            throw new ResourceNotFoundException("User id " + id +" not found");
+        {
+            throw new ResourceNotFoundException("Rental id " + id +" not found");
+        }
+        else
         return rental;
     }
 
@@ -75,12 +78,12 @@ public class RentalServiceImpl implements  RentalService{
     }
 
     @Override
-    public Rental updateStatus(int rentalId, String status, int userId) {
+    public Rental updateStatus(int rentalId, String status, int userId)  {
         User user = userService.findById(userId);
         if(user.getRole().equals("User")){
             throw new UnAuthenticated("No permission");
         }
-        Rental rental = rentalRepository.findById(rentalId);
+        Rental rental = this.findById(rentalId);
         String rentalStatus=rental.getRentalStatus();
         if(rentalStatus.equals("pending")&&status.equals("completed")) throw new RentalException("Không hợp lệ");
         if(rentalStatus.equals("completed")) throw new RentalException("Không hợp lệ");
@@ -91,8 +94,8 @@ public class RentalServiceImpl implements  RentalService{
     }
 
     @Override
-    public String remove(int id) {
-        Rental rental = rentalRepository.findById(id);
+    public String remove(int id)  {
+        Rental rental = this.findById(id);
         rentalRepository.delete(rental);
         return new String("Deleted rental with Id: "+id);
 

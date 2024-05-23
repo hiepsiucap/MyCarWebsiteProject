@@ -10,6 +10,7 @@ import com.mycar.nhom13.Service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDTO registerDto) {
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterDTO registerDto) {
         if (userService.findByEmail(registerDto.getEmail()) != null) {
             return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
         }

@@ -1,5 +1,7 @@
 package com.mycar.nhom13.Dto;
 
+import jakarta.validation.constraints.Size;
+
 public class RegisterDTO {
     public String getFirstName() {
         return firstName;
@@ -28,6 +30,7 @@ public class RegisterDTO {
     private String email;
 
     private String phoneNumber;
+    @Size(min=6,message = "Mật khẩu phải có ít nhất 6 ký tự.")
 
     private String password;
 }

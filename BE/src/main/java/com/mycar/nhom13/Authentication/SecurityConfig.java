@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -32,10 +33,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .logout(logout -> logout.deleteCookies(CookiesAuthenticationFilter.COOKIE_NAME))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST,"/login", "/register")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/api/cars/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/register")).permitAll()
+                        .anyRequest().authenticated()
                 );
 
         return http.build();

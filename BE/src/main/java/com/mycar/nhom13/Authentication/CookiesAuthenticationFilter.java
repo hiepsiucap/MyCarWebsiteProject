@@ -37,17 +37,15 @@ public class CookiesAuthenticationFilter extends OncePerRequestFilter {
                 .filter(cookie -> USER_ID_COOKIE_NAME.equals(cookie.getName()))
                 .findFirst();
 
-        if (!"/register".equals(request.getServletPath())) {
-            if (cookieAuth.isPresent()) {
-                String token = cookieAuth.get().getValue();
-                SecurityContextHolder.getContext().setAuthentication(
-                        userAuthProvider.validateCookies(token));
-            }
+        if (cookieAuth.isPresent()) {
+            String token = cookieAuth.get().getValue();
+            SecurityContextHolder.getContext().setAuthentication(
+                    userAuthProvider.validateCookies(token));
+        }
 
-            if (cookieUserId.isPresent()) {
-                String userId = cookieUserId.get().getValue();
-                request.setAttribute("userId", userId);
-            }
+        if (cookieUserId.isPresent()) {
+            String userId = cookieUserId.get().getValue();
+            request.setAttribute("userId", userId);
         }
         filterChain.doFilter(request, response);
     }

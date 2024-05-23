@@ -8,6 +8,7 @@ import com.mycar.nhom13.Service.AuthService;
 import com.mycar.nhom13.Service.TaiKhoanService;
 import com.mycar.nhom13.Service.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,7 +72,17 @@ public class AuthController {
     }
 
     @PostMapping("/signOut")
-    public ResponseEntity<Void> signOut(@AuthenticationPrincipal TaiKhoan user) {
+    public ResponseEntity<Void> signOut(@AuthenticationPrincipal TaiKhoan user, HttpServletResponse response, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null)
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("auth_by_cookie")) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
         SecurityContextHolder.clearContext();
         return ResponseEntity.noContent().build();
     }

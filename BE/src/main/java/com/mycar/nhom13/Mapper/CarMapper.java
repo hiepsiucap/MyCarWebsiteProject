@@ -22,9 +22,6 @@ public class CarMapper {
         CarDTO.setAddress(car.getLocation().getAddress());
 
         CarDTO.setDays(car.getCarCalendars());
-
-
-
         CarDTO.setReviews(car.getRentals().stream()
                 .map(rental -> ReviewMapper.reviewToReviewDTO(rental.getReview()))
                 .collect(Collectors.toList()));

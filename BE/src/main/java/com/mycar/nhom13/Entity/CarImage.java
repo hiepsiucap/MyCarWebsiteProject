@@ -1,5 +1,6 @@
 package com.mycar.nhom13.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -11,25 +12,27 @@ public class CarImage {
     @SequenceGenerator(name = "image_seq", sequenceName = "image_seq", allocationSize = 1)
     @Column(name = "image_id")
     public int imageId;
+    
     @Column(name="image")
     public String image;
 
     @ManyToOne
     @JoinColumn(name="car_id")
-    @JsonIgnore
+    @JsonBackReference
     public Car car;
 
     public CarImage(){
 
     }
-    public CarImage(int imageId, String image) {
-        this.imageId = imageId;
-        this.image = image;
-    }
 
+    public CarImage(int imageId, String image, Car car) {
+		super();
+		this.imageId = imageId;
+		this.image = image;
+		this.car = car;
+	}
 
-
-    public int getImageId() {
+	public int getImageId() {
         return imageId;
     }
 

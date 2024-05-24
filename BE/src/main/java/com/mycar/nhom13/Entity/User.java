@@ -1,7 +1,9 @@
 package com.mycar.nhom13.Entity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -55,6 +57,7 @@ public class User {
     @JsonIgnore
     private List<Rental> rentals;
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     @JsonIgnore
     private List<Car> cars;
 

@@ -16,7 +16,7 @@ public class CarCalendar {
     private int calendarId;
 
     @ManyToOne
-    @JoinColumn(name = "car_id", referencedColumnName = "car_id")
+    @JoinColumn(name = "car_id")
     @JsonBackReference
     private Car car;
 

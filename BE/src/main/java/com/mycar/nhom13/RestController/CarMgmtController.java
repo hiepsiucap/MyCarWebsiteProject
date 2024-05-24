@@ -3,16 +3,21 @@ package com.mycar.nhom13.RestController;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.mycar.nhom13.Dto.CarDTO;
+import com.mycar.nhom13.Dto.PostCarDTO;
 import com.mycar.nhom13.Entity.Car;
+import com.mycar.nhom13.Entity.Location;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Mapper.CarMapper;
+import com.mycar.nhom13.Mapper.PostCarMapper;
 import com.mycar.nhom13.Service.CarService;
+import com.mycar.nhom13.Service.LocationService;
 import com.mycar.nhom13.Service.UserService;
 
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +27,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +53,9 @@ public class CarMgmtController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LocationService locationService;
 
 
 	public CarMgmtController(CarService carService) {
@@ -130,12 +137,23 @@ public class CarMgmtController {
     }
 	
     @PostMapping("")
-    public ResponseEntity<Car> postCar(@RequestBody Car car, HttpServletRequest request) {
+    public ResponseEntity<?> postCar(@Valid @RequestBody PostCarDTO postCarDTO, HttpServletRequest request) {
         int userId = getUserIdFromCookie(request);
         User user = userService.findById(userId); 
-        car.setUser(user); 
+        
+        Location location = locationService.findByAddress(postCarDTO.getAddress());
+        
+        if (location == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Location not found for address: " + postCarDTO.getAddress());
+        }
+        
+        Car car = PostCarMapper.dtoToCar(postCarDTO, user, location);
+
         Car savedCar = carService.save(car);
-        return ResponseEntity.created(URI.create("/api/cars/" + savedCar.getCarId())).body(savedCar);
+
+        PostCarDTO savedPostCarDTO = PostCarMapper.carToCarDTO(savedCar);
+
+        return ResponseEntity.created(URI.create("/api/cars/" + savedCar.getCarId())).body(savedPostCarDTO);
     }
 
 	

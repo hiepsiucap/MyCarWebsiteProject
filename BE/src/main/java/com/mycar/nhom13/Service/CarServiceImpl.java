@@ -25,8 +25,9 @@ public class CarServiceImpl implements CarService {
 
     @Autowired
     private CarRepository carRepository;
+    @Autowired
     private CloudinaryService cloudinaryService;
-
+    @Autowired
     private CarImageRepository carImageRepository;
     public CarServiceImpl(CarRepository carRepository,CloudinaryService cloudinaryService,CarImageRepository carImageRepository) {
         this.carRepository=carRepository;

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name ="Rentals")
 public class Rental {
@@ -39,6 +41,7 @@ public class Rental {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH})
     @JoinColumn(name ="car_id")
+    @JsonBackReference
     private Car car;
 
     @OneToMany(mappedBy = "rental",cascade = CascadeType.ALL)
@@ -66,11 +69,13 @@ public class Rental {
         this.rentalStatus = rentalStatus;
     }
 
-    public Review getReview() {
-        return review;
-    }
 
-    public void setReview(Review review) {
+
+    public Review getReview() {
+		return review;
+	}
+
+	public void setReview(Review review) {
         this.review = review;
     }
 

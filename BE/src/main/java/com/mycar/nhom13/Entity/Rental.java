@@ -45,7 +45,6 @@ public class Rental {
     private Car car;
 
     @OneToMany(mappedBy = "rental",cascade = CascadeType.ALL)
-
     private List<Report> report;
     @ManyToOne
     @JoinColumn(name = "pick_up_location_id")

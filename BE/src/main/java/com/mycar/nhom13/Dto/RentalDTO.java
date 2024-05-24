@@ -8,8 +8,26 @@ public class RentalDTO {
     private String drop_off_date;
     private String drop_off_hours;
     private int total_cost;
+    
+    
 
-    public int getCar_Id() {
+    public RentalDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public RentalDTO(int car_Id, String pick_up_date, String pick_up_hours, String drop_off_date, String drop_off_hours,
+			int total_cost) {
+		super();
+		this.car_Id = car_Id;
+		this.pick_up_date = pick_up_date;
+		this.pick_up_hours = pick_up_hours;
+		this.drop_off_date = drop_off_date;
+		this.drop_off_hours = drop_off_hours;
+		this.total_cost = total_cost;
+	}
+
+	public int getCar_Id() {
         return car_Id;
     }
 

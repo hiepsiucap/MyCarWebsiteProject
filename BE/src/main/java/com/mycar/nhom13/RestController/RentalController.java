@@ -4,6 +4,7 @@ package com.mycar.nhom13.RestController;
 import com.mycar.nhom13.Dto.RentalDTO;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
+import com.mycar.nhom13.Mapper.RentalMapper;
 import com.mycar.nhom13.Service.RentalService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class RentalController {
@@ -26,9 +28,12 @@ public class RentalController {
         this.rentalService=rentalService;
     }
     @GetMapping("/rentals")
-
-    public ResponseEntity<List<Rental>> retrieveAllRentals(){
-        return new ResponseEntity<>(rentalService.findAll(),new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<List<RentalDTO>> retrieveAllRentals(){
+        List<Rental> rentals = rentalService.findAll();
+        List<RentalDTO> rentalDTOs = rentals.stream()
+                                            .map(RentalMapper::rentalToRentalDTO)
+                                            .collect(Collectors.toList());
+        return ResponseEntity.ok(rentalDTOs);
     }
 
     @GetMapping("/rentals/{id}")

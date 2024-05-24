@@ -5,10 +5,13 @@ import com.mycar.nhom13.Dto.RegisterDTO;
 import com.mycar.nhom13.Entity.TaiKhoan;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.Service.AuthService;
-import com.mycar.nhom13.Service.TaiKhoanService;
 import com.mycar.nhom13.Service.UserService;
 import jakarta.servlet.http.Cookie;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +55,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDTO registerDto) {
+
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterDTO registerDto) {
+
         if (userService.findByEmail(registerDto.getEmail()) != null) {
             return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
         }
@@ -71,7 +76,19 @@ public class AuthController {
     }
 
     @PostMapping("/signOut")
-    public ResponseEntity<Void> signOut(@AuthenticationPrincipal TaiKhoan user) {
+
+    public ResponseEntity<Void> signOut(@AuthenticationPrincipal TaiKhoan user, HttpServletResponse response, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null)
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("auth_by_cookie")) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
+
         SecurityContextHolder.clearContext();
         return ResponseEntity.noContent().build();
     }

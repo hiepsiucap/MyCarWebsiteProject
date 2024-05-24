@@ -1,6 +1,7 @@
 package com.mycar.nhom13.Entity;
 
 import jakarta.persistence.*;
+
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
@@ -11,11 +12,14 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
+
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "Cars")
 @JsonFilter("CarListFilter")
+
 public class Car {
 
     @Id
@@ -25,7 +29,9 @@ public class Car {
     private int carId;
 
     @Column(name = "license_plates", length = 10)
+
     @Size(min = 9, max = 10, message = "Biển số xe phải đúng định dạng.")
+
     private String licensePlates;
 
     @Column(name = "brand", length = 255)
@@ -100,20 +106,30 @@ public class Car {
 
 	@OneToMany( mappedBy ="car")
 	private List<CarImage> images;
-	
-    @OneToMany(mappedBy = "car")
-    @JsonManagedReference
-    private List<CarCalendar> carCalendars;
     
     @OneToMany(mappedBy = "car")
     @JsonManagedReference
     private List<Rental> rentals;
 
+    @OneToMany(mappedBy = "car")
+    @JsonManagedReference
+    private List<CarCalendar> carCalendars;
+
+	@Override
+	public String toString() {
+		return "Car [carId=" + carId + ", licensePlates=" + licensePlates + ", brand=" + brand + ", model=" + model
+				+ ", year=" + year + ", color=" + color + ", user=" + user + ", mileage=" + mileage + ", type=" + type
+				+ ", fuel=" + fuel + ", gear=" + gear + ", consumption=" + consumption + ", description=" + description
+				+ ", review=" + review + ", numberOfReview=" + numberOfReview + ", image=" + image + ", status="
+				+ status + ", seat=" + seat + ", numberOfRental=" + numberOfRental + ", cost=" + cost + ", location="
+				+ location + ", carCalendars=" + carCalendars + "]";
+	}
+
+
 	public Car() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 	
 	
 	public Car(int carId, @Size(min = 9, max = 10, message = "Biển số xe phải đúng định dạng.") String licensePlates,
@@ -154,8 +170,6 @@ public class Car {
 		this.carCalendars = carCalendars;
 		this.rentals = rentals;
 	}
-
-
 
 	public int getCarId() {
 		return carId;
@@ -325,6 +339,7 @@ public class Car {
 		this.location = location;
 	}
 
+
 	public List<CarImage> getImages() {
 		return images;
 	}
@@ -332,6 +347,7 @@ public class Car {
 	public void setImages(List<CarImage> images) {
 		this.images = images;
 	}
+
 
 	public List<CarCalendar> getCarCalendars() {
 		return carCalendars;
@@ -341,6 +357,7 @@ public class Car {
 		this.carCalendars = carCalendars;
 	}
 
+
 	public List<Rental> getRentals() {
 		return rentals;
 	}
@@ -349,7 +366,8 @@ public class Car {
 		this.rentals = rentals;
 	}
 
-	
+
+
 }
 
 

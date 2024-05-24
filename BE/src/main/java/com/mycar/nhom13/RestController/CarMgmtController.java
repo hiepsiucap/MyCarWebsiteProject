@@ -10,6 +10,7 @@ import com.mycar.nhom13.Mapper.CarMapper;
 import com.mycar.nhom13.Service.CarService;
 import com.mycar.nhom13.Service.UserService;
 
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -49,15 +50,15 @@ public class CarMgmtController {
 	@Autowired
 	private UserService userService;
 
+
 	public CarMgmtController(CarService carService) {
 		this.carService = carService;
 	}
 
-    @GetMapping("")
+	@GetMapping("")
     public ResponseEntity<MappingJacksonValue> getActiveCars(@RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Car> carsPage = carService.findByStatus("active", pageable);
-
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image","images" ,  "user", "rentals");
         SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
 
@@ -66,7 +67,6 @@ public class CarMgmtController {
 
         return ResponseEntity.ok(mapping);
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<CarDTO> getCarById(@PathVariable int id) {
@@ -77,6 +77,7 @@ public class CarMgmtController {
         CarDTO carDTO = CarMapper.carToCarDTO(car);
         return ResponseEntity.ok(carDTO);
     }
+
 	
     @GetMapping("/conditions")
     public List<Car> getCars(
@@ -100,7 +101,6 @@ public class CarMgmtController {
         if (cars.isEmpty()) {
             throw new ResourceNotFoundException("No cars found with rental status: " + status);
         }
-
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image","images" ,  "user", "rentals");
         SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
 
@@ -153,19 +153,24 @@ public class CarMgmtController {
 
     }
 
+
     @PostMapping("/{id}/images")
     public ResponseEntity<Car> uploadImages(@RequestParam("image1") MultipartFile file1,
                                             @RequestParam("image2") MultipartFile file2,
                                             @RequestParam("image3") MultipartFile file3,
                                             @RequestParam("image4") MultipartFile file4,
                                             @RequestParam("image5") MultipartFile file5,
+                                            @RequestParam("image6") MultipartFile file6,
                                             @PathVariable("id") int id) throws IOException {
+        carService.saveThumbnail(file1,id);
         List<MultipartFile> files=new ArrayList<>();
-        files.add(file1);
+
         files.add(file2);
         files.add(file3);
         files.add(file4);
         files.add(file5);
+        files.add(file6);
+
         Car savedCar = carService.saveImages(files,id);
         return new ResponseEntity<>(savedCar, new HttpHeaders(), HttpStatus.OK);
 

@@ -1,7 +1,6 @@
 package com.mycar.nhom13.Entity;
 
 import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -32,6 +31,7 @@ public class Review {
     public Review(){
 
     }
+
 
 	public Review(int reviewId, Rental rental,
 			@Pattern(regexp = "[1-5]", message = "Số đánh giá không hợp lệ.") int rate,
@@ -83,9 +83,4 @@ public class Review {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
-	
-
-
-    
 }

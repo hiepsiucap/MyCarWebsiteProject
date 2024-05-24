@@ -11,6 +11,8 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFilter;
 
 import java.util.List;
@@ -19,7 +21,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "Cars")
 @JsonFilter("CarListFilter")
-
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE,
+setterVisibility=JsonAutoDetect.Visibility.NONE, creatorVisibility=JsonAutoDetect.Visibility.NONE)
 public class Car {
 
     @Id
@@ -51,6 +54,7 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @Column(name = "mileage")
@@ -102,9 +106,11 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "location_id")
+    @JsonBackReference
     private Location location;
 
 	@OneToMany( mappedBy ="car")
+	@JsonManagedReference
 	private List<CarImage> images;
     
     @OneToMany(mappedBy = "car")

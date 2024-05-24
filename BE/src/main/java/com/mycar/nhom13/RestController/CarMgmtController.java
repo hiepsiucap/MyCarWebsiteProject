@@ -80,14 +80,19 @@ public class CarMgmtController {
 
 	
     @GetMapping("/conditions")
-    public List<Car> getCars(
+    public ResponseEntity<MappingJacksonValue> getCars(
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) List<String> type,
             @RequestParam(required = false) Integer minprice,
             @RequestParam(required = false) Integer maxprice,
             @RequestParam(required = false) List<String> fuel,
             @RequestParam(required = false) String province) {
-        return carService.filterCars(brand, type, minprice, maxprice, fuel, province);
+    	
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image","images" ,  "user", "rentals");
+        SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
+        MappingJacksonValue mapping = new MappingJacksonValue(carService.filterCars(brand, type, minprice, maxprice, fuel, province));
+        mapping.setFilters(filters);
+        return ResponseEntity.ok(mapping);
     }
 
     @GetMapping("/rental-status/{status}")

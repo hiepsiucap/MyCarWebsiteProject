@@ -2,7 +2,6 @@ package com.mycar.nhom13.Authentication;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -33,10 +32,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .logout(logout -> logout.deleteCookies(CookiesAuthenticationFilter.COOKIE_NAME))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST,"/login", "/register")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/api/cars/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/register")).permitAll()
                         .anyRequest().authenticated()

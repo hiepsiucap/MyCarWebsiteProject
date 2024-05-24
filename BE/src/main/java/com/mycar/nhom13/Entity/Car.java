@@ -100,6 +100,7 @@ public class Car {
 
 	@OneToMany( mappedBy ="car")
 	private List<CarImage> images;
+	
     @OneToMany(mappedBy = "car")
     @JsonManagedReference
     private List<CarCalendar> carCalendars;
@@ -113,10 +114,20 @@ public class Car {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Car(int carId, String licensePlates, String brand, String model, int year, String color, User user,
-			int mileage, String type, String fuel, String gear, Float consumption, String description, Float review,
-			int numberOfReview, String image, String status, int seat, int numberOfRental, int cost, Location location,
-			List<CarImage> images, List<CarCalendar> carCalendars, List<Rental> rentals) {
+	
+	
+	public Car(int carId, @Size(min = 9, max = 10, message = "Biển số xe phải đúng định dạng.") String licensePlates,
+			String brand, @Size(max = 20, message = "Kiểm tra lại model.") String model,
+			@Min(value = 1886, message = "Xe phải từ năm 1886 trở đi.") @Max(value = 2024, message = "Xe phải từ năm 2024 trở về trước.") int year,
+			String color, User user, @Min(value = 0, message = "Mileage must be at least 0") int mileage, String type,
+			String fuel, String gear,
+			@DecimalMin(value = "0.0", message = "Consumption ít nhất phải là 0.0") Float consumption,
+			@Size(max = 2000, message = "Mô tả ngắn gọn, nhiều nhất là 2000 kí tự.") String description,
+			@DecimalMin(value = "0.0", message = "Review must be at least 0.0") @DecimalMax(value = "5.0", message = "Review must be at most 5.0") Float review,
+			@Min(value = 0, message = "Number of reviews must be at least 0") int numberOfReview, String image,
+			String status, @Min(value = 1, message = "Seat count must be at least 1") int seat, int numberOfRental,
+			@Min(value = 0, message = "Cost must be at least 0") int cost, Location location, List<CarImage> images,
+			List<CarCalendar> carCalendars, List<Rental> rentals) {
 		super();
 		this.carId = carId;
 		this.licensePlates = licensePlates;
@@ -143,6 +154,8 @@ public class Car {
 		this.carCalendars = carCalendars;
 		this.rentals = rentals;
 	}
+
+
 
 	public int getCarId() {
 		return carId;

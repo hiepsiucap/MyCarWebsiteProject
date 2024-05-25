@@ -1,6 +1,11 @@
 package com.mycar.nhom13.Service;
 
 import com.mycar.nhom13.Dto.ChangePasswordDTO;
+import com.mycar.nhom13.Dto.ChangeUserInfoDTO;
+import com.mycar.nhom13.Dto.Pair;
+import com.mycar.nhom13.Dto.RevenueDTO;
+import com.mycar.nhom13.Entity.Car;
+import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
@@ -12,8 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements  UserService{
@@ -53,22 +58,15 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
-    public User update(int id, Map<String, Object> fields) {
+    public User update(int id, ChangeUserInfoDTO changeUserInfoDTO) {
 
         User user = this.findById(id);
 
-        if( user != null) {
+        user.setLastName(changeUserInfoDTO.getLastName());
+        user.setFirstName(changeUserInfoDTO.getFirstName());
+        user.setPhoneNumber(changeUserInfoDTO.getPhoneNumber());
 
-            fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(User.class, key);
-                field.setAccessible(true);
-
-                ReflectionUtils.setField(field, user, value);
-            });
-            return userRepository.save(user);
-        }
-        return null;
-
+        return userRepository.save(user);
 
     }
     public User saveLicense(MultipartFile file, int id) throws IOException {
@@ -120,12 +118,75 @@ public class UserServiceImpl implements  UserService{
             return false;
         }
 
-        // Cập nhật mật khẩu mới
         currentUser.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
         userRepository.save(currentUser);
 
         return true;
     }
 
+    @Override
+    public RevenueDTO getRevenue(int id) {
+        User user = this.findById(id);
+        List<Car> cars = user.getCars();
+
+        int [] monthRevenue = new int [12];
+        int [] monthRent = new int[12];
+        List<Pair> topRevenue= new ArrayList<>();
+        for(Car car: cars){
+            int profit=0;
+            for (Rental rental : car.getRentals()){
+                if(rental.getDropOffDate().getYear()==2024&&rental.getRentalStatus().equals("completed")){
+                    profit += rental.getTotalCost();
+
+                    monthRevenue[rental.getDropOffDate().getMonthValue()-1]+=rental.getTotalCost();
+                    monthRent[rental.getDropOffDate().getMonthValue()-1]++;
+                }
+            }
+            topRevenue.add(new Pair(car.getBrand() +" " + car.getModel() + " " + car.getYear()
+                    ,profit));
+
+        }
+        Collections.sort(topRevenue, new Comparator<Pair>() {
+            @Override
+            public int compare(Pair p1, Pair p2) {
+                return p2.getProfit().compareTo(p1.getProfit());
+            }
+        });
+        topRevenue.removeIf(pair -> pair.getProfit() <= 0);
+        List<String> topcar= new ArrayList<>();
+        List<Integer> toprentcar= new ArrayList<>();
+        int count=0;
+
+        for(Pair p : topRevenue){
+            if(count>=10) break;
+            topcar.add(p.getName());
+            toprentcar.add(p.getProfit());
+            count++;
+        }
+        int totalRent=0;
+        int totalRevenue=0;
+        for(int i=0;i<12;i++){
+            totalRent+=monthRent[i];
+            totalRevenue+=monthRevenue[i];
+        }
+
+        RevenueDTO revenueDTO = new RevenueDTO();
+
+        revenueDTO.setTotalCar(cars.size());
+        revenueDTO.setTotalRent(totalRent);
+        revenueDTO.setTotalRevenue(totalRevenue);
+        revenueDTO.setMonthRevenue(Arrays.stream(monthRevenue).boxed().collect(Collectors.toList()));
+        revenueDTO.setMonthRent(Arrays.stream(monthRent).boxed().collect(Collectors.toList()));
+        revenueDTO.setTopCar(topcar);
+        revenueDTO.setTopRentCar(toprentcar);
+
+        return revenueDTO;
+    }
+
+    @Override
+    public List<Rental> getRentals(int id) {
+        User user = this.findById(id);
+        return user.getRentals();
+    }
 
 }

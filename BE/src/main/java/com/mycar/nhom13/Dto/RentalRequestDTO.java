@@ -1,63 +1,61 @@
 package com.mycar.nhom13.Dto;
 
-import com.mycar.nhom13.RestController.RentalController;
-
 public class RentalRequestDTO {
-    private String pick_up_date;
-    private String pick_up_hours;
-    private String drop_off_date;
-    private String drop_off_hours;
-    private int total_cost;
+    private String pickUpDate;
+    private String pickUpHours;
+    private String dropOffDate;
+    private String dropOffHours;
+    private int totalCost;
 
     public RentalRequestDTO(){
 
     }
 
-    public RentalRequestDTO(String pick_up_date, String pick_up_hours, String drop_off_date, String drop_off_hours, int total_cost) {
-        this.pick_up_date = pick_up_date;
-        this.pick_up_hours = pick_up_hours;
-        this.drop_off_date = drop_off_date;
-        this.drop_off_hours = drop_off_hours;
-        this.total_cost = total_cost;
+    public RentalRequestDTO(String pickUpDate, String pickUpHours, String dropOffDate, String dropOffHours, int totalCost) {
+        this.pickUpDate = pickUpDate;
+        this.pickUpHours = pickUpHours;
+        this.dropOffDate = dropOffDate;
+        this.dropOffHours = dropOffHours;
+        this.totalCost = totalCost;
     }
 
-    public String getPick_up_date() {
-        return pick_up_date;
+    public String getPickUpDate() {
+        return pickUpDate;
     }
 
-    public void setPick_up_date(String pick_up_date) {
-        this.pick_up_date = pick_up_date;
+    public void setPickUpDate(String pickUpDate) {
+        this.pickUpDate = pickUpDate;
     }
 
-    public String getPick_up_hours() {
-        return pick_up_hours;
+    public String getPickUpHours() {
+        return pickUpHours;
     }
 
-    public void setPick_up_hours(String pick_up_hours) {
-        this.pick_up_hours = pick_up_hours;
+    public void setPickUpHours(String pickUpHours) {
+        this.pickUpHours = pickUpHours;
     }
 
-    public String getDrop_off_date() {
-        return drop_off_date;
+    public String getDropOffDate() {
+        return dropOffDate;
     }
 
-    public void setDrop_off_date(String drop_off_date) {
-        this.drop_off_date = drop_off_date;
+    public void setDropOffDate(String dropOffDate) {
+        this.dropOffDate = dropOffDate;
     }
 
-    public String getDrop_off_hours() {
-        return drop_off_hours;
+    public String getDropOffHours() {
+        return dropOffHours;
     }
 
-    public void setDrop_off_hours(String drop_off_hours) {
-        this.drop_off_hours = drop_off_hours;
+    public void setDropOffHours(String dropOffHours) {
+        this.dropOffHours = dropOffHours;
     }
 
-    public int getTotal_cost() {
-        return total_cost;
+    public int getTotalCost() {
+        return totalCost;
     }
 
-    public void setTotal_cost(int total_cost) {
-        this.total_cost = total_cost;
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
     }
 }

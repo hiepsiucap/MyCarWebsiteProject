@@ -2,6 +2,9 @@ package com.mycar.nhom13.RestController;
 
 
 import com.mycar.nhom13.Dto.ChangePasswordDTO;
+import com.mycar.nhom13.Dto.ChangeUserInfoDTO;
+import com.mycar.nhom13.Dto.RevenueDTO;
+import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.Service.UserService;
 import jakarta.servlet.http.Cookie;
@@ -53,9 +56,9 @@ public class UserController {
     }
 
     @PatchMapping("/users")
-    public ResponseEntity<User> updateUser(HttpServletRequest request, @RequestBody Map<String, Object> fields) {
+    public ResponseEntity<User> updateUser(HttpServletRequest request, @RequestBody @Valid ChangeUserInfoDTO changeUserInfoDTO) {
         int id=getUserIdFromCookie(request);
-        User updatedUser = userService.update(id, fields);
+        User updatedUser = userService.update(id, changeUserInfoDTO);
 
         return new ResponseEntity<>(updatedUser, new HttpHeaders(), HttpStatus.OK);
     }
@@ -85,7 +88,7 @@ public class UserController {
         User checked = userService.checkLicense(staffId,id,check);
         return new ResponseEntity<>(checked, new HttpHeaders(), HttpStatus.OK);
     }
-    @PostMapping("/users/changepassword")
+    @PatchMapping("/users/changepassword")
     public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDto, HttpServletRequest httpServletRequest) {
         int id = getUserIdFromCookie(httpServletRequest);
         boolean isPasswordChanged = userService.changePassword(changePasswordDto,id);
@@ -94,6 +97,22 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body("Invalid current password");
         }
+    }
+
+    @GetMapping("/users/revenue")
+    public ResponseEntity<RevenueDTO> getRevenue(HttpServletRequest request){
+        int id = getUserIdFromCookie(request);
+        RevenueDTO revenueDTO = userService.getRevenue(id);
+        return new ResponseEntity<>(revenueDTO, new HttpHeaders(), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/users/rentals")
+    public ResponseEntity<List<Rental>> getRentals(HttpServletRequest request){
+        int id = getUserIdFromCookie(request);
+        List<Rental> rentals = userService.getRentals(id);
+        return new ResponseEntity<>(rentals, new HttpHeaders(), HttpStatus.OK);
+
     }
 
     private int getUserIdFromCookie(HttpServletRequest request) {

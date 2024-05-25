@@ -32,7 +32,7 @@ public class ReviewController {
         Review review = reviewService.findById(id);
 
         if(review == null)
-            throw new ResourceNotFoundException("User id " + id +" not found");
+            throw new ResourceNotFoundException("Review id " + id +" not found");
         return review;
     }
 

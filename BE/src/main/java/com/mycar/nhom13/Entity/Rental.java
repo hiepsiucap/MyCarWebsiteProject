@@ -60,20 +60,33 @@ public class Rental {
 
     }
 
-    public Rental(int rentalId, LocalDate pickUpDate, String pickUpHours, LocalDate dropOffDate, String dropOffHours, int totalDay, int totalCost, String rentalStatus) {
-        this.rentalId = rentalId;
-        this.pickUpDate = pickUpDate;
-        this.pickUpHours = pickUpHours;
-        this.dropOffDate = dropOffDate;
-        this.dropOffHours = dropOffHours;
-        this.totalDay = totalDay;
-        this.totalCost = totalCost;
-        this.rentalStatus = rentalStatus;
-    }
+    
+
+
+    public Rental(int rentalId, LocalDate pickUpDate, String pickUpHours, LocalDate dropOffDate, String dropOffHours,
+			int totalDay, int totalCost, String rentalStatus, Review review, User user, Car car, List<Report> report,
+			Location pickUpLocation, Location dropOffLocation) {
+		super();
+		this.rentalId = rentalId;
+		this.pickUpDate = pickUpDate;
+		this.pickUpHours = pickUpHours;
+		this.dropOffDate = dropOffDate;
+		this.dropOffHours = dropOffHours;
+		this.totalDay = totalDay;
+		this.totalCost = totalCost;
+		this.rentalStatus = rentalStatus;
+		this.review = review;
+		this.user = user;
+		this.car = car;
+		this.report = report;
+		this.pickUpLocation = pickUpLocation;
+		this.dropOffLocation = dropOffLocation;
+	}
 
 
 
-    public Review getReview() {
+
+	public Review getReview() {
 		return review;
 	}
 

@@ -56,6 +56,8 @@ public class CarMgmtController {
 	
 	@Autowired
 	private LocationService locationService;
+	
+	private CarMapper carMapper;
 
 
 	public CarMgmtController(CarService carService) {
@@ -195,7 +197,7 @@ public class CarMgmtController {
 
 
     @PostMapping("/{id}/images")
-    public ResponseEntity<Car> uploadImages(@RequestParam("image1") MultipartFile file1,
+    public ResponseEntity<CarDTO> uploadImages(@RequestParam("image1") MultipartFile file1,
                                             @RequestParam("image2") MultipartFile file2,
                                             @RequestParam("image3") MultipartFile file3,
                                             @RequestParam("image4") MultipartFile file4,
@@ -210,9 +212,13 @@ public class CarMgmtController {
         files.add(file4);
         files.add(file5);
         files.add(file6);
-
+        
         Car savedCar = carService.saveImages(files,id);
-        return new ResponseEntity<>(savedCar, new HttpHeaders(), HttpStatus.OK);
+
+        CarDTO carDTO = CarMapper.carToCarDTO(savedCar);
+        
+        
+        return new ResponseEntity<>(carDTO, new HttpHeaders(), HttpStatus.OK);
 
 
     }

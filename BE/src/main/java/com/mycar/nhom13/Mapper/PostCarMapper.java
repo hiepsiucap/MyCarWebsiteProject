@@ -9,6 +9,7 @@ public class PostCarMapper {
 
     public static PostCarDTO carToCarDTO(Car car) {
         PostCarDTO c = new PostCarDTO();
+        c.setCarId(car.getCarId());
         c.setLicensePlates(car.getLicensePlates());
         c.setModel(car.getModel());
         c.setBrand(car.getBrand());
@@ -30,6 +31,7 @@ public class PostCarMapper {
 
     public static Car dtoToCar(PostCarDTO dto, User user, Location location) {
         Car car = new Car();
+        car.setCarId(dto.getCarId());
         car.setLicensePlates(dto.getLicensePlates());
         car.setModel(dto.getModel());
         car.setBrand(dto.getBrand());

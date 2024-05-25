@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class PostCarDTO {
+	
+	private int carId;
     
     @NotBlank(message = "License plates cannot be empty")
     @Size(min = 9, max = 10, message = "License plates must be between 9 and 10 characters")
@@ -56,10 +58,11 @@ public class PostCarDTO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public PostCarDTO(String licensePlates, String model, String brand, int year, String color, float consumption,
+	public PostCarDTO(int carId, String licensePlates, String model, String brand, int year, String color, float consumption,
 			String description, int seat, String type, String gear, String fuel, String address, String province,
 			String district, int cost) {
 		super();
+		this.carId = carId;
 		this.licensePlates = licensePlates;
 		this.model = model;
 		this.brand = brand;
@@ -75,6 +78,14 @@ public class PostCarDTO {
 		this.province = province;
 		this.district = district;
 		this.cost = cost;
+	}
+	
+	
+	public int getCarId() {
+		return carId;
+	}
+	public void setCarId(int carId) {
+		this.carId = carId;
 	}
 	public String getLicensePlates() {
 		return licensePlates;

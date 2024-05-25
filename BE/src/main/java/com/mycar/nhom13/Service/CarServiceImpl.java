@@ -79,6 +79,11 @@ public class CarServiceImpl implements CarService {
     }
     
     @Override
+    public List<Car> findAllCarsByRentalStatus(@Param("userId") int userId){
+    	return carRepository.findCarsByRentalStatus(userId);
+    }
+    
+    @Override
     public List<Car> filterCars(
             String brand, List<String> types, Integer minPrice, Integer maxPrice, 
             List<String> fuels, String province) {

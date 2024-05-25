@@ -18,7 +18,7 @@ public class CarImage {
 
     @ManyToOne
     @JoinColumn(name="car_id")
-    @JsonBackReference
+    @JsonBackReference(value="image")
     public Car car;
 
     public CarImage(){

@@ -111,7 +111,7 @@ public class Car {
     private Location location;
 
 	@OneToMany( mappedBy ="car")
-	@JsonManagedReference
+	@JsonManagedReference(value="image")
 	private List<CarImage> images;
     
     @OneToMany(mappedBy = "car")
@@ -119,7 +119,7 @@ public class Car {
     private List<Rental> rentals;
 
     @OneToMany(mappedBy = "car")
-    @JsonManagedReference
+    @JsonManagedReference(value="calendar")
     private List<CarCalendar> carCalendars;
 
 	@Override

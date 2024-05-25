@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CarCalendarService {
     List<CarCalendar> findAll();
-    CarCalendar save(CarCalendar carCalendar);
+    CarCalendar save(CarCalendar carCalendar, int carId);
     List<CarCalendar> findByCarId(Long carId);
 }

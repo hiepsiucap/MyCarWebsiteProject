@@ -1,5 +1,6 @@
 package com.mycar.nhom13.Service;
 
+import com.mycar.nhom13.Entity.Car;
 import com.mycar.nhom13.Entity.CarCalendar;
 import com.mycar.nhom13.Repository.CarCalendarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ public class CarCalendarServiceImpl implements CarCalendarService {
 
     @Autowired
     private CarCalendarRepository carCalendarRepository;
+    @Autowired
+    private CarService carserivce;
 
     @Override
     public List<CarCalendar> findAll() {
@@ -20,7 +23,11 @@ public class CarCalendarServiceImpl implements CarCalendarService {
 
 
     @Override
-    public CarCalendar save(CarCalendar carCalendar) {
+    public CarCalendar save(CarCalendar carCalendar, int carId) {
+    	
+    	Car car = carserivce.findByCarId(carId);
+    	
+    	carCalendar.setCar(car);
         return carCalendarRepository.save(carCalendar);
     }
 

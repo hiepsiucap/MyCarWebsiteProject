@@ -192,15 +192,6 @@ public class CarMgmtController {
 	    return new ResponseEntity<>(updatedCar, new HttpHeaders(), HttpStatus.OK);
 	}
 
-    @PostMapping("/{id}/thumbnail")
-    public ResponseEntity<Car> uploadThumbnail(@RequestParam("image") MultipartFile file,
-                                               @PathVariable("id") int id) throws IOException {
-
-        Car savedCar = carService.saveThumbnail(file,id);
-        return new ResponseEntity<>(savedCar, new HttpHeaders(), HttpStatus.OK);
-
-
-    }
 
 
     @PostMapping("/{id}/images")

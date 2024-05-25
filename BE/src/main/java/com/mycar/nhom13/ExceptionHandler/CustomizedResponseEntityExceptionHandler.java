@@ -46,7 +46,21 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ReviewException.class)
+    public final ResponseEntity<ErrorDetails> handleReviewException(Exception ex, WebRequest request){
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
+                ex.getMessage(),request.getDescription(false));
 
+        return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ChangePasswordException.class)
+    public final ResponseEntity<ErrorDetails> handleChangePasswordException(Exception ex, WebRequest request){
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
+                ex.getMessage(),request.getDescription(false));
+
+        return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),

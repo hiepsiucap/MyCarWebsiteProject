@@ -30,8 +30,7 @@ public class ReportController {
     public Report retrieveReport(@PathVariable int id){
         Report report = reportService.findById(id);
 
-        if(report == null)
-            throw new ResourceNotFoundException("User id " + id +" not found");
+
         return report;
     }
 
@@ -43,11 +42,13 @@ public class ReportController {
         return new ResponseEntity<>(savedReport,new HttpHeaders(), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/reports/{id}")
-    public ResponseEntity<Report> updateReview(@PathVariable int id, @RequestBody Map<String, Object> fields) {
-        Report updatedReport = reportService.update(id, fields);
-        if (updatedReport == null)
-            throw new ResourceNotFoundException("User id: " + id + " not found");
-        return new ResponseEntity<>(updatedReport, new HttpHeaders(), HttpStatus.OK);
+    @PatchMapping("/rentals/{id}/reports")
+    public ResponseEntity<Report> patchReport(@RequestParam("status") String status, @PathVariable int id){
+
+        Report savedReport =reportService.update(status,id);
+
+        return new ResponseEntity<>(savedReport,new HttpHeaders(), HttpStatus.CREATED);
     }
+
+
 }

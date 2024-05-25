@@ -6,6 +6,7 @@ import com.mycar.nhom13.Dto.ChangeUserInfoDTO;
 import com.mycar.nhom13.Dto.RevenueDTO;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
+import com.mycar.nhom13.ExceptionHandler.ChangePasswordException;
 import com.mycar.nhom13.Service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class UserController {
@@ -92,11 +92,10 @@ public class UserController {
     public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDto, HttpServletRequest httpServletRequest) {
         int id = getUserIdFromCookie(httpServletRequest);
         boolean isPasswordChanged = userService.changePassword(changePasswordDto,id);
-        if (isPasswordChanged) {
-            return ResponseEntity.ok("Password changed successfully");
-        } else {
-            return ResponseEntity.badRequest().body("Invalid current password");
-        }
+
+        return ResponseEntity.ok("Đổi mật khẩu thành công");
+
+
     }
 
     @GetMapping("/users/revenue")
@@ -112,6 +111,14 @@ public class UserController {
         int id = getUserIdFromCookie(request);
         List<Rental> rentals = userService.getRentals(id);
         return new ResponseEntity<>(rentals, new HttpHeaders(), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/users/numofrentals")
+    public ResponseEntity<Integer> getNumOfRental(HttpServletRequest request){
+        int id = getUserIdFromCookie(request);
+
+        return new ResponseEntity<>(userService.getNumOfRental(id), new HttpHeaders(), HttpStatus.OK);
 
     }
 

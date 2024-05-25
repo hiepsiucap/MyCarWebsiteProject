@@ -1,12 +1,14 @@
 package com.mycar.nhom13.Service;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.Report;
+import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Repository.RentalRepository;
 import com.mycar.nhom13.Repository.ReportRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -27,31 +29,27 @@ public class ReportServiceImpl implements  ReportService{
 
     @Override
     public Report findById(int id) {
-        return repository.findById(id);
+        Report report = repository.findById(id);
+        if(report == null)
+            throw new ResourceNotFoundException("Report id " + id +" not found");
+        return report;
     }
 
     @Override
     public Report save(Report report, int id) {
+        report.setState("Pending");
+        report.setDate(LocalDate.now());
         report.setRental(rentalRepository.findById(id));
         return repository.save(report);
     }
 
     @Override
-    public Report update(int id, Map<String, Object> fields) {
-        Report report = repository.findById(id);
+    public Report update(String status, int id) {
+        Report report = this.findById(id);
+        report.setState("status");
 
-        if( report != null) {
-
-            fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(Report.class, key);
-                field.setAccessible(true);
-
-                ReflectionUtils.setField(field, report, value);
-            });
-            return repository.save(report);
-        }
-        return null;
-
-
+        return repository.save(report);
     }
+
+
 }

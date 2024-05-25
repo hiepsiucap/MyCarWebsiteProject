@@ -7,6 +7,7 @@ import com.mycar.nhom13.Dto.RevenueDTO;
 import com.mycar.nhom13.Entity.Car;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
+import com.mycar.nhom13.ExceptionHandler.ChangePasswordException;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
 import com.mycar.nhom13.Repository.UserRepository;
@@ -110,12 +111,12 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
-    public boolean changePassword(ChangePasswordDTO changePasswordDto, int id) {
+    public boolean changePassword(ChangePasswordDTO changePasswordDto, int id)  {
 
         User currentUser = this.findById(id);
 
         if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), currentUser.getPassword())) {
-            return false;
+            throw new ChangePasswordException("Sai mật khẩu");
         }
 
         currentUser.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
@@ -187,6 +188,19 @@ public class UserServiceImpl implements  UserService{
     public List<Rental> getRentals(int id) {
         User user = this.findById(id);
         return user.getRentals();
+    }
+
+    @Override
+    public Integer getNumOfRental(int id) {
+        User user = this.findById(id);
+        if(user.getRentals() == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return user.getRentals().size();
+        }
     }
 
 }

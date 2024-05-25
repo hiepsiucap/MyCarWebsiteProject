@@ -1,11 +1,11 @@
 package com.mycar.nhom13.Entity;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -35,7 +35,7 @@ public class Review {
     private String details;
     
     @Column(name = "review_date")
-    private Date date;
+    private LocalDate date;
 
     public Review(){
 
@@ -43,8 +43,8 @@ public class Review {
 
 
 	public Review(int reviewId, Rental rental,
-			@Pattern(regexp = "[1-5]", message = "Số đánh giá không hợp lệ.") int rate,
-			@Size(min = 1, message = "Nội dung không được để trống.") String details, Date date) {
+				  @Pattern(regexp = "[1-5]", message = "Số đánh giá không hợp lệ.") int rate,
+				  @Size(min = 1, message = "Nội dung không được để trống.") String details, LocalDate date) {
 		super();
 		this.reviewId = reviewId;
 		this.rental = rental;
@@ -85,11 +85,11 @@ public class Review {
 		this.details = details;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 }

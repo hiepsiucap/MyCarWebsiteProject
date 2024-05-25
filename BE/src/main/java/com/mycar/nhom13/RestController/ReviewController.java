@@ -30,9 +30,6 @@ public class ReviewController {
     @GetMapping("/reviews/{id}")
     public Review retrieveReview(@PathVariable int id){
         Review review = reviewService.findById(id);
-
-        if(review == null)
-            throw new ResourceNotFoundException("Review id " + id +" not found");
         return review;
     }
 
@@ -44,11 +41,5 @@ public class ReviewController {
         return new ResponseEntity<>(savedReview,new HttpHeaders(), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/reviews/{id}")
-    public ResponseEntity<Review> updateReview(@PathVariable int id, @RequestBody Map<String, Object> fields) {
-        Review updatedReview = reviewService.update(id, fields);
-        if (updatedReview == null)
-            throw new ResourceNotFoundException("User id: " + id + " not found");
-        return new ResponseEntity<>(updatedReview, new HttpHeaders(), HttpStatus.OK);
-    }
+
 }

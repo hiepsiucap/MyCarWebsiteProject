@@ -13,5 +13,5 @@ public interface ReportService {
     Report findById(int id);
     Report save(Report report, int id);
 
-    Report update(int id, Map<String, Object> fields);
+    Report update(String status, int id);
 }

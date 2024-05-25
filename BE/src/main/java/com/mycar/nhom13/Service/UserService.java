@@ -32,4 +32,6 @@ public interface UserService {
     RevenueDTO getRevenue(int id);
 
     List<Rental> getRentals(int id);
+
+    Integer getNumOfRental(int id);
 }

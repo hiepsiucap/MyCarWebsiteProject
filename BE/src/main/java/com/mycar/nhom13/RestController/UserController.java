@@ -4,6 +4,7 @@ package com.mycar.nhom13.RestController;
 import com.mycar.nhom13.Dto.ChangePasswordDTO;
 import com.mycar.nhom13.Dto.ChangeUserInfoDTO;
 import com.mycar.nhom13.Dto.RevenueDTO;
+import com.mycar.nhom13.Dto.StringResponse;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ChangePasswordException;
@@ -89,11 +90,12 @@ public class UserController {
         return new ResponseEntity<>(checked, new HttpHeaders(), HttpStatus.OK);
     }
     @PatchMapping("/users/changepassword")
-    public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDto, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<StringResponse> changePassword(@RequestBody @Valid ChangePasswordDTO changePasswordDto, HttpServletRequest httpServletRequest) {
         int id = getUserIdFromCookie(httpServletRequest);
         boolean isPasswordChanged = userService.changePassword(changePasswordDto,id);
 
-        return ResponseEntity.ok("Đổi mật khẩu thành công");
+        return new ResponseEntity<>(new StringResponse("Đổi mật khẩu thành công"), new HttpHeaders(), HttpStatus.OK);
+
 
 
     }

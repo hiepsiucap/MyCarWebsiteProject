@@ -144,7 +144,12 @@ public class CarMgmtController {
         Location location = locationService.findByAddress(postCarDTO.getAddress());
         
         if (location == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Location not found for address: " + postCarDTO.getAddress());
+            location = new Location();
+            location.setAddress(postCarDTO.getAddress());
+            location.setDistrict(postCarDTO.getDistrict());
+            location.setProvince(postCarDTO.getProvince());
+            
+            location = locationService.save(location);
         }
         
         Car car = PostCarMapper.dtoToCar(postCarDTO, user, location);

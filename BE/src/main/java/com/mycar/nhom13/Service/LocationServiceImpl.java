@@ -24,4 +24,10 @@ public class LocationServiceImpl implements LocationService {
 	public Location findByAddress(String address) {
 		return locationRepository.findByAddressContainingIgnoreCase(address);
 	}
+	
+	@Override
+	public Location save(Location location) {
+		return locationRepository.save(location);
+	}
+	
 }

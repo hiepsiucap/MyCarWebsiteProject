@@ -1,0 +1,382 @@
+
+--TRIGGER 
+--TRIGER 8 
+CREATE OR REPLACE TRIGGER TRIGGER_THEM_SUA_CAR_CALENDAR
+FOR INSERT OR UPDATE ON Car_calendars
+COMPOUND TRIGGER 
+    SDATE DATE ;
+    EDATE DATE ;
+    NCARID INT;
+    NCALENDAR INT;
+
+    AFTER EACH ROW IS BEGIN
+        SDATE := :NEW.start_date;
+        EDATE := :NEW.end_date;
+        NCARID := :NEW.CAR_ID;
+        NCALENDAR := :NEW.CALENDAR_ID;
+    END AFTER EACH ROW;
+
+    AFTER STATEMENT IS BEGIN
+        IF SDATE > EDATE THEN   
+            RAISE_APPLICATION_ERROR(-20001, 'NHAP NGAY KHONG HOP LE, VUI LONG NHAP LAI');
+        END IF;
+
+        FOR NGAY_CALENDAR IN (
+            SELECT start_date, end_date
+            from CAR_CALENDARS
+            WHERE CAR_ID = NCARID AND CAR_CALENDARS.CALENDAR_ID != NCALENDAR
+        )LOOP
+            IF SDATE >= NGAY_CALENDAR.start_date AND SDATE <= NGAY_CALENDAR.END_DATE THEN
+                RAISE_APPLICATION_ERROR(-20001, 'NHAP NGAY KHONG HOP LE, VUI LONG NHAP LAI ');
+            END IF;
+            IF EDATE >= NGAY_CALENDAR.start_date AND EDATE <= NGAY_CALENDAR.END_DATE THEN
+                RAISE_APPLICATION_ERROR(-20001, 'NHAP NGAY KHONG HOP LE, VUI LONG NHAP LAI ');
+            END IF;
+        END LOOP;
+
+        
+        FOR NGAY_RENTAL IN (
+            SELECT pick_up_date, DROP_OFF_DATE
+            from RENTALS
+            WHERE CAR_ID = NCARID
+        )LOOP
+            IF SDATE >= NGAY_RENTAL.PICK_UP_DATE AND SDATE <= NGAY_RENTAL.DROP_OFF_DATE THEN
+                RAISE_APPLICATION_ERROR(-20001, 'NHAP NGAY NGAY NHAP DA CO NGUOI THUE, VUI LONG NHAP LAI ');
+            END IF;
+
+            IF EDATE >= NGAY_RENTAL.PICK_UP_DATE AND EDATE <= NGAY_RENTAL.DROP_OFF_DATE THEN
+                RAISE_APPLICATION_ERROR(-20001, 'NHAP NGAY NGAY NHAP DA CO NGUOI THUE, VUI LONG NHAP LAI ');
+            END IF;
+        END LOOP;
+    END AFTER STATEMENT;
+
+END TRIGGER_THEM_SUA_CAR_CALENDAR;
+/
+
+SELECT * FROM CAR_CALENDARS;
+SELECT * FROM RENTALS WHERE CAR_ID = 1;
+
+INSERT INTO Car_calendars (CALENDAR_id, car_id, start_date, end_date) VALUES
+(6, 1, TO_DATE('2025-06-01', 'YYYY-MM-DD'), TO_DATE('2025-09-06', 'YYYY-MM-DD'));
+
+DELETE FROM CAR_CALENDARS WHERE CALENDAR_id = 6;
+
+--TRIGGER_THEM_SUA_RENTAL
+CREATE OR REPLACE TRIGGER TRIGGER_THEM_SUA_RENTAL
+FOR INSERT OR UPDATE ON RENTALS
+COMPOUND TRIGGER 
+    SDATE DATE ;
+    EDATE DATE ;
+    NCARID INT;
+    NRENTAL INT;
+    NCUSTOMER_ID INT;
+    ACCDATE DATE;
+    BANG VARCHAR2(1);
+    nstatus VARCHAR2(10);
+    SOLUOTCHOTHUE INT;
+    NCOST INT;
+    NTOTAL_COST INT;
+    NTOTAL_DAY INT;
+    OLDCHECK INT;
+
+    AFTER EACH ROW IS BEGIN
+        SDATE := :NEW.PICK_UP_DATE;
+        EDATE := :NEW.DROP_OFF_DATE;
+        NCARID := :NEW.CAR_ID;
+        NRENTAL := :NEW.RENTAL_ID;
+        NCUSTOMER_ID := :NEW.customer_id;
+        NTOTAL_COST := :NEW.TOTAL_COST;
+        NTOTAL_DAY := :NEW.TOTAL_DAY;
+        OLDCHECK := :OLD.CAR_ID;
+    END AFTER EACH ROW;
+
+    AFTER STATEMENT IS BEGIN
+        --TÍNH LẠI SỐ LƯỢT CHO THUÊ 
+        SELECT COUNT(*) INTO SOLUOTCHOTHUE FROM RENTALS
+        WHERE CAR_ID = NCARID;
+        IF OLDCHECK IS NULL THEN
+            UPDATE CARS SET CARS.NUMBER_OF_RENTAL = SOLUOTCHOTHUE WHERE CAR_ID = NCARID;
+        END IF;
+
+        --KIEM TRA TOTAL_DAY
+        IF NTOTAL_DAY != (EDATE - SDATE + 1) THEN
+            RAISE_APPLICATION_ERROR(-20001, 'SAI TOTAL DAY');
+        END IF;
+        --KIEM TRA COST
+        SELECT COST INTO NCOST FROM CARS
+        WHERE CAR_ID = NCARID;
+        IF (EDATE - SDATE + 1) * NCOST != NTOTAL_COST AND OLDCHECK IS NULL THEN
+           RAISE_APPLICATION_ERROR(-20001, 'SAI TOTAL COST');
+        END IF;
+
+        --DATE OF CREATE ACCOUNT SMALLER DATE OF RENTALS 
+        SELECT CREATE_DATE INTO ACCDATE 
+        FROM "user"  
+        WHERE "user".user_id = NCUSTOMER_ID;
+
+        IF ACCDATE > SDATE THEN
+            RAISE_APPLICATION_ERROR(-20001, 'NGAY THUE NHO HON NGAY TAO TAI KHOAN');
+        END IF;
+
+        --CÓ BẰNG LÁI HAY KHÔNG
+        SELECT   driver_license_check INTO BANG
+        FROM "user"
+        WHERE "user".user_id = NCUSTOMER_ID;
+
+        IF BANG = 'N' AND OLDCHECK IS NULL THEN
+               RAISE_APPLICATION_ERROR(-20001, 'KHONG CO BANG');
+        END IF;
+
+        --XE CÓ ĐANG HOẠT ĐỘNG KHÔNG
+        SELECT STATUS INTO NSTATUS 
+        FROM CARS
+        WHERE CAR_ID = NCARID;
+
+        IF NSTATUS != 'active' AND OLDCHECK IS NULL THEN
+            RAISE_APPLICATION_ERROR(-20001, 'XE KHONG HOAT DONG');
+        END IF;
+
+        --NGAY BAT DAU NHO HON NGAY KET THUC
+        IF SDATE > EDATE THEN   
+            RAISE_APPLICATION_ERROR(-20001, 'NHAP NGAY KHONG HOP LE, VUI LONG NHAP LAI');
+        END IF;
+
+
+        FOR NGAY_RENTAL IN (
+            SELECT RENTALS.PICK_UP_DATE, RENTALS.DROP_OFF_DATE
+            from RENTALS
+            WHERE CAR_ID = NCARID AND RENTALS.RENTAL_ID != NRENTAL
+        )LOOP
+            IF SDATE >= NGAY_RENTAL.PICK_UP_DATE AND SDATE <= NGAY_RENTAL.DROP_OFF_DATE THEN
+                RAISE_APPLICATION_ERROR(-20001, 'TRUNG RENTAL, VUI LONG NHAP LAI ');
+            END IF;
+            IF EDATE >= NGAY_RENTAL.PICK_UP_DATE AND EDATE <= NGAY_RENTAL.DROP_OFF_DATE THEN
+                RAISE_APPLICATION_ERROR(-20001, 'TRUNG RENTAL, VUI LONG NHAP LAI ');
+            END IF;
+        END LOOP;
+
+        
+        FOR NGAY_CALENDAR IN (
+            SELECT start_date, end_date
+            from CAR_CALENDARS
+            WHERE CAR_ID = NCARID 
+        )LOOP
+            IF SDATE >= NGAY_CALENDAR.start_date AND SDATE <= NGAY_CALENDAR.END_DATE THEN
+                RAISE_APPLICATION_ERROR(-20001, 'TRUNG CAR_CALEDER, VUI LONG NHAP LAI ');
+            END IF;
+            IF EDATE >= NGAY_CALENDAR.start_date AND EDATE <= NGAY_CALENDAR.END_DATE THEN
+                RAISE_APPLICATION_ERROR(-20001, 'TRUNG CAR_CALEDER, VUI LONG NHAP LAI ');
+            END IF;
+        END LOOP;
+    END AFTER STATEMENT;
+    
+END TRIGGER_THEM_SUA_RENTAL;
+/
+
+SELECT * FROM CAR_CALENDARS WHERE CAR_ID = 1;
+SELECT * FROM RENTALS WHERE CAR_ID = 1;
+SELECT * FROM CARS;
+INSERT INTO Rentals (rental_id, customer_id, car_id, pick_up_location_id, drop_off_location_id, pick_up_date, pick_up_hours, drop_off_date, drop_off_hours, total_day, total_cost, rental_status) VALUES
+(6, 1, 1, 1, 1, TO_DATE('2025-06-01', 'YYYY-MM-DD'), '10:00 AM', TO_DATE('2025-06-01', 'YYYY-MM-DD'), '10:00 AM', 1, 500.00, 'confirmed');
+DELETE FROM RENTALS WHERE RENTAL_ID = 6;
+SELECT * FROM "user";
+--TRIGGER XOA RENTALS 
+-- RÀNG BUỘC ĐẢM BẢO SỐ LƯỢT CHO THUÊ XE
+CREATE OR REPLACE TRIGGER TRIGGER_XOA_RENTALS
+FOR DELETE ON RENTALS
+COMPOUND TRIGGER
+    NCAR_ID INT;
+    SOLUOTCHOTHUE INT;
+
+    AFTER EACH ROW IS BEGIN
+        NCAR_ID := :OLD.CAR_ID;
+    END AFTER EACH ROW;
+
+    AFTER STATEMENT IS BEGIN
+        SELECT COUNT(*) INTO SOLUOTCHOTHUE FROM RENTALS
+        WHERE CAR_ID = NCAR_ID;
+        UPDATE CARS SET CARS.NUMBER_OF_RENTAL = SOLUOTCHOTHUE WHERE CAR_ID = NCAR_ID;
+    END AFTER STATEMENT;
+
+END TRIGGER_XOA_RENTALS;
+/
+
+INSERT INTO Rentals (rental_id, customer_id, car_id, pick_up_location_id, drop_off_location_id, pick_up_date, pick_up_hours, drop_off_date, drop_off_hours, total_day, total_cost, rental_status) VALUES
+(6, 1, 1, 1, 1, TO_DATE('2025-06-01', 'YYYY-MM-DD'), '10:00 AM', TO_DATE('2025-06-04', 'YYYY-MM-DD'), '10:00 AM', 4, 2000.00, 'confirmed');
+DELETE FROM RENTALS WHERE RENTAL_ID = 6;
+SELECT * FROM CARS;
+SELECT * FROM RENTALS;
+--trigger 1 
+--TRGGER THEM_SUA_USER
+CREATE OR REPLACE TRIGGER trg_check_user_create_date
+FOR INSERT OR UPDATE ON "user"
+COMPOUND TRIGGER
+    KHACH INT;
+    NCREATE_DATE DATE;
+    BANG VARCHAR2(1);
+    AFTER EACH ROW IS BEGIN
+        KHACH := :NEW.USER_ID;
+        NCREATE_DATE := :NEW.CREATE_DATE;
+        BANG := :NEW.DRIVER_LICENSE_CHECK ;
+    END AFTER EACH ROW;
+
+    AFTER STATEMENT IS BEGIN
+        IF BANG = 'N' THEN
+            FOR rec IN (SELECT RENTAL_ID
+                        FROM Rentals
+                        WHERE customer_id = KHACH AND PICK_UP_DATE >= SYSDATE
+                        ) LOOP
+                            UPDATE RENTALS SET  rental_status  = 'cancelled' WHERE RENTAL_ID = REC.RENTAL_ID;
+            END LOOP;
+        END IF;
+
+        FOR rec IN (SELECT pick_up_date
+                    FROM Rentals
+                    WHERE customer_id = KHACH) LOOP
+            IF Ncreate_date >= rec.pick_up_date THEN
+                RAISE_APPLICATION_ERROR(-20002, 'Ngày tạo tài khoản phải nhỏ hơn ngày thuê xe.');
+            END IF;
+        END LOOP;
+    END AFTER STATEMENT;
+
+END trg_check_user_create_date;
+/
+
+INSERT INTO Rentals (rental_id, customer_id, car_id, pick_up_location_id, drop_off_location_id, pick_up_date, pick_up_hours, drop_off_date, drop_off_hours, total_day, total_cost, rental_status) VALUES
+(6, 1, 1, 1, 1, TO_DATE('2025-06-01', 'YYYY-MM-DD'), '10:00 AM', TO_DATE('2025-06-05', 'YYYY-MM-DD'), '10:00 AM', 5, 2500, 'confirmed');
+DELETE FROM RENTALS WHERE RENTAL_ID = 6;
+SELECT * FROM RENTALS WHERE RENTAL_ID = 6;
+SELECT * FROM "user" WHERE USER_ID = 1;
+UPDATE "user" SET CREATE_DATE = TO_DATE('2024-06-01', 'YYYY-MM-DD') WHERE user_id = 1;
+UPDATE "user" SET DRIVER_LICENSE_CHECK = 'N' WHERE user_id = 1;
+UPDATE "user" SET DRIVER_LICENSE_CHECK = 'Y' WHERE user_id = 1;
+UPDATE RENTALS SET  rental_status  =  'confirmed' WHERE RENTAL_ID = 1;
+
+--TRIGGER XE CÓ ĐANG HOẠT ĐỘNG KHÔNG
+--TRIGGER SỬA CARS
+CREATE OR REPLACE TRIGGER TRIGGER_THEM_SUA_CARS
+FOR INSERT OR UPDATE ON CARS
+COMPOUND TRIGGER
+    NCAR_ID INT;
+    TTMOI VARCHAR2(10);
+    NCOST INT;
+    OLDCOST INT;
+    SOLUOTCHOTHUE INT;
+    Nnumber_of_rental INT;
+
+    AFTER EACH ROW IS BEGIN
+        NCAR_ID := :NEW.CAR_ID;
+        TTMOI := :NEW.STATUS;
+        NCOST := :NEW.COST;
+        OLDCOST := :OLD.COST;
+        Nnumber_of_rental := :NEW.number_of_rental ;
+    END AFTER EACH ROW;
+
+    AFTER STATEMENT IS BEGIN
+        -- XE KHÔNG HOẠT ĐỘNG THÌ HỦY CÁC RENTALS
+        IF  TTMOI = 'pause'THEN
+            FOR rec IN (SELECT RENTAL_ID
+                        FROM Rentals
+                        WHERE CAR_ID = NCAR_ID AND PICK_UP_DATE >= SYSDATE
+                        ) LOOP
+                            UPDATE RENTALS SET  rental_status  = 'cancelled' WHERE RENTAL_ID = REC.RENTAL_ID;
+            END LOOP;
+        END IF;
+
+        --KIỂM TRA SỐ LƯỢT CHO THUÊ
+        SELECT COUNT(*) INTO SOLUOTCHOTHUE FROM RENTALS
+        WHERE CAR_ID = NCAR_ID;
+        IF Nnumber_of_rental != SOLUOTCHOTHUE THEN
+            RAISE_APPLICATION_ERROR(-20002, 'SO LUOT CHO THUE KHONG HOP LE');
+        END IF;
+
+    END AFTER STATEMENT;
+
+END TRIGGER_THEM_SUA_CARS;
+/
+
+INSERT INTO Cars (car_id, license_plates, brand, model, year, color, user_id, mileage, type, fuel, gear, consumption, description, review, number_of_review, image, status, seat, number_of_rental, cost, location_id) VALUES
+(6, '30A-12345', 'Toyota', 'Camry', 2020, 'Black', 1, 15000, 'Sedan', 'Xang', 'Tu dong', 8.5, 'Good condition, well-maintained', 0, 0, 'car1.jpg', 'active', 5, 0, 500, 1);
+INSERT INTO Rentals (rental_id, customer_id, car_id, pick_up_location_id, drop_off_location_id, pick_up_date, pick_up_hours, drop_off_date, drop_off_hours, total_day, total_cost, rental_status) VALUES
+(6, 1, 6, 1, 1, TO_DATE('2025-06-01', 'YYYY-MM-DD'), '10:00 AM', TO_DATE('2025-06-05', 'YYYY-MM-DD'), '10:00 AM', 5, 2500, 'confirmed');
+DELETE FROM RENTALS WHERE RENTAL_ID = 6;
+DELETE FROM CARS WHERE CAR_ID = 6;
+SELECT * FROM RENTALS WHERE RENTAL_ID = 6;
+UPDATE CARS SET STATUS = 'pause' WHERE CAR_ID = 6;
+UPDATE CARS SET STATUS = 'active' WHERE CAR_ID = 6;
+UPDATE CARS SET COST = 200 WHERE CAR_ID = 1;
+UPDATE CARS SET COST = 500 WHERE CAR_ID = 1;
+
+SELECT * FROM CARS;
+SELECT * FROM RENTALS;
+
+--TRIGGER THEM_SUA_REVIEW
+-- RANG BUỘC TOÀN VẸN VỀ ĐÁNH GIÁ XE
+CREATE OR REPLACE TRIGGER TRIGGER_THEM_SUA_REVIEWS
+FOR INSERT OR UPDATE ON Reviews
+COMPOUND TRIGGER 
+    NCAR_ID INT;
+    SOLUOTDANHGIA INT;
+    DANHGIA DECIMAL(10,2);
+
+    AFTER EACH ROW IS BEGIN
+        SELECT RENTALS.CAR_ID INTO NCAR_ID FROM RENTALS
+        WHERE RENTAL_ID = :NEW.RENTAL_ID;
+    END AFTER EACH ROW;
+
+    AFTER STATEMENT IS BEGIN
+        SELECT COUNT(*) INTO SOLUOTDANHGIA 
+        FROM REVIEWS INNER JOIN RENTALS ON REVIEWS.RENTAL_ID = RENTALS.RENTAL_ID
+        WHERE CAR_ID = NCAR_ID;
+        SELECT AVG(RATE) INTO DANHGIA 
+        FROM REVIEWS INNER JOIN RENTALS ON REVIEWS.RENTAL_ID = RENTALS.RENTAL_ID
+        WHERE CAR_ID = NCAR_ID;
+
+        UPDATE CARS SET REVIEW = DANHGIA WHERE CAR_ID = NCAR_ID;
+        UPDATE CARS SET CARS.NUMBER_OF_REVIEW = SOLUOTDANHGIA WHERE CAR_ID = NCAR_ID;
+
+    END AFTER STATEMENT;
+
+END TRIGGER_THEM_SUA_REVIEWS;
+/
+
+--TRIGGER XOA REVIEWS 
+-- RÀNG BUỘC TOÀN VẸN VỀ ĐÁNH GIÁ
+CREATE OR REPLACE TRIGGER TRIGGER_XOA_REVIEWS
+FOR DELETE ON Reviews
+COMPOUND TRIGGER 
+    NCAR_ID INT;
+    SOLUOTDANHGIA INT;
+    DANHGIA DECIMAL(10,2);
+
+    AFTER EACH ROW IS BEGIN
+        SELECT RENTALS.CAR_ID INTO NCAR_ID FROM RENTALS
+        WHERE RENTAL_ID = :OLD.RENTAL_ID;
+    END AFTER EACH ROW;
+
+    AFTER STATEMENT IS BEGIN
+        SELECT COUNT(*) INTO SOLUOTDANHGIA 
+        FROM REVIEWS INNER JOIN RENTALS ON REVIEWS.RENTAL_ID = RENTALS.RENTAL_ID
+        WHERE CAR_ID = NCAR_ID;
+        SELECT AVG(RATE) INTO DANHGIA 
+        FROM REVIEWS INNER JOIN RENTALS ON REVIEWS.RENTAL_ID = RENTALS.RENTAL_ID
+        WHERE CAR_ID = NCAR_ID;
+
+        UPDATE CARS SET REVIEW = DANHGIA WHERE CAR_ID = NCAR_ID;
+        UPDATE CARS SET CARS.NUMBER_OF_REVIEW = SOLUOTDANHGIA WHERE CAR_ID = NCAR_ID;
+
+    END AFTER STATEMENT;
+
+END TRIGGER_XOA_REVIEWS;
+/
+
+INSERT INTO Reviews (review_id, rental_id, rate, details) VALUES
+(6, 1, 4, 'The car was in great condition but pick-up was delayed.');
+DELETE FROM REVIEWS WHERE REVIEW_ID = 6;
+
+SELECT * FROM CARS;
+SELECT * FROM REVIEWS;
+
+
+
+

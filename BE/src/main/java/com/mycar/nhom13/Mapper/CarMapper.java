@@ -1,5 +1,6 @@
 package com.mycar.nhom13.Mapper;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.mycar.nhom13.Dto.CarDTO;
@@ -23,8 +24,10 @@ public class CarMapper {
 
         CarDTO.setDays(car.getCarCalendars());
         CarDTO.setReviews(car.getRentals().stream()
-                .map(rental -> ReviewMapper.reviewToReviewDTO(rental.getReview()))
+                .map(rental -> rental.getReview() != null ? ReviewMapper.reviewToReviewDTO(rental.getReview()) : null)
+                .filter(Objects::nonNull) 
                 .collect(Collectors.toList()));
+
         CarDTO.setImages(car.getImages());
         return CarDTO;
     }

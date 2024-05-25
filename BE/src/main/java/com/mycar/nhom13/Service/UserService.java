@@ -34,4 +34,6 @@ public interface UserService {
     List<Rental> getRentals(int id);
 
     Integer getNumOfRental(int id);
+
+    List<User> getListNeedCheck(int id);
 }

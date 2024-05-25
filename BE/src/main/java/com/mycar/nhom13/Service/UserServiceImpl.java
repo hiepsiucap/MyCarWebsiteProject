@@ -203,4 +203,18 @@ public class UserServiceImpl implements  UserService{
         }
     }
 
+    @Override
+    public List<User> getListNeedCheck(int id) {
+        User user = this.findById(id);
+        if(user.getRole().equals("User")){
+            throw new UnAuthenticated("No permission");
+        }
+
+        List<User> userList = userRepository.findAll();
+        return userList.stream()
+                .filter(user1 -> user1.getDriverLicense() != null && user1.getDriverLicenseCheck() == null)
+                .collect(Collectors.toList());
+
+    }
+
 }

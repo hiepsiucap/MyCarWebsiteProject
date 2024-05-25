@@ -3,6 +3,8 @@ package com.mycar.nhom13.RestController;
 import com.mycar.nhom13.Entity.Report;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.ReportService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,16 +24,17 @@ public class ReportController {
         this.reportService=reportService;
     }
     @GetMapping("/reports")
-    public List<Report> retrieveAllReports(){
-        return reportService.findAll();
+    public ResponseEntity<List<Report>> retrieveAllReports(){
+        return new ResponseEntity<>(reportService.findAll(),new HttpHeaders(), HttpStatus.OK);
+
     }
 
     @GetMapping("/reports/{id}")
-    public Report retrieveReport(@PathVariable int id){
+    public ResponseEntity<Report> retrieveReport(@PathVariable int id){
         Report report = reportService.findById(id);
 
 
-        return report;
+        return new ResponseEntity<>(report,new HttpHeaders(), HttpStatus.OK);
     }
 
     @PostMapping("/rentals/{id}/reports")
@@ -47,8 +50,29 @@ public class ReportController {
 
         Report savedReport =reportService.update(status,id);
 
-        return new ResponseEntity<>(savedReport,new HttpHeaders(), HttpStatus.CREATED);
+        return new ResponseEntity<>(savedReport,new HttpHeaders(), HttpStatus.OK);
     }
+
+    @GetMapping("/reports/staff")
+    public ResponseEntity<List<Report>> listForStaff(HttpServletRequest request){
+        int id = getUserIdFromCookie(request);
+
+        return new ResponseEntity<>(reportService.listforStaff(id),new HttpHeaders(), HttpStatus.OK);
+    }
+    private int getUserIdFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("auth_by_cookie")) {
+                    String cookieValue = cookie.getValue();
+                    String[] parts = cookieValue.split("&");
+                    return Integer.parseInt(parts[0]);
+                }
+            }
+        }
+        return 0;
+    }
+
 
 
 }

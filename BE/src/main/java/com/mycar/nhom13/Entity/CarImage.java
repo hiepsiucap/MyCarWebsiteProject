@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class CarImage {
     @Id()
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_seq")
-    @SequenceGenerator(name = "image_seq", sequenceName = "image_seq", allocationSize = 1)
+    @SequenceGenerator(name = "image_seq", sequenceName = "image_seq",initialValue = 50, allocationSize = 1)
     @Column(name = "image_id")
     public int imageId;
     

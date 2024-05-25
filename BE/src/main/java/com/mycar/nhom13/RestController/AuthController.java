@@ -2,7 +2,6 @@ package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Authentication.CookiesAuthenticationFilter;
 import com.mycar.nhom13.Dto.RegisterDTO;
-import com.mycar.nhom13.Entity.TaiKhoan;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.Service.AuthService;
 import com.mycar.nhom13.Service.UserService;
@@ -75,7 +74,7 @@ public class AuthController {
 
     @PostMapping("/signOut")
 
-    public ResponseEntity<Void> signOut(@AuthenticationPrincipal TaiKhoan user, HttpServletResponse response, HttpServletRequest request){
+    public ResponseEntity<Void> signOut(@AuthenticationPrincipal User user, HttpServletResponse response, HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
         if (cookies != null)
             for (Cookie cookie : cookies) {

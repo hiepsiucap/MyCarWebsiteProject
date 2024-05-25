@@ -23,14 +23,14 @@ public class ReviewController {
         this.reviewService=reviewService;
     }
     @GetMapping("/reviews")
-    public List<Review> retrieveAllReviews(){
-        return reviewService.findAll();
+    public ResponseEntity<List<Review>> retrieveAllReviews(){
+        return new ResponseEntity<>(reviewService.findAll(),new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("/reviews/{id}")
-    public Review retrieveReview(@PathVariable int id){
+    public ResponseEntity<Review> retrieveReview(@PathVariable int id){
         Review review = reviewService.findById(id);
-        return review;
+        return new ResponseEntity<>(review,new HttpHeaders(), HttpStatus.OK);
     }
 
     @PostMapping("/rentals/{id}/reviews")

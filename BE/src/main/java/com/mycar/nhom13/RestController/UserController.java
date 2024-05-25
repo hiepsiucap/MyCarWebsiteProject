@@ -117,12 +117,24 @@ public class UserController {
     }
 
     @GetMapping("/users/numofrentals")
-    public ResponseEntity<Integer> getNumOfRental(HttpServletRequest request){
+    public ResponseEntity<StringResponse> getNumOfRental(HttpServletRequest request){
         int id = getUserIdFromCookie(request);
 
-        return new ResponseEntity<>(userService.getNumOfRental(id), new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(new StringResponse(userService.getNumOfRental(id).toString()), new HttpHeaders(), HttpStatus.OK);
 
     }
+
+    @GetMapping("/users/staff/license")
+    public ResponseEntity<List<User>> getListForStaff(HttpServletRequest request){
+
+        int id = getUserIdFromCookie(request);
+
+
+        List<User> list =userService.getListNeedCheck(id);
+
+        return new ResponseEntity<>(list,new HttpHeaders(), HttpStatus.OK);
+    }
+
 
     private int getUserIdFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -137,6 +149,8 @@ public class UserController {
         }
         return 0;
     }
+
+
 
 
 }

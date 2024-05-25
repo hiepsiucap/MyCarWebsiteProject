@@ -14,4 +14,6 @@ public interface ReportService {
     Report save(Report report, int id);
 
     Report update(String status, int id);
+
+    List<Report> listforStaff(int id);
 }

@@ -9,19 +9,13 @@ import com.mycar.nhom13.ExceptionHandler.RentalException;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
 import com.mycar.nhom13.Mapper.RentalMapper;
-import com.mycar.nhom13.Repository.CarRepository;
 
 import com.mycar.nhom13.Repository.RentalRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
-
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class RentalServiceImpl implements  RentalService{
@@ -52,7 +46,9 @@ public class RentalServiceImpl implements  RentalService{
             throw new ResourceNotFoundException("Rental id " + id +" not found");
         }
         else
-        return rental;
+        {
+            return rental;
+        }
     }
 
     @Override
@@ -64,6 +60,9 @@ public class RentalServiceImpl implements  RentalService{
         
         Rental rental = RentalMapper.rentalDTOToRental(rentalDTO, car);
 
+        if(!car.getStatus().equals("active")){
+            throw new RentalException("Không thể thuê xe này");
+        }
         if (user.getDriverLicenseCheck() == null || user.getDriverLicenseCheck().equals("N")) {
             throw new RentalException("Chưa có bằng lái");
         }
@@ -79,11 +78,11 @@ public class RentalServiceImpl implements  RentalService{
 
         rental.setTotalDay((int) ChronoUnit.DAYS.between(rental.getPickUpDate(), rental.getDropOffDate()) + 1);
 
-        if (rental.getTotalDay() * car.getCost() != rentalDTO.getTotal_cost()) {
+        if (rental.getTotalDay() * car.getCost() != rentalDTO.getTotalCost()) {
             throw new RentalException("Sai giá tiền");
         }
 
-        rental.setTotalCost(rentalDTO.getTotal_cost());
+        rental.setTotalCost(rentalDTO.getTotalCost());
 
         return rentalRepository.save(rental);
     }

@@ -3,8 +3,6 @@ package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Dto.RentalDTO;
 import com.mycar.nhom13.Entity.Rental;
-import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
-import com.mycar.nhom13.Mapper.RentalMapper;
 import com.mycar.nhom13.Service.RentalService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 public class RentalController {
@@ -43,7 +39,7 @@ public class RentalController {
     public ResponseEntity<Rental> postRental(@RequestBody RentalDTO rentalDTO, HttpServletRequest request) throws Exception {
         int id = getUserIdFromCookie(request);
      
-        Rental savedRental = rentalService.save(rentalDTO, id, rentalDTO.getCar_Id());
+        Rental savedRental = rentalService.save(rentalDTO, id, rentalDTO.getCarId());
        
         return new ResponseEntity<>(savedRental, new HttpHeaders(), HttpStatus.CREATED);
     }

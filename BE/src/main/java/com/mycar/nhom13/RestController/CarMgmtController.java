@@ -121,6 +121,27 @@ public class CarMgmtController {
 
         return ResponseEntity.ok(mapping);
     }
+    
+    @GetMapping("/rental-status")
+    public ResponseEntity<MappingJacksonValue> getAllCarsWithAllStatuses(HttpServletRequest request) {
+        int userId = getUserIdFromCookie(request);
+        if (String.valueOf(userId) == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        List<Car> cars = carService.findAllCarsByRentalStatus(userId);
+        if (cars.isEmpty()) {
+            throw new ResourceNotFoundException("No cars found.");
+        }
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image","images" ,  "user", "rentals");
+        SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(cars);
+        mapping.setFilters(filters);
+
+        return ResponseEntity.ok(mapping);
+    }
 
     private int getUserIdFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();

@@ -8,6 +8,7 @@ import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.RentalException;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
+import com.mycar.nhom13.Mapper.RentalMapper;
 import com.mycar.nhom13.Repository.CarRepository;
 
 import com.mycar.nhom13.Repository.RentalRepository;
@@ -55,33 +56,38 @@ public class RentalServiceImpl implements  RentalService{
     }
 
     @Override
-    public Rental save(RentalDTO rentalDTO, int id) throws Exception {
-        Rental rental = new Rental();
-        Car car = carService.findByCarId(rentalDTO.getCar_Id());
-        User user = userService.findById(id);
-        if(user.getDriverLicenseCheck()==null||user.getDriverLicenseCheck().equals("N")){
+    public Rental save(RentalDTO rentalDTO, int userId, int carId) throws Exception {
+
+        Car car = carService.findByCarId(carId);
+
+        User user = userService.findById(userId);
+        
+        Rental rental = RentalMapper.rentalDTOToRental(rentalDTO, car);
+
+        if (user.getDriverLicenseCheck() == null || user.getDriverLicenseCheck().equals("N")) {
             throw new RentalException("Chưa có bằng lái");
         }
-        rental.setCar(car);
         rental.setUser(user);
-        rental.setPickUpHours(rentalDTO.getPick_up_hours());
-        rental.setDropOffHours(rentalDTO.getDrop_off_hours());
         rental.setDropOffLocation(car.getLocation());
         rental.setPickUpLocation(car.getLocation());
-        rental.setPickUpDate(LocalDate.parse(rentalDTO.getPick_up_date()));
-        rental.setDropOffDate(LocalDate.parse(rentalDTO.getDrop_off_date()));
-        if(rental.getDropOffDate().compareTo(rental.getPickUpDate())<0){
+
+        if (rental.getDropOffDate().compareTo(rental.getPickUpDate()) < 0) {
             throw new RentalException("Ngày thuê và ngày trả không hợp lệ");
         }
+
         rental.setRentalStatus("pending");
-        rental.setTotalDay((int)ChronoUnit.DAYS.between(rental.getPickUpDate(),rental.getDropOffDate())+1);
-        if(rental.getTotalDay()*car.getCost()!=rentalDTO.getTotal_cost()){
+
+        rental.setTotalDay((int) ChronoUnit.DAYS.between(rental.getPickUpDate(), rental.getDropOffDate()) + 1);
+
+        if (rental.getTotalDay() * car.getCost() != rentalDTO.getTotal_cost()) {
             throw new RentalException("Sai giá tiền");
         }
+
         rental.setTotalCost(rentalDTO.getTotal_cost());
-        System.out.println(rental);
+
         return rentalRepository.save(rental);
     }
+
 
     @Override
     public Rental updateStatus(int rentalId, String status, int userId)  {

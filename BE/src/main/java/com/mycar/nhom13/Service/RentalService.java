@@ -15,7 +15,7 @@ public interface RentalService {
     List<Rental> findAll();
 
     Rental findById(int id);
-    Rental save(RentalDTO rentalDTO, int id) throws Exception;
+    Rental save(RentalDTO rentalDTO, int userId, int carId) throws Exception;
 
     Rental updateStatus(int rentalId, String status,int userId);
 

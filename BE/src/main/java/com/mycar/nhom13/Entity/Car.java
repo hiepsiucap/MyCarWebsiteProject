@@ -14,6 +14,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -114,7 +115,7 @@ public class Car {
 	private List<CarImage> images;
     
     @OneToMany(mappedBy = "car")
-    @JsonManagedReference
+    @JsonManagedReference(value="rental")
     private List<Rental> rentals;
 
     @OneToMany(mappedBy = "car")

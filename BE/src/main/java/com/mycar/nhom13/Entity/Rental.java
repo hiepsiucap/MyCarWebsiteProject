@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name ="Rentals")
@@ -41,16 +42,18 @@ public class Rental {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH})
     @JoinColumn(name ="car_id")
-    @JsonBackReference
+    @JsonBackReference(value ="rental")
     private Car car;
 
     @OneToMany(mappedBy = "rental",cascade = CascadeType.ALL)
     private List<Report> report;
     @ManyToOne
     @JoinColumn(name = "pick_up_location_id")
+    @JsonBackReference
     private Location pickUpLocation;
     @ManyToOne
     @JoinColumn(name = "drop_off_location_id")
+    @JsonBackReference
     private Location dropOffLocation;
 
     public Rental(){

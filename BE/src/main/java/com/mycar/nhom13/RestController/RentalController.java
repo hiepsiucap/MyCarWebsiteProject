@@ -28,12 +28,8 @@ public class RentalController {
         this.rentalService=rentalService;
     }
     @GetMapping("/rentals")
-    public ResponseEntity<List<RentalDTO>> retrieveAllRentals(){
-        List<Rental> rentals = rentalService.findAll();
-        List<RentalDTO> rentalDTOs = rentals.stream()
-                                            .map(RentalMapper::rentalToRentalDTO)
-                                            .collect(Collectors.toList());
-        return ResponseEntity.ok(rentalDTOs);
+    public ResponseEntity<List<Rental>> retrieveAllRentals(){
+        return new ResponseEntity<>(rentalService.findAll(),new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("/rentals/{id}")
@@ -46,11 +42,12 @@ public class RentalController {
     @PostMapping("/rentals")
     public ResponseEntity<Rental> postRental(@RequestBody RentalDTO rentalDTO, HttpServletRequest request) throws Exception {
         int id = getUserIdFromCookie(request);
-        Rental savedRental =rentalService.save(rentalDTO,id);
-
-
-        return new ResponseEntity<>(savedRental,new HttpHeaders(), HttpStatus.CREATED);
+     
+        Rental savedRental = rentalService.save(rentalDTO, id, rentalDTO.getCar_Id());
+       
+        return new ResponseEntity<>(savedRental, new HttpHeaders(), HttpStatus.CREATED);
     }
+
 
     @PatchMapping("/rentals/{id}")
     public ResponseEntity<Rental> updateRentalStatus(@PathVariable int id, @RequestParam("status") String status,HttpServletRequest request) {

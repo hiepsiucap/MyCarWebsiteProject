@@ -44,9 +44,9 @@ public class PostCarDTO {
     @Pattern(regexp = "Xang|Dau|Dien", message = "Fuel must be 'Xang', 'Dau', or 'Dien'")
     private String fuel;
 
+    private int mileage;
     
     private String address;
-
     private String province;
     private String district;
 
@@ -60,7 +60,7 @@ public class PostCarDTO {
 	}
 	public PostCarDTO(int carId, String licensePlates, String model, String brand, int year, String color, float consumption,
 			String description, int seat, String type, String gear, String fuel, String address, String province,
-			String district, int cost) {
+			String district, int cost, int mileage) {
 		super();
 		this.carId = carId;
 		this.licensePlates = licensePlates;
@@ -78,9 +78,17 @@ public class PostCarDTO {
 		this.province = province;
 		this.district = district;
 		this.cost = cost;
+		this.mileage = mileage;
 	}
 	
 	
+	
+	public int getMileage() {
+		return mileage;
+	}
+	public void setMileage(int mileage) {
+		this.mileage = mileage;
+	}
 	public int getCarId() {
 		return carId;
 	}

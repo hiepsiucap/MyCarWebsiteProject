@@ -3,6 +3,7 @@ package com.mycar.nhom13.RestController;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.mycar.nhom13.Dto.CarDTO;
+import com.mycar.nhom13.Dto.CarDTOGET;
 import com.mycar.nhom13.Dto.PatchCarDTO;
 import com.mycar.nhom13.Dto.PostCarDTO;
 import com.mycar.nhom13.Entity.Car;
@@ -99,12 +100,12 @@ public class CarMgmtController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CarDTO> getCarById(@PathVariable int id) {
+	public ResponseEntity<CarDTOGET> getCarById(@PathVariable int id) {
 		Car car = carService.findByCarId(id);
 		if (car == null) {
 			throw new ResourceNotFoundException("Car id " + id + " not found");
 		}
-		CarDTO carDTO = CarMapper.carToCarDTO(car);
+		CarDTOGET carDTO = CarMapper.carToCarDTOGET(car);
 		return ResponseEntity.ok(carDTO);
 	}
 

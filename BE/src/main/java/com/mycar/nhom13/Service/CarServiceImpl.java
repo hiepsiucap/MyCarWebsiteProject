@@ -79,8 +79,13 @@ public class CarServiceImpl implements CarService {
     }
     
     @Override
-    public List<Car> findAllCarsByRentalStatus(@Param("userId") int userId){
-    	return carRepository.findCarsByRentalStatus(userId);
+    public List<Car> findAllCarsByUserIdInRental(@Param("userId") int userId){
+    	return carRepository.findCarsByUserId(userId);
+    }
+    
+    @Override
+    public List<Car> findAllCarsByUserIdInRentalgnorePending(@Param("userId") int userId){
+    	return carRepository.findCarsByUserIdIgnorePending(userId);
     }
     
     @Override

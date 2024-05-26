@@ -42,6 +42,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -56,8 +57,6 @@ public class CarMgmtController {
 	
 	@Autowired
 	private LocationService locationService;
-	
-	private CarMapper carMapper;
 
 
 	public CarMgmtController(CarService carService) {
@@ -107,43 +106,64 @@ public class CarMgmtController {
     @GetMapping("/rental-status/{status}")
     public ResponseEntity<MappingJacksonValue> getCarsByRentalStatus(@PathVariable String status, HttpServletRequest request) {
         int userId = getUserIdFromCookie(request);
-        if (String.valueOf(userId) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        User user = userService.findById(userId);
+
+        if (user == null) {
+            throw new ResourceNotFoundException("Khong tim thay user nay!");
+        } else if (status.equals("pending") && (user.getCars() == null || user.getCars().isEmpty())) {
+        	throw new ResourceNotFoundException("Khach hang khong dang ky xe cho thue nen khong duoc xem cac xe co trang thai pending!");
+        } else {
+            List<Car> cars = carService.findCarsByRentalStatus(status, userId);
+            if (cars.isEmpty()) {
+                throw new ResourceNotFoundException("No cars found with rental status: " + status);
+            }
+            
+            SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image", "images", "user", "rentals");
+            SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
+
+            MappingJacksonValue mapping = new MappingJacksonValue(cars);
+            mapping.setFilters(filters);
+
+            return ResponseEntity.ok(mapping);
         }
-
-        List<Car> cars = carService.findCarsByRentalStatus(status, userId);
-        if (cars.isEmpty()) {
-            throw new ResourceNotFoundException("No cars found with rental status: " + status);
-        }
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image","images" ,  "user", "rentals");
-        SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
-
-        MappingJacksonValue mapping = new MappingJacksonValue(cars);
-        mapping.setFilters(filters);
-
-        return ResponseEntity.ok(mapping);
     }
-    
+
     @GetMapping("/rental-status")
     public ResponseEntity<MappingJacksonValue> getAllCarsWithAllStatuses(HttpServletRequest request) {
         int userId = getUserIdFromCookie(request);
-        if (String.valueOf(userId) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        User user = userService.findById(userId);
+
+        if (user == null) {
+            throw new ResourceNotFoundException("Vui long dang nhap hoac dang ky!");
         }
 
-        List<Car> cars = carService.findAllCarsByRentalStatus(userId);
-        if (cars.isEmpty()) {
-            throw new ResourceNotFoundException("No cars found.");
+        List<Car> kq;
+        List<Car> cars = carService.findAllCarsByUserIdInRental(userId);
+        List<Car> carsWithoutPending = carService.findAllCarsByUserIdInRentalgnorePending(userId);
+        if (user.getCars().isEmpty()) {
+            kq = carsWithoutPending;
+        	
+        } else {
+            kq = cars;
         }
 
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image","images" ,  "user", "rentals");
+
+        if (kq.isEmpty()) {
+            throw new ResourceNotFoundException("Khong tim thay xe nao.");
+        }
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image", "images", "user", "rentals");
         SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
 
-        MappingJacksonValue mapping = new MappingJacksonValue(cars);
+        MappingJacksonValue mapping = new MappingJacksonValue(kq);
         mapping.setFilters(filters);
 
         return ResponseEntity.ok(mapping);
     }
+
+
+
+
 
     private int getUserIdFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();

@@ -1,5 +1,7 @@
 package com.mycar.nhom13.Mapper;
 
+import java.time.LocalDate;
+
 import com.mycar.nhom13.Dto.ReviewDTO;
 import com.mycar.nhom13.Entity.Review;
 
@@ -11,7 +13,13 @@ public class ReviewMapper {
         reviewDTO.setName(review.getRental().getUser().getLastName() + review.getRental().getUser().getFirstName());
         reviewDTO.setRate(review.getRate());
         reviewDTO.setDetail(review.getDetails());
-        reviewDTO.setDate(review.getDate().toString());
+        LocalDate date = review.getDate();
+        if (date != null) {
+            reviewDTO.setDate(date.toString());
+        } else {
+            reviewDTO.setDate(null); 
+        }
         return reviewDTO;
+        
     }
 }

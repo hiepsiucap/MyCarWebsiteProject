@@ -21,7 +21,10 @@ public interface CarRepository extends JpaRepository<Car,Integer>, JpaSpecificat
     List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId);
 
     @Query(value = "SELECT c.* FROM Cars c INNER JOIN Rentals r ON r.car_id = c.car_id WHERE r.customer_id = :userId", nativeQuery = true)
-    List<Car> findCarsByRentalStatus(@Param("userId") int userId);
+    List<Car> findCarsByUserId(@Param("userId") int userId);
+    
+    @Query(value = "SELECT c.* FROM Cars c INNER JOIN Rentals r ON r.car_id = c.car_id WHERE r.customer_id = :userId AND r.rental_status != 'pending'", nativeQuery = true)
+    List<Car> findCarsByUserIdIgnorePending(@Param("userId") int userId);
 }
 
 

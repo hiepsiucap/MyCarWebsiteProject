@@ -3,12 +3,14 @@ package com.mycar.nhom13.RestController;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.mycar.nhom13.Dto.CarDTO;
+import com.mycar.nhom13.Dto.PatchCarDTO;
 import com.mycar.nhom13.Dto.PostCarDTO;
 import com.mycar.nhom13.Entity.Car;
 import com.mycar.nhom13.Entity.Location;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Mapper.CarMapper;
+import com.mycar.nhom13.Mapper.PatchCarMapper;
 import com.mycar.nhom13.Mapper.PostCarMapper;
 import com.mycar.nhom13.Service.CarService;
 import com.mycar.nhom13.Service.LocationService;
@@ -221,13 +223,13 @@ public class CarMgmtController {
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<PostCarDTO> patchCar(@PathVariable int id,@Valid @RequestBody Map<String, Object> fields) {
+	public ResponseEntity<PatchCarDTO> patchCar(@PathVariable int id,@Valid @RequestBody Map<String, Object> fields) {
 		Car updatedCar = carService.update(id, fields);
 		if (updatedCar == null) {
 			throw new ResourceNotFoundException("Car id " + id + " not found");
 		}
-		PostCarDTO savedPostCarDTO = PostCarMapper.carToCarDTO(updatedCar);
-		return new ResponseEntity<>(savedPostCarDTO, new HttpHeaders(), HttpStatus.OK);
+		PatchCarDTO savedPatchCarDTO = PatchCarMapper.carToCarDTO(updatedCar);
+		return new ResponseEntity<>(savedPatchCarDTO, new HttpHeaders(), HttpStatus.OK);
 	}
 
 	@PostMapping("/{id}/images")

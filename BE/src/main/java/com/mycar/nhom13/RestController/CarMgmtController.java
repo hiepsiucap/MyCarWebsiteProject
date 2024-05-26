@@ -76,6 +76,20 @@ public class CarMgmtController {
 
 		return ResponseEntity.ok(mapping);
 	}
+	
+	@GetMapping("/null-cars")
+	public ResponseEntity<MappingJacksonValue> getCarsStatusNull(@RequestParam(defaultValue = "0") int page) {
+		Pageable pageable = PageRequest.of(page, 10);
+		Page<Car> carsPage = carService.findByStatus("null", pageable);
+		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "user",
+				"rentals");
+		SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
+
+		MappingJacksonValue mapping = new MappingJacksonValue(carsPage);
+		mapping.setFilters(filters);
+
+		return ResponseEntity.ok(mapping);
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CarDTO> getCarById(@PathVariable int id) {
@@ -207,12 +221,13 @@ public class CarMgmtController {
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<Car> patchCar(@PathVariable int id, @RequestBody Map<String, Object> fields) {
+	public ResponseEntity<PostCarDTO> patchCar(@PathVariable int id,@Valid @RequestBody Map<String, Object> fields) {
 		Car updatedCar = carService.update(id, fields);
 		if (updatedCar == null) {
 			throw new ResourceNotFoundException("Car id " + id + " not found");
 		}
-		return new ResponseEntity<>(updatedCar, new HttpHeaders(), HttpStatus.OK);
+		PostCarDTO savedPostCarDTO = PostCarMapper.carToCarDTO(updatedCar);
+		return new ResponseEntity<>(savedPostCarDTO, new HttpHeaders(), HttpStatus.OK);
 	}
 
 	@PostMapping("/{id}/images")

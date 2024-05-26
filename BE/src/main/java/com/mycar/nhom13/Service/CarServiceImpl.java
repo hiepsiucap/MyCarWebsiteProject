@@ -89,10 +89,10 @@ public class CarServiceImpl implements CarService {
     }
     
     @Override
-    public List<Car> filterCars(
+    public Page<Car> filterCars(
     		List<String> brand, List<String> types, Integer minPrice, Integer maxPrice, 
-            List<String> fuels, List<String> province) {
-        return carRepository.findAll(CarSpecification.filterByCriteria(brand, types, minPrice, maxPrice, fuels, province));
+            List<String> fuels, List<String> province, Pageable pageable) {
+        return carRepository.findAll(CarSpecification.filterByCriteria(brand, types, minPrice, maxPrice, fuels, province), pageable);
     }
     
     @Override

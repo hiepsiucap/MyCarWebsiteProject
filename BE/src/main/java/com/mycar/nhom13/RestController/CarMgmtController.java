@@ -98,12 +98,18 @@ public class CarMgmtController {
             @RequestParam(required = false) Integer minprice,
             @RequestParam(required = false) Integer maxprice,
             @RequestParam(required = false) List<String> fuel,
-            @RequestParam(required = false) List<String> province) {
-    	
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars",  "user", "rentals");
+            @RequestParam(required = false) List<String> province,
+            @RequestParam(defaultValue = "0") int page) {
+
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Car> carsPage = carService.filterCars(brand, type, minprice, maxprice, fuel, province, pageable);
+        
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "user", "rentals");
         SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
-        MappingJacksonValue mapping = new MappingJacksonValue(carService.filterCars(brand, type, minprice, maxprice, fuel, province));
+
+        MappingJacksonValue mapping = new MappingJacksonValue(carsPage);
         mapping.setFilters(filters);
+
         return ResponseEntity.ok(mapping);
     }
 

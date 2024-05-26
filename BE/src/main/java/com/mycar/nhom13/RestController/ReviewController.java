@@ -16,30 +16,30 @@ import java.util.Map;
 @RestController
 public class ReviewController {
 
-    private final ReviewService reviewService;
+	private final ReviewService reviewService;
 
-    public ReviewController(ReviewService reviewService){
+	public ReviewController(ReviewService reviewService) {
 
-        this.reviewService=reviewService;
-    }
-    @GetMapping("/reviews")
-    public ResponseEntity<List<Review>> retrieveAllReviews(){
-        return new ResponseEntity<>(reviewService.findAll(),new HttpHeaders(), HttpStatus.OK);
-    }
+		this.reviewService = reviewService;
+	}
 
-    @GetMapping("/reviews/{id}")
-    public ResponseEntity<Review> retrieveReview(@PathVariable int id){
-        Review review = reviewService.findById(id);
-        return new ResponseEntity<>(review,new HttpHeaders(), HttpStatus.OK);
-    }
+	@GetMapping("/reviews")
+	public ResponseEntity<List<Review>> retrieveAllReviews() {
+		return new ResponseEntity<>(reviewService.findAll(), new HttpHeaders(), HttpStatus.OK);
+	}
 
-    @PostMapping("/rentals/{id}/reviews")
-    public ResponseEntity<Review> postReview(@RequestBody @Valid Review review, @PathVariable int id){
+	@GetMapping("/reviews/{id}")
+	public ResponseEntity<Review> retrieveReview(@PathVariable int id) {
+		Review review = reviewService.findById(id);
+		return new ResponseEntity<>(review, new HttpHeaders(), HttpStatus.OK);
+	}
 
-        Review savedReview =reviewService.save(review,id);
+	@PostMapping("/rentals/{id}/reviews")
+	public ResponseEntity<Review> postReview(@RequestBody @Valid Review review, @PathVariable int id) {
 
-        return new ResponseEntity<>(savedReview,new HttpHeaders(), HttpStatus.CREATED);
-    }
+		Review savedReview = reviewService.save(review, id);
 
+		return new ResponseEntity<>(savedReview, new HttpHeaders(), HttpStatus.CREATED);
+	}
 
 }

@@ -14,61 +14,63 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<ErrorDetails> handleAllException(Exception ex, WebRequest request){
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
-                ex.getMessage(),request.getDescription(false));
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<ErrorDetails> handleAllException(Exception ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
 
-       return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public final ResponseEntity<ErrorDetails> handleUserNotFound(Exception ex, WebRequest request){
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
-                ex.getMessage(),request.getDescription(false));
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public final ResponseEntity<ErrorDetails> handleUserNotFound(Exception ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
 
-        return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.NOT_FOUND);
-    }
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.NOT_FOUND);
+	}
 
-    @ExceptionHandler(UnAuthenticated.class)
-    public final ResponseEntity<ErrorDetails> handleUnAuthenticated(Exception ex, WebRequest request){
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
-                ex.getMessage(),request.getDescription(false));
+	@ExceptionHandler(UnAuthenticated.class)
+	public final ResponseEntity<ErrorDetails> handleUnAuthenticated(Exception ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
 
-        return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.UNAUTHORIZED);
-    }
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.UNAUTHORIZED);
+	}
 
-    @ExceptionHandler(RentalException.class)
-    public final ResponseEntity<ErrorDetails> handleRentalException(Exception ex, WebRequest request){
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
-                ex.getMessage(),request.getDescription(false));
+	@ExceptionHandler(RentalException.class)
+	public final ResponseEntity<ErrorDetails> handleRentalException(Exception ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
 
-        return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
-    }
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
+	}
 
-    @ExceptionHandler(ReviewException.class)
-    public final ResponseEntity<ErrorDetails> handleReviewException(Exception ex, WebRequest request){
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
-                ex.getMessage(),request.getDescription(false));
+	@ExceptionHandler(ReviewException.class)
+	public final ResponseEntity<ErrorDetails> handleReviewException(Exception ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
 
-        return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
-    }
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
+	}
 
-    @ExceptionHandler(ChangePasswordException.class)
-    public final ResponseEntity<ErrorDetails> handleChangePasswordException(Exception ex, WebRequest request){
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
-                ex.getMessage(),request.getDescription(false));
+	@ExceptionHandler(ChangePasswordException.class)
+	public final ResponseEntity<ErrorDetails> handleChangePasswordException(Exception ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
 
-        return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
-    }
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
+	}
 
-                "Total Errors:" +ex.getErrorCount()+ " First Error: "  +ex.getFieldError().getDefaultMessage()
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
 
-                ,request.getDescription(false));
-        return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
-    }
+				"Total Errors:" + ex.getErrorCount() + " First Error: " + ex.getFieldError().getDefaultMessage()
+
+				, request.getDescription(false));
+		return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+	}
 
 }

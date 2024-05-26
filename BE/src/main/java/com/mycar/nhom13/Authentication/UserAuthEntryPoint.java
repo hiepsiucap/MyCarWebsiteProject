@@ -15,11 +15,13 @@ import java.io.IOException;
 @Component
 public class UserAuthEntryPoint implements AuthenticationEntryPoint {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        OBJECT_MAPPER.writeValue(response.getOutputStream(),"Unauthorized path");
-    }
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+	@Override
+	public void commence(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException authException) throws IOException, ServletException {
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		OBJECT_MAPPER.writeValue(response.getOutputStream(), "Unauthorized path");
+	}
 }

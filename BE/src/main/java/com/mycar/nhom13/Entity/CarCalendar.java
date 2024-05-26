@@ -10,27 +10,27 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name = "Car_calendars")
 public class CarCalendar {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "calendar_id")
-    private int calendarId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "calendar_id")
+	private int calendarId;
 
-    @ManyToOne
-    @JoinColumn(name = "car_id")
-    @JsonBackReference(value="calendar")
-    private Car car;
+	@ManyToOne
+	@JoinColumn(name = "car_id")
+	@JsonBackReference(value = "calendar")
+	private Car car;
 
-    @Column(name = "start_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date startDate;
+	@Column(name = "start_date", nullable = false)
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private Date startDate;
 
-    @Column(name = "end_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date endDate;
-    
-    @Override
+	@Column(name = "end_date", nullable = false)
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private Date endDate;
+
+	@Override
 	public String toString() {
 		return "CarCalendar [calendarId=" + calendarId + ", car=" + car + ", startDate=" + startDate + ", endDate="
 				+ endDate + "]";
@@ -50,35 +50,34 @@ public class CarCalendar {
 	}
 
 	public int getCalendarId() {
-        return calendarId;
-    }
+		return calendarId;
+	}
 
-    public void setCalendarId(int calendarId) {
-        this.calendarId = calendarId;
-    }
+	public void setCalendarId(int calendarId) {
+		this.calendarId = calendarId;
+	}
 
-    public Car getCar() {
-        return car;
-    }
+	public Car getCar() {
+		return car;
+	}
 
-    public void setCar(Car car) {
-        this.car = car;
-    }
+	public void setCar(Car car) {
+		this.car = car;
+	}
 
-    public Date getStartDate() {
-        return startDate;
-    }
+	public Date getStartDate() {
+		return startDate;
+	}
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 
-    public Date getEndDate() {
-        return endDate;
-    }
+	public Date getEndDate() {
+		return endDate;
+	}
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 }
-

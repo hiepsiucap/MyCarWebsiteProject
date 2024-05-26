@@ -13,26 +13,24 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface CarService {
 
-    
-    Car findByCarId(int id);
+	Car findByCarId(int id);
 
 	Car save(Car car);
-	
+
 	Car update(int id, Map<String, Object> fields);
-    
+
 	Page<Car> findByStatus(String status, Pageable pageable);
-	
+
 	List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId);
-	
+
 	List<Car> findAllCarsByUserIdInRentalgnorePending(@Param("userId") int userId);
-	
+
 	List<Car> findAllCarsByUserIdInRental(@Param("userId") int userId);
-	
-    public Page<Car> filterCars(
-            List<String> brand, List<String> types, Integer minPrice, Integer maxPrice, 
-            List<String> fuels, List<String> province, Pageable pageable); 
-    
-    public void pauseCar(int id);
+
+	public Page<Car> filterCars(List<String> brand, List<String> types, Integer minPrice, Integer maxPrice,
+			List<String> fuels, List<String> province, Pageable pageable);
+
+	public void pauseCar(int id);
 
 	Car saveThumbnail(MultipartFile file, int id) throws IOException;
 

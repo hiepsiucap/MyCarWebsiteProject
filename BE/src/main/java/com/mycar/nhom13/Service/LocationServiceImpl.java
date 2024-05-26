@@ -11,23 +11,20 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
-	
-	
-	
+
 	public LocationServiceImpl(LocationRepository locationRepository) {
 		super();
 		this.locationRepository = locationRepository;
 	}
 
-
 	@Override
 	public Location findByAddress(String address) {
 		return locationRepository.findByAddressContainingIgnoreCase(address);
 	}
-	
+
 	@Override
 	public Location save(Location location) {
 		return locationRepository.save(location);
 	}
-	
+
 }

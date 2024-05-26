@@ -1,30 +1,31 @@
 package com.mycar.nhom13.Dto;
 
 public class Pair {
-    private String name;
-    private Integer profit;
-    public Pair(){
+	private String name;
+	private Integer profit;
 
-    }
+	public Pair() {
 
-    public Pair(String name, Integer price) {
-        this.name = name;
-        this.profit = price;
-    }
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Pair(String name, Integer price) {
+		this.name = name;
+		this.profit = price;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Integer getProfit() {
-        return profit;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setProfit(Integer profit) {
-        this.profit = profit;
-    }
+	public Integer getProfit() {
+		return profit;
+	}
+
+	public void setProfit(Integer profit) {
+		this.profit = profit;
+	}
 }

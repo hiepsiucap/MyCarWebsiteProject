@@ -27,66 +27,66 @@ import java.time.temporal.ChronoUnit;
 
 @RestController
 public class AuthController {
-    public AuthController(UserService userService, AuthService authService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.authService = authService;
-        this.passwordEncoder = passwordEncoder;
-    }
-    private final UserService userService;
-    private final AuthService authService;
-    private final PasswordEncoder passwordEncoder;
+	public AuthController(UserService userService, AuthService authService, PasswordEncoder passwordEncoder) {
+		this.userService = userService;
+		this.authService = authService;
+		this.passwordEncoder = passwordEncoder;
+	}
 
+	private final UserService userService;
+	private final AuthService authService;
+	private final PasswordEncoder passwordEncoder;
 
+	@PostMapping("/login")
+	public ResponseEntity<User> login(@AuthenticationPrincipal User user, HttpServletResponse response) {
+		Cookie authCookie = new Cookie(CookiesAuthenticationFilter.COOKIE_NAME, authService.createToken(user));
+		authCookie.setHttpOnly(true);
+		authCookie.setSecure(true);
+		authCookie.setMaxAge((int) Duration.of(1, ChronoUnit.DAYS).toSeconds());
+		authCookie.setPath("/");
 
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@AuthenticationPrincipal User user, HttpServletResponse response){
-        Cookie authCookie = new Cookie(CookiesAuthenticationFilter.COOKIE_NAME, authService.createToken(user));
-        authCookie.setHttpOnly(true);
-        authCookie.setSecure(true);
-        authCookie.setMaxAge((int) Duration.of(1, ChronoUnit.DAYS).toSeconds());
-        authCookie.setPath("/");
+		response.addCookie(authCookie);
 
-        response.addCookie(authCookie);
+		return ResponseEntity.ok(user);
+	}
 
-        return ResponseEntity.ok(user);
-    }
+	@PostMapping("/register")
 
-    @PostMapping("/register")
+	public ResponseEntity<String> register(@RequestBody @Valid RegisterDTO registerDto) {
 
-    public ResponseEntity<String> register(@RequestBody @Valid RegisterDTO registerDto) {
+		if (userService.findByEmail(registerDto.getEmail()) != null) {
+			return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
+		}
 
-        if (userService.findByEmail(registerDto.getEmail()) != null) {
-            return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
-        }
+		User user = new User();
+		user.setEmail(registerDto.getEmail());
+		user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registerDto.getPassword())));
+		user.setFirstName(registerDto.getFirstName());
+		user.setLastName(registerDto.getLastName());
+		user.setPhoneNumber(registerDto.getPhoneNumber());
+		user.setCreate_date(LocalDate.now());
+		user.setRole("User");
+		userService.save(user);
 
-        User user = new User();
-        user.setEmail(registerDto.getEmail());
-        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registerDto.getPassword())));
-        user.setFirstName(registerDto.getFirstName());
-        user.setLastName(registerDto.getLastName());
-        user.setPhoneNumber(registerDto.getPhoneNumber());
-        user.setCreate_date(LocalDate.now());
-        user.setRole("User");
-        userService.save(user);
+		return new ResponseEntity<>("User registered success!", HttpStatus.OK);
+	}
 
-        return new ResponseEntity<>("User registered success!", HttpStatus.OK);
-    }
+	@PostMapping("/signOut")
 
-    @PostMapping("/signOut")
-
-    public ResponseEntity<Void> signOut(@AuthenticationPrincipal User user, HttpServletResponse response, HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null)
-            for (Cookie cookie : cookies) {
-                if(cookie.getName().equals("auth_by_cookie")) {
-                    cookie.setValue("");
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-            }
-        SecurityContextHolder.clearContext();
-        return ResponseEntity.noContent().build();
-    }
+	public ResponseEntity<Void> signOut(@AuthenticationPrincipal User user, HttpServletResponse response,
+			HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null)
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("auth_by_cookie")) {
+					cookie.setValue("");
+					cookie.setPath("/");
+					cookie.setMaxAge(0);
+					response.addCookie(cookie);
+				}
+			}
+		SecurityContextHolder.clearContext();
+		return ResponseEntity.noContent().build();
+	}
 
 }

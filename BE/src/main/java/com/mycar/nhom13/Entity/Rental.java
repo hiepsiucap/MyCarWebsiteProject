@@ -9,61 +9,56 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name ="Rentals")
+@Table(name = "Rentals")
 public class Rental {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rental_seq")
-    @SequenceGenerator(name = "rental_seq", sequenceName = "rental_seq", initialValue = 50,allocationSize = 1)
-    @Column(name = "rental_id")
-    private int rentalId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rental_seq")
+	@SequenceGenerator(name = "rental_seq", sequenceName = "rental_seq", initialValue = 50, allocationSize = 1)
+	@Column(name = "rental_id")
+	private int rentalId;
 
-    @Column(name="pick_up_date")
-    private LocalDate pickUpDate;
-    @Column(name = "pick_up_hours")
-    private String pickUpHours;
-    @Column(name="drop_off_date")
-    private LocalDate dropOffDate;
-    @Column(name = "drop_off_hours")
-    private String dropOffHours;
-    @Column(name = "total_day")
-    private int totalDay;
-    @Column(name = "total_cost")
-    private int totalCost;
-    @Column(name = "rental_status")
-    private String rentalStatus;
+	@Column(name = "pick_up_date")
+	private LocalDate pickUpDate;
+	@Column(name = "pick_up_hours")
+	private String pickUpHours;
+	@Column(name = "drop_off_date")
+	private LocalDate dropOffDate;
+	@Column(name = "drop_off_hours")
+	private String dropOffHours;
+	@Column(name = "total_day")
+	private int totalDay;
+	@Column(name = "total_cost")
+	private int totalCost;
+	@Column(name = "rental_status")
+	private String rentalStatus;
 
-    @OneToOne(mappedBy = "rental",cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH})
-    private Review review;
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH})
-    @JoinColumn(name = "customer_id")
-    private User user;
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH})
-    @JoinColumn(name ="car_id")
-    @JsonBackReference(value ="rental")
-    private Car car;
+	@OneToOne(mappedBy = "rental", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	private Review review;
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
+	@JoinColumn(name = "customer_id")
+	private User user;
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
+	@JoinColumn(name = "car_id")
+	@JsonBackReference(value = "rental")
+	private Car car;
 
-    @OneToMany(mappedBy = "rental",cascade = CascadeType.ALL)
-    private List<Report> report;
-    @ManyToOne
-    @JoinColumn(name = "pick_up_location_id")
-    @JsonBackReference
-    private Location pickUpLocation;
-    @ManyToOne
-    @JoinColumn(name = "drop_off_location_id")
-    @JsonBackReference
-    private Location dropOffLocation;
+	@OneToMany(mappedBy = "rental", cascade = CascadeType.ALL)
+	private List<Report> report;
+	@ManyToOne
+	@JoinColumn(name = "pick_up_location_id")
+	@JsonBackReference
+	private Location pickUpLocation;
+	@ManyToOne
+	@JoinColumn(name = "drop_off_location_id")
+	@JsonBackReference
+	private Location dropOffLocation;
 
-    public Rental(){
+	public Rental() {
 
-    }
+	}
 
-    
-
-
-    public Rental(int rentalId, LocalDate pickUpDate, String pickUpHours, LocalDate dropOffDate, String dropOffHours,
+	public Rental(int rentalId, LocalDate pickUpDate, String pickUpHours, LocalDate dropOffDate, String dropOffHours,
 			int totalDay, int totalCost, String rentalStatus, Review review, User user, Car car, List<Report> report,
 			Location pickUpLocation, Location dropOffLocation) {
 		super();
@@ -83,120 +78,115 @@ public class Rental {
 		this.dropOffLocation = dropOffLocation;
 	}
 
-
-
-
 	public Review getReview() {
 		return review;
 	}
 
 	public void setReview(Review review) {
-        this.review = review;
-    }
+		this.review = review;
+	}
 
-    public int getRentalId() {
-        return rentalId;
-    }
+	public int getRentalId() {
+		return rentalId;
+	}
 
-    public void setRentalId(int rentalId) {
-        this.rentalId = rentalId;
-    }
+	public void setRentalId(int rentalId) {
+		this.rentalId = rentalId;
+	}
 
+	public LocalDate getPickUpDate() {
+		return pickUpDate;
+	}
 
+	public void setPickUpDate(LocalDate pickUpDate) {
+		this.pickUpDate = pickUpDate;
+	}
 
-    public LocalDate getPickUpDate() {
-        return pickUpDate;
-    }
+	public String getPickUpHours() {
+		return pickUpHours;
+	}
 
-    public void setPickUpDate(LocalDate pickUpDate) {
-        this.pickUpDate = pickUpDate;
-    }
+	public void setPickUpHours(String pickUpHours) {
+		this.pickUpHours = pickUpHours;
+	}
 
-    public String getPickUpHours() {
-        return pickUpHours;
-    }
+	public LocalDate getDropOffDate() {
+		return dropOffDate;
+	}
 
-    public void setPickUpHours(String pickUpHours) {
-        this.pickUpHours = pickUpHours;
-    }
+	public void setDropOffDate(LocalDate dropOffDate) {
+		this.dropOffDate = dropOffDate;
+	}
 
-    public LocalDate getDropOffDate() {
-        return dropOffDate;
-    }
+	public String getDropOffHours() {
+		return dropOffHours;
+	}
 
-    public void setDropOffDate(LocalDate dropOffDate) {
-        this.dropOffDate = dropOffDate;
-    }
+	public void setDropOffHours(String dropOffHours) {
+		this.dropOffHours = dropOffHours;
+	}
 
-    public String getDropOffHours() {
-        return dropOffHours;
-    }
+	public int getTotalDay() {
+		return totalDay;
+	}
 
-    public void setDropOffHours(String dropOffHours) {
-        this.dropOffHours = dropOffHours;
-    }
+	public void setTotalDay(int totalDay) {
+		this.totalDay = totalDay;
+	}
 
-    public int getTotalDay() {
-        return totalDay;
-    }
+	public int getTotalCost() {
+		return totalCost;
+	}
 
-    public void setTotalDay(int totalDay) {
-        this.totalDay = totalDay;
-    }
+	public void setTotalCost(int totalCost) {
+		this.totalCost = totalCost;
+	}
 
-    public int getTotalCost() {
-        return totalCost;
-    }
+	public String getRentalStatus() {
+		return rentalStatus;
+	}
 
-    public void setTotalCost(int totalCost) {
-        this.totalCost = totalCost;
-    }
+	public void setRentalStatus(String rentalStatus) {
+		this.rentalStatus = rentalStatus;
+	}
 
-    public String getRentalStatus() {
-        return rentalStatus;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setRentalStatus(String rentalStatus) {
-        this.rentalStatus = rentalStatus;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public Car getCar() {
+		return car;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setCar(Car car) {
+		this.car = car;
+	}
 
-    public Car getCar() {
-        return car;
-    }
+	public void setReport(List<Report> report) {
+		this.report = report;
+	}
 
-    public void setCar(Car car) {
-        this.car = car;
-    }
+	public List<Report> getReport() {
+		return report;
+	}
 
-    public void setReport(List<Report> report) {
-        this.report = report;
-    }
+	public Location getPickUpLocation() {
+		return pickUpLocation;
+	}
 
-    public List<Report> getReport() {
-        return report;
-    }
+	public void setPickUpLocation(Location pickUpLocation) {
+		this.pickUpLocation = pickUpLocation;
+	}
 
-    public Location getPickUpLocation() {
-        return pickUpLocation;
-    }
+	public Location getDropOffLocation() {
+		return dropOffLocation;
+	}
 
-    public void setPickUpLocation(Location pickUpLocation) {
-        this.pickUpLocation = pickUpLocation;
-    }
-
-    public Location getDropOffLocation() {
-        return dropOffLocation;
-    }
-
-    public void setDropOffLocation(Location dropOffLocation) {
-        this.dropOffLocation = dropOffLocation;
-    }
+	public void setDropOffLocation(Location dropOffLocation) {
+		this.dropOffLocation = dropOffLocation;
+	}
 }

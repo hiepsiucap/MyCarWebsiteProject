@@ -15,28 +15,29 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserAuthEntryPoint userAuthEntryPoint;
-    private final UserAuthProvider userAuthProvider;
-    public SecurityConfig(UserAuthEntryPoint userAuthenticationEntryPoint,
-                          UserAuthProvider userAuthenticationProvider) {
-        this.userAuthEntryPoint = userAuthenticationEntryPoint;
-        this.userAuthProvider = userAuthenticationProvider;
-    }
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(userAuthEntryPoint))
-                .addFilterBefore(new UsernamePasswordAuthenticationFilter(userAuthProvider), BasicAuthenticationFilter.class)
-                .addFilterBefore(new CookiesAuthenticationFilter(userAuthProvider), UsernamePasswordAuthenticationFilter.class)
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                .logout(logout -> logout.deleteCookies(CookiesAuthenticationFilter.COOKIE_NAME))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/api/cars/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/register")).permitAll()
-                        .anyRequest().authenticated()
-                );
+	private final UserAuthEntryPoint userAuthEntryPoint;
+	private final UserAuthProvider userAuthProvider;
 
-        return http.build();
-    }
+	public SecurityConfig(UserAuthEntryPoint userAuthenticationEntryPoint,
+			UserAuthProvider userAuthenticationProvider) {
+		this.userAuthEntryPoint = userAuthenticationEntryPoint;
+		this.userAuthProvider = userAuthenticationProvider;
+	}
+
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.exceptionHandling(ex -> ex.authenticationEntryPoint(userAuthEntryPoint))
+				.addFilterBefore(new UsernamePasswordAuthenticationFilter(userAuthProvider),
+						BasicAuthenticationFilter.class)
+				.addFilterBefore(new CookiesAuthenticationFilter(userAuthProvider),
+						UsernamePasswordAuthenticationFilter.class)
+				.csrf(AbstractHttpConfigurer::disable)
+				.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+				.logout(logout -> logout.deleteCookies(CookiesAuthenticationFilter.COOKIE_NAME))
+				.authorizeHttpRequests(auth -> auth.requestMatchers(new AntPathRequestMatcher("/api/cars/**"))
+						.permitAll().requestMatchers(new AntPathRequestMatcher("/register")).permitAll().anyRequest()
+						.authenticated());
+
+		return http.build();
+	}
 }

@@ -6,15 +6,15 @@ import java.util.Date;
 
 public class CarCalendarDTO {
 
-    private int calendarId;
+	private int calendarId;
 
-    private int carId;
+	private int carId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date startDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private Date startDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date endDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private Date endDate;
 
 	public CarCalendarDTO() {
 		super();
@@ -61,5 +61,4 @@ public class CarCalendarDTO {
 		this.endDate = endDate;
 	}
 
-    
 }

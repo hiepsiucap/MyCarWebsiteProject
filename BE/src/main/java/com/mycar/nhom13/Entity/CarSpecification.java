@@ -7,37 +7,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarSpecification {
-    public static Specification<Car> filterByCriteria(
-    		List<String> brand, List<String> types, Integer minPrice, Integer maxPrice, 
-            List<String> fuels, List<String> province) {
-        return (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
+	public static Specification<Car> filterByCriteria(List<String> brand, List<String> types, Integer minPrice,
+			Integer maxPrice, List<String> fuels, List<String> province) {
+		return (root, query, criteriaBuilder) -> {
+			List<Predicate> predicates = new ArrayList<>();
 
-            if (brand != null && !brand.isEmpty()) {
-                predicates.add(root.get("brand").in(brand));
-            }
+			if (brand != null && !brand.isEmpty()) {
+				predicates.add(root.get("brand").in(brand));
+			}
 
-            if (types != null && !types.isEmpty()) {
-                predicates.add(root.get("type").in(types));
-            }
+			if (types != null && !types.isEmpty()) {
+				predicates.add(root.get("type").in(types));
+			}
 
-            if (minPrice != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("cost"), minPrice));
-            }
+			if (minPrice != null) {
+				predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("cost"), minPrice));
+			}
 
-            if (maxPrice != null) {
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("cost"), maxPrice));
-            }
+			if (maxPrice != null) {
+				predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("cost"), maxPrice));
+			}
 
-            if (fuels != null && !fuels.isEmpty()) {
-                predicates.add(root.get("fuel").in(fuels));
-            }
+			if (fuels != null && !fuels.isEmpty()) {
+				predicates.add(root.get("fuel").in(fuels));
+			}
 
-            if (province != null && !province.isEmpty()) {
-                predicates.add(root.get("provice").in(province));
-            }
+			if (province != null && !province.isEmpty()) {
+				predicates.add(root.join("location").get("province").in(province));
+			}
 
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        };
-    }
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
+	}
 }

@@ -18,33 +18,30 @@ public class Review {
 	@Column(name = "review_id")
 	private int reviewId;
 
-    
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "rental_id")
-    @JsonIgnore
-    private Rental rental;
-    
-    @Min(value = 1, message = "Số đánh giá không hợp lệ. Phải từ 1 đến 5.")
-    @Max(value = 5, message = "Số đánh giá không hợp lệ. Phải từ 1 đến 5.")
-    @Column(name = "rate")
-    private int rate;
-    
-    @Size(min=1,message = "Nội dung không được để trống.")
-    @Column(name = "details")
-    private String details;
-    
-    @Column(name = "review_date")
-    private LocalDate date;
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "rental_id")
+	@JsonIgnore
+	private Rental rental;
 
-    public Review(){
+	@Min(value = 1, message = "Số đánh giá không hợp lệ. Phải từ 1 đến 5.")
+	@Max(value = 5, message = "Số đánh giá không hợp lệ. Phải từ 1 đến 5.")
+	@Column(name = "rate")
+	private int rate;
 
-    }
+	@Size(min = 1, message = "Nội dung không được để trống.")
+	@Column(name = "details")
+	private String details;
 
+	@Column(name = "review_date")
+	private LocalDate date;
+
+	public Review() {
+
+	}
 
 	public Review(int reviewId, Rental rental,
-				  @Pattern(regexp = "[1-5]", message = "Số đánh giá không hợp lệ.") int rate,
-				  @Size(min = 1, message = "Nội dung không được để trống.") String details, LocalDate date) {
+			@Pattern(regexp = "[1-5]", message = "Số đánh giá không hợp lệ.") int rate,
+			@Size(min = 1, message = "Nội dung không được để trống.") String details, LocalDate date) {
 		super();
 		this.reviewId = reviewId;
 		this.rental = rental;

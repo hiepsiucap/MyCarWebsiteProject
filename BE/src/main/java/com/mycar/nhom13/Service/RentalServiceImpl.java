@@ -1,6 +1,5 @@
 package com.mycar.nhom13.Service;
 
-
 import com.mycar.nhom13.Dto.RentalDTO;
 import com.mycar.nhom13.Entity.Car;
 import com.mycar.nhom13.Entity.Rental;
@@ -18,98 +17,98 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
-public class RentalServiceImpl implements  RentalService{
+public class RentalServiceImpl implements RentalService {
 
-    private final RentalRepository rentalRepository;
-    private final CarService carService;
+	private final RentalRepository rentalRepository;
+	private final CarService carService;
 
-    private final UserService userService;
+	private final UserService userService;
 
-    public RentalServiceImpl(RentalRepository repository,CarService carService,UserService userService)
-    {
-        this.rentalRepository =repository;
-        this.carService=carService;
-        this.userService=userService;
-    }
-    @Override
-    public List<Rental> findAll() {
-        return rentalRepository.findAll();
+	public RentalServiceImpl(RentalRepository repository, CarService carService, UserService userService) {
+		this.rentalRepository = repository;
+		this.carService = carService;
+		this.userService = userService;
+	}
 
-    }
+	@Override
+	public List<Rental> findAll() {
+		return rentalRepository.findAll();
 
-    @Override
-    public Rental findById(int id) {
+	}
 
-        Rental rental=rentalRepository.findById(id);
-        if(rental == null)
-        {
-            throw new ResourceNotFoundException("Rental id " + id +" not found");
-        }
-        else
-        {
-            return rental;
-        }
-    }
+	@Override
+	public Rental findById(int id) {
 
-    @Override
-    public Rental save(RentalDTO rentalDTO, int userId, int carId) throws Exception {
+		Rental rental = rentalRepository.findById(id);
+		if (rental == null) {
+			throw new ResourceNotFoundException("Rental id " + id + " not found");
+		} else {
+			return rental;
+		}
+	}
 
-        Car car = carService.findByCarId(carId);
+	@Override
+	public Rental save(RentalDTO rentalDTO, int userId, int carId) throws Exception {
 
-        User user = userService.findById(userId);
-        
-        Rental rental = RentalMapper.rentalDTOToRental(rentalDTO, car);
+		Car car = carService.findByCarId(carId);
 
-        if(!car.getStatus().equals("active")){
-            throw new RentalException("Không thể thuê xe này");
-        }
-        if (user.getDriverLicenseCheck() == null || user.getDriverLicenseCheck().equals("N")) {
-            throw new RentalException("Chưa có bằng lái");
-        }
-        rental.setUser(user);
-        rental.setDropOffLocation(car.getLocation());
-        rental.setPickUpLocation(car.getLocation());
+		User user = userService.findById(userId);
 
-        if (rental.getDropOffDate().compareTo(rental.getPickUpDate()) < 0) {
-            throw new RentalException("Ngày thuê và ngày trả không hợp lệ");
-        }
+		Rental rental = RentalMapper.rentalDTOToRental(rentalDTO, car);
 
-        rental.setRentalStatus("pending");
+		if (!car.getStatus().equals("active")) {
+			throw new RentalException("Không thể thuê xe này");
+		}
+		if (user.getDriverLicenseCheck() == null || user.getDriverLicenseCheck().equals("N")) {
+			throw new RentalException("Chưa có bằng lái");
+		}
+		rental.setUser(user);
+		rental.setDropOffLocation(car.getLocation());
+		rental.setPickUpLocation(car.getLocation());
 
-        rental.setTotalDay((int) ChronoUnit.DAYS.between(rental.getPickUpDate(), rental.getDropOffDate()) + 1);
+		if (rental.getDropOffDate().compareTo(rental.getPickUpDate()) < 0) {
+			throw new RentalException("Ngày thuê và ngày trả không hợp lệ");
+		}
 
-        if (rental.getTotalDay() * car.getCost() != rentalDTO.getTotalCost()) {
-            throw new RentalException("Sai giá tiền");
-        }
+		rental.setRentalStatus("pending");
 
-        rental.setTotalCost(rentalDTO.getTotalCost());
+		rental.setTotalDay((int) ChronoUnit.DAYS.between(rental.getPickUpDate(), rental.getDropOffDate()) + 1);
 
-        return rentalRepository.save(rental);
-    }
+		if (rental.getTotalDay() * car.getCost() != rentalDTO.getTotalCost()) {
+			throw new RentalException("Sai giá tiền");
+		}
 
+		rental.setTotalCost(rentalDTO.getTotalCost());
 
-    @Override
-    public Rental updateStatus(int rentalId, String status, int userId)  {
-        User user = userService.findById(userId);
-        if(user.getRole().equals("User")){
-            throw new UnAuthenticated("No permission");
-        }
-        Rental rental = this.findById(rentalId);
-        String rentalStatus=rental.getRentalStatus();
-        if(rentalStatus.equals("pending")&&status.equals("completed")) throw new RentalException("Không hợp lệ");
-        if(rentalStatus.equals("completed")) throw new RentalException("Không hợp lệ");
-        if(rentalStatus.equals("confirmed")&&status.equals("pending")) throw new RentalException("Không hợp lệ");
-        if(rentalStatus.equals("cancelled")) throw new RentalException("Không hợp lệ");
-        rental.setRentalStatus(status);
-        return rentalRepository.save(rental);
-    }
+		return rentalRepository.save(rental);
+	}
 
-    @Override
-    public String remove(int id)  {
-        Rental rental = this.findById(id);
-        rentalRepository.delete(rental);
-        return new String("Deleted rental with Id: "+id);
+	@Override
+	public Rental updateStatus(int rentalId, String status, int userId) {
+		User user = userService.findById(userId);
+		if (user.getRole().equals("User")) {
+			throw new UnAuthenticated("No permission");
+		}
+		Rental rental = this.findById(rentalId);
+		String rentalStatus = rental.getRentalStatus();
+		if (rentalStatus.equals("pending") && status.equals("completed"))
+			throw new RentalException("Không hợp lệ");
+		if (rentalStatus.equals("completed"))
+			throw new RentalException("Không hợp lệ");
+		if (rentalStatus.equals("confirmed") && status.equals("pending"))
+			throw new RentalException("Không hợp lệ");
+		if (rentalStatus.equals("cancelled"))
+			throw new RentalException("Không hợp lệ");
+		rental.setRentalStatus(status);
+		return rentalRepository.save(rental);
+	}
 
-    }
+	@Override
+	public String remove(int id) {
+		Rental rental = this.findById(id);
+		rentalRepository.delete(rental);
+		return new String("Deleted rental with Id: " + id);
+
+	}
 
 }

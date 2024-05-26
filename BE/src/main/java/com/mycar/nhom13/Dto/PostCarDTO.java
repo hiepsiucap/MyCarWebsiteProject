@@ -8,59 +8,58 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class PostCarDTO {
-	
+
 	private int carId;
-    
-    @NotBlank(message = "License plates cannot be empty")
-    @Size(min = 9, max = 10, message = "License plates must be between 9 and 10 characters")
-    private String licensePlates;
 
-    @Size(max = 20, message = "Model must be less than or equal to 20 characters")
-    private String model;
+	@NotBlank(message = "License plates cannot be empty")
+	@Size(min = 9, max = 10, message = "License plates must be between 9 and 10 characters")
+	private String licensePlates;
 
-    private String brand;
+	@Size(max = 20, message = "Model must be less than or equal to 20 characters")
+	private String model;
 
-    @Min(value = 1886, message = "Year must be from 1886 onwards")
-    @Max(value = 2024, message = "Year must be 2024 or earlier")
-    private int year;
+	private String brand;
 
-    
-    private String color;
+	@Min(value = 1886, message = "Year must be from 1886 onwards")
+	@Max(value = 2024, message = "Year must be 2024 or earlier")
+	private int year;
 
-    @DecimalMin(value = "0.0", message = "Consumption must be at least 0.0")
-    private float consumption;
+	private String color;
 
-    @Size(max = 2000, message = "Description must be less than or equal to 2000 characters")
-    private String description;
+	@DecimalMin(value = "0.0", message = "Consumption must be at least 0.0")
+	private float consumption;
 
-    @Min(value = 1, message = "Seat count must be at least 1")
-    private int seat;
+	@Size(max = 2000, message = "Description must be less than or equal to 2000 characters")
+	private String description;
 
-    private String type;
+	@Min(value = 1, message = "Seat count must be at least 1")
+	private int seat;
 
-    @Pattern(regexp = "Tu dong|So san", message = "Gear must be 'Tu dong' or 'So san'")
-    private String gear;
+	private String type;
 
-    @Pattern(regexp = "Xang|Dau|Dien", message = "Fuel must be 'Xang', 'Dau', or 'Dien'")
-    private String fuel;
+	@Pattern(regexp = "Tu dong|So san", message = "Gear must be 'Tu dong' or 'So san'")
+	private String gear;
 
-    private int mileage;
-    
-    private String address;
-    private String province;
-    private String district;
+	@Pattern(regexp = "Xang|Dau|Dien", message = "Fuel must be 'Xang', 'Dau', or 'Dien'")
+	private String fuel;
 
-    @Min(value = 0, message = "Cost must be at least 0")
-    private int cost;
+	private int mileage;
 
+	private String address;
+	private String province;
+	private String district;
+
+	@Min(value = 0, message = "Cost must be at least 0")
+	private int cost;
 
 	public PostCarDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public PostCarDTO(int carId, String licensePlates, String model, String brand, int year, String color, float consumption,
-			String description, int seat, String type, String gear, String fuel, String address, String province,
-			String district, int cost, int mileage) {
+
+	public PostCarDTO(int carId, String licensePlates, String model, String brand, int year, String color,
+			float consumption, String description, int seat, String type, String gear, String fuel, String address,
+			String province, String district, int cost, int mileage) {
 		super();
 		this.carId = carId;
 		this.licensePlates = licensePlates;
@@ -80,108 +79,139 @@ public class PostCarDTO {
 		this.cost = cost;
 		this.mileage = mileage;
 	}
-	
-	
-	
+
 	public int getMileage() {
 		return mileage;
 	}
+
 	public void setMileage(int mileage) {
 		this.mileage = mileage;
 	}
+
 	public int getCarId() {
 		return carId;
 	}
+
 	public void setCarId(int carId) {
 		this.carId = carId;
 	}
+
 	public String getLicensePlates() {
 		return licensePlates;
 	}
+
 	public void setLicensePlates(String licensePlates) {
 		this.licensePlates = licensePlates;
 	}
+
 	public String getModel() {
 		return model;
 	}
+
 	public void setModel(String model) {
 		this.model = model;
 	}
+
 	public String getBrand() {
 		return brand;
 	}
+
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
+
 	public int getYear() {
 		return year;
 	}
+
 	public void setYear(int year) {
 		this.year = year;
 	}
+
 	public String getColor() {
 		return color;
 	}
+
 	public void setColor(String color) {
 		this.color = color;
 	}
+
 	public float getConsumption() {
 		return consumption;
 	}
+
 	public void setConsumption(float consumption) {
 		this.consumption = consumption;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public int getSeat() {
 		return seat;
 	}
+
 	public void setSeat(int seat) {
 		this.seat = seat;
 	}
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	public String getGear() {
 		return gear;
 	}
+
 	public void setGear(String gear) {
 		this.gear = gear;
 	}
+
 	public String getFuel() {
 		return fuel;
 	}
+
 	public void setFuel(String fuel) {
 		this.fuel = fuel;
 	}
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 	public String getProvince() {
 		return province;
 	}
+
 	public void setProvince(String province) {
 		this.province = province;
 	}
+
 	public String getDistrict() {
 		return district;
 	}
+
 	public void setDistrict(String district) {
 		this.district = district;
 	}
+
 	public int getCost() {
 		return cost;
 	}
+
 	public void setCost(int cost) {
 		this.cost = cost;
 	}

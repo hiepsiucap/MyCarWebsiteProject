@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 
 @Component
-public class UserAuthProvider{
-    @Autowired
-    private AuthService authService;
+public class UserAuthProvider {
+	@Autowired
+	private AuthService authService;
 
 //    @Override
 //    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -38,13 +38,13 @@ public class UserAuthProvider{
 //        return true;
 //    }
 
-    public Authentication validateLogin(LoginDTO loginDTO){
-        User user = authService.authenticate(loginDTO);
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
-    }
+	public Authentication validateLogin(LoginDTO loginDTO) {
+		User user = authService.authenticate(loginDTO);
+		return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+	}
 
-    public Authentication validateCookies(String cookies){
-        User user = authService.findByToken(cookies);
-        return new PreAuthenticatedAuthenticationToken(user, null, Collections.emptyList());
-    }
+	public Authentication validateCookies(String cookies) {
+		User user = authService.findByToken(cookies);
+		return new PreAuthenticatedAuthenticationToken(user, null, Collections.emptyList());
+	}
 }

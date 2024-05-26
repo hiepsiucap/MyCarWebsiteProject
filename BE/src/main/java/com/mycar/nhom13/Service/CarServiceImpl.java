@@ -23,119 +23,122 @@ import java.util.Map;
 @Service
 public class CarServiceImpl implements CarService {
 
-    @Autowired
-    private CarRepository carRepository;
-    @Autowired
-    private CloudinaryService cloudinaryService;
-    @Autowired
-    private CarImageRepository carImageRepository;
-    public CarServiceImpl(CarRepository carRepository,CloudinaryService cloudinaryService,CarImageRepository carImageRepository) {
-        this.carRepository=carRepository;
-        this.cloudinaryService=cloudinaryService;
-        this.carImageRepository=carImageRepository;
-    }
+	@Autowired
+	private CarRepository carRepository;
+	@Autowired
+	private CloudinaryService cloudinaryService;
+	@Autowired
+	private CarImageRepository carImageRepository;
+
+	public CarServiceImpl(CarRepository carRepository, CloudinaryService cloudinaryService,
+			CarImageRepository carImageRepository) {
+		this.carRepository = carRepository;
+		this.cloudinaryService = cloudinaryService;
+		this.carImageRepository = carImageRepository;
+	}
+
 	@Override
 	public Car findByCarId(int id) {
 		Car car = carRepository.findByCarId(id);
-		if(car != null) {
+		if (car != null) {
 			return car;
-		}else {
-			throw new ResourceNotFoundException("Car id " + id +" not found");
+		} else {
+			throw new ResourceNotFoundException("Car id " + id + " not found");
 		}
 	}
-	
+
 	@Override
 	public Car save(Car car) {
 		return carRepository.save(car);
 	}
-	
+
 	@Override
 	public Car update(int id, Map<String, Object> fields) {
-		
-		Car car = carRepository.findByCarId(id);
-		if(car != null) {
-			
-			fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(Car.class, key);
-                field.setAccessible(true);
 
-                ReflectionUtils.setField(field, car, value);
-			  });
-            return carRepository.save(car);
-		}
-		else {
-			throw new ResourceNotFoundException("Car id " + id +" not found");
+		Car car = carRepository.findByCarId(id);
+		if (car != null) {
+
+			fields.forEach((key, value) -> {
+				Field field = ReflectionUtils.findField(Car.class, key);
+				field.setAccessible(true);
+
+				ReflectionUtils.setField(field, car, value);
+			});
+			return carRepository.save(car);
+		} else {
+			throw new ResourceNotFoundException("Car id " + id + " not found");
 		}
 	}
-	
-    @Override
-    public Page<Car> findByStatus(String status, Pageable pageable) {
-        return carRepository.findByStatus("active", pageable);
-    }
-    
-    @Override
-    public List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId){
-    	return carRepository.findCarsByRentalStatus(status, userId);
-    }
-    
-    @Override
-    public List<Car> findAllCarsByUserIdInRental(@Param("userId") int userId){
-    	return carRepository.findCarsByUserId(userId);
-    }
-    
-    @Override
-    public List<Car> findAllCarsByUserIdInRentalgnorePending(@Param("userId") int userId){
-    	return carRepository.findCarsByUserIdIgnorePending(userId);
-    }
-    
-    @Override
-    public Page<Car> filterCars(
-    		List<String> brand, List<String> types, Integer minPrice, Integer maxPrice, 
-            List<String> fuels, List<String> province, Pageable pageable) {
-        return carRepository.findAll(CarSpecification.filterByCriteria(brand, types, minPrice, maxPrice, fuels, province), pageable);
-    }
-    
-    @Override
-    public void pauseCar(int id) {
-        Car car = carRepository.findById(id).orElse(null);
-        if (car != null) {
-            car.setStatus("pause");
-            carRepository.save(car);
-        } else {
-            throw new ResourceNotFoundException("Car id " + id + " not found");
-        }
-    }
 
+	@Override
+	public Page<Car> findByStatus(String status, Pageable pageable) {
+		return carRepository.findByStatus("active", pageable);
+	}
 
-    public Car saveThumbnail(MultipartFile file, int id) throws IOException {
-        Car car = carRepository.findByCarId(id);
-        if(car == null) throw new ResourceNotFoundException("Car id: "+ id +" not found");
-        String imageName = "car_id_"+car.getCarId();
-        String folder="cars/thumbnail";
-        String url = cloudinaryService.uploadImage(file,folder,imageName);
-        car.setImage(url);
-        return carRepository.save(car);
-    }
+	@Override
+	public List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId) {
+		return carRepository.findCarsByRentalStatus(status, userId);
+	}
 
-    public Car saveImages(List<MultipartFile> file, int id) throws IOException {
-        Car car= carRepository.findByCarId(id);
-        if(car == null) throw new ResourceNotFoundException("Car id: "+ id +" not found");
+	@Override
+	public List<Car> findAllCarsByUserIdInRental(@Param("userId") int userId) {
+		return carRepository.findCarsByUserId(userId);
+	}
 
-        List<CarImage> images=new ArrayList<>();
-        int count=1;
-        for(MultipartFile f:file){
-            String imageName = "car_id_"+car.getCarId()+"image_id_"+count;
-            String folder="cars/images";
-            String url = cloudinaryService.uploadImage(f,folder,imageName);
-            CarImage carImage=new CarImage();
-            carImage.setImage(url);
-            carImage.setCar(car);
-            images.add(carImageRepository.save(carImage));
-            count++;
-        }
-        car.setImages(images);
-        return carRepository.save(car);
+	@Override
+	public List<Car> findAllCarsByUserIdInRentalgnorePending(@Param("userId") int userId) {
+		return carRepository.findCarsByUserIdIgnorePending(userId);
+	}
 
-    }
-    
+	@Override
+	public Page<Car> filterCars(List<String> brand, List<String> types, Integer minPrice, Integer maxPrice,
+			List<String> fuels, List<String> province, Pageable pageable) {
+		return carRepository.findAll(
+				CarSpecification.filterByCriteria(brand, types, minPrice, maxPrice, fuels, province), pageable);
+	}
+
+	@Override
+	public void pauseCar(int id) {
+		Car car = carRepository.findById(id).orElse(null);
+		if (car != null) {
+			car.setStatus("pause");
+			carRepository.save(car);
+		} else {
+			throw new ResourceNotFoundException("Car id " + id + " not found");
+		}
+	}
+
+	public Car saveThumbnail(MultipartFile file, int id) throws IOException {
+		Car car = carRepository.findByCarId(id);
+		if (car == null)
+			throw new ResourceNotFoundException("Car id: " + id + " not found");
+		String imageName = "car_id_" + car.getCarId();
+		String folder = "cars/thumbnail";
+		String url = cloudinaryService.uploadImage(file, folder, imageName);
+		car.setImage(url);
+		return carRepository.save(car);
+	}
+
+	public Car saveImages(List<MultipartFile> file, int id) throws IOException {
+		Car car = carRepository.findByCarId(id);
+		if (car == null)
+			throw new ResourceNotFoundException("Car id: " + id + " not found");
+
+		List<CarImage> images = new ArrayList<>();
+		int count = 1;
+		for (MultipartFile f : file) {
+			String imageName = "car_id_" + car.getCarId() + "image_id_" + count;
+			String folder = "cars/images";
+			String url = cloudinaryService.uploadImage(f, folder, imageName);
+			CarImage carImage = new CarImage();
+			carImage.setImage(url);
+			carImage.setCar(car);
+			images.add(carImageRepository.save(carImage));
+			count++;
+		}
+		car.setImages(images);
+		return carRepository.save(car);
+
+	}
+
 }

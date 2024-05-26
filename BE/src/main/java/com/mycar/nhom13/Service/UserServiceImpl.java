@@ -22,199 +22,201 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements  UserService{
+public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-    private final CloudinaryService cloudinaryService;
+	private final CloudinaryService cloudinaryService;
 
-    private final PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
+	public UserServiceImpl(UserRepository userRepository, CloudinaryService cloudinaryService,
+			PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
+		this.cloudinaryService = cloudinaryService;
+		this.passwordEncoder = passwordEncoder;
+	}
 
-    public UserServiceImpl(UserRepository userRepository,CloudinaryService cloudinaryService,PasswordEncoder passwordEncoder){
-        this.userRepository = userRepository;
-        this.cloudinaryService = cloudinaryService;
-        this.passwordEncoder=passwordEncoder;
-    }
-    @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
+	@Override
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
 
-    @Override
-    public User findById(int id) {
-        User user = userRepository.findById(id);
-        if(user == null)
-            throw new ResourceNotFoundException("User id " + id +" not found");
-        return user;
-    }
-    @Override
-    public User findByEmail(String email){
-        return userRepository.findByEmail(email);
-    }
+	@Override
+	public User findById(int id) {
+		User user = userRepository.findById(id);
+		if (user == null)
+			throw new ResourceNotFoundException("User id " + id + " not found");
+		return user;
+	}
 
-    @Override
-    public User save(User user) {
-        return userRepository.save(user);
-    }
+	@Override
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 
-    @Override
-    public User update(int id, ChangeUserInfoDTO changeUserInfoDTO) {
+	@Override
+	public User save(User user) {
+		return userRepository.save(user);
+	}
 
-        User user = this.findById(id);
+	@Override
+	public User update(int id, ChangeUserInfoDTO changeUserInfoDTO) {
 
-        user.setLastName(changeUserInfoDTO.getLastName());
-        user.setFirstName(changeUserInfoDTO.getFirstName());
-        user.setPhoneNumber(changeUserInfoDTO.getPhoneNumber());
+		User user = this.findById(id);
 
-        return userRepository.save(user);
+		user.setLastName(changeUserInfoDTO.getLastName());
+		user.setFirstName(changeUserInfoDTO.getFirstName());
+		user.setPhoneNumber(changeUserInfoDTO.getPhoneNumber());
 
-    }
-    public User saveLicense(MultipartFile file, int id) throws IOException {
+		return userRepository.save(user);
 
-        User user = this.findById(id);
+	}
 
-        if(user == null) throw new ResourceNotFoundException("User id: "+ id +" not found");
-        String imageName = "user_id_"+user.getUserId();
-        String folder="users/user_license";
-        String url = cloudinaryService.uploadImage(file,folder,imageName);
-        user.setDriverLicense(url);
+	public User saveLicense(MultipartFile file, int id) throws IOException {
 
-        user.setDriverLicenseCheck(null);
-        return userRepository.save(user);
-    }
-    public User saveAvatar(MultipartFile file, int id) throws IOException {
-        User user = this.findById(id);
+		User user = this.findById(id);
 
-        if(user == null) throw new ResourceNotFoundException("User id: "+ id +" not found");
-        String imageName = "user_id_"+user.getUserId();
-        String folder="users/user_avatar";
-        String url = cloudinaryService.uploadImage(file,folder,imageName);
-        user.setAvatar(url);
-        return userRepository.save(user);
-    }
+		if (user == null)
+			throw new ResourceNotFoundException("User id: " + id + " not found");
+		String imageName = "user_id_" + user.getUserId();
+		String folder = "users/user_license";
+		String url = cloudinaryService.uploadImage(file, folder, imageName);
+		user.setDriverLicense(url);
 
-    @Override
-    public User checkLicense(int staffId, int id,boolean check) {
+		user.setDriverLicenseCheck(null);
+		return userRepository.save(user);
+	}
 
-        User staff = this.findById(staffId);
+	public User saveAvatar(MultipartFile file, int id) throws IOException {
+		User user = this.findById(id);
 
-        if(staff.getRole().equals("User")){
-            throw new UnAuthenticated("No permission");
-        }
-        else{
-            String checked=(check)?"Y":"N";
-            User user = userRepository.findById(id);
-            user.setDriverLicenseCheck(checked);
-            return userRepository.save(user);
-        }
-    }
+		if (user == null)
+			throw new ResourceNotFoundException("User id: " + id + " not found");
+		String imageName = "user_id_" + user.getUserId();
+		String folder = "users/user_avatar";
+		String url = cloudinaryService.uploadImage(file, folder, imageName);
+		user.setAvatar(url);
+		return userRepository.save(user);
+	}
 
-    @Override
-    public boolean changePassword(ChangePasswordDTO changePasswordDto, int id)  {
+	@Override
+	public User checkLicense(int staffId, int id, boolean check) {
 
-        User currentUser = this.findById(id);
+		User staff = this.findById(staffId);
 
-        if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), currentUser.getPassword())) {
-            throw new ChangePasswordException("Sai mật khẩu");
-        }
+		if (staff.getRole().equals("User")) {
+			throw new UnAuthenticated("No permission");
+		} else {
+			String checked = (check) ? "Y" : "N";
+			User user = userRepository.findById(id);
+			user.setDriverLicenseCheck(checked);
+			return userRepository.save(user);
+		}
+	}
 
-        currentUser.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
-        userRepository.save(currentUser);
+	@Override
+	public boolean changePassword(ChangePasswordDTO changePasswordDto, int id) {
 
-        return true;
-    }
+		User currentUser = this.findById(id);
 
-    @Override
-    public RevenueDTO getRevenue(int id) {
-        User user = this.findById(id);
-        List<Car> cars = user.getCars();
+		if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), currentUser.getPassword())) {
+			throw new ChangePasswordException("Sai mật khẩu");
+		}
 
-        int [] monthRevenue = new int [12];
-        int [] monthRent = new int[12];
-        List<Pair> topRevenue= new ArrayList<>();
-        for(Car car: cars){
-            int profit=0;
-            for (Rental rental : car.getRentals()){
-                if(rental.getDropOffDate().getYear()==2024&&rental.getRentalStatus().equals("completed")){
-                    profit += rental.getTotalCost();
+		currentUser.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+		userRepository.save(currentUser);
 
-                    monthRevenue[rental.getDropOffDate().getMonthValue()-1]+=rental.getTotalCost();
-                    monthRent[rental.getDropOffDate().getMonthValue()-1]++;
-                }
-            }
-            topRevenue.add(new Pair(car.getBrand() +" " + car.getModel() + " " + car.getYear()
-                    ,profit));
+		return true;
+	}
 
-        }
-        Collections.sort(topRevenue, new Comparator<Pair>() {
-            @Override
-            public int compare(Pair p1, Pair p2) {
-                return p2.getProfit().compareTo(p1.getProfit());
-            }
-        });
-        topRevenue.removeIf(pair -> pair.getProfit() <= 0);
-        List<String> topcar= new ArrayList<>();
-        List<Integer> toprentcar= new ArrayList<>();
-        int count=0;
+	@Override
+	public RevenueDTO getRevenue(int id) {
+		User user = this.findById(id);
+		List<Car> cars = user.getCars();
 
-        for(Pair p : topRevenue){
-            if(count>=10) break;
-            topcar.add(p.getName());
-            toprentcar.add(p.getProfit());
-            count++;
-        }
-        int totalRent=0;
-        int totalRevenue=0;
-        for(int i=0;i<12;i++){
-            totalRent+=monthRent[i];
-            totalRevenue+=monthRevenue[i];
-        }
+		int[] monthRevenue = new int[12];
+		int[] monthRent = new int[12];
+		List<Pair> topRevenue = new ArrayList<>();
+		for (Car car : cars) {
+			int profit = 0;
+			for (Rental rental : car.getRentals()) {
+				if (rental.getDropOffDate().getYear() == 2024 && rental.getRentalStatus().equals("completed")) {
+					profit += rental.getTotalCost();
 
-        RevenueDTO revenueDTO = new RevenueDTO();
+					monthRevenue[rental.getDropOffDate().getMonthValue() - 1] += rental.getTotalCost();
+					monthRent[rental.getDropOffDate().getMonthValue() - 1]++;
+				}
+			}
+			topRevenue.add(new Pair(car.getBrand() + " " + car.getModel() + " " + car.getYear(), profit));
 
-        revenueDTO.setTotalCar(cars.size());
-        revenueDTO.setTotalRent(totalRent);
-        revenueDTO.setTotalRevenue(totalRevenue);
-        revenueDTO.setMonthRevenue(Arrays.stream(monthRevenue).boxed().collect(Collectors.toList()));
-        revenueDTO.setMonthRent(Arrays.stream(monthRent).boxed().collect(Collectors.toList()));
-        revenueDTO.setTopCar(topcar);
-        revenueDTO.setTopRentCar(toprentcar);
+		}
+		Collections.sort(topRevenue, new Comparator<Pair>() {
+			@Override
+			public int compare(Pair p1, Pair p2) {
+				return p2.getProfit().compareTo(p1.getProfit());
+			}
+		});
+		topRevenue.removeIf(pair -> pair.getProfit() <= 0);
+		List<String> topcar = new ArrayList<>();
+		List<Integer> toprentcar = new ArrayList<>();
+		int count = 0;
 
-        return revenueDTO;
-    }
+		for (Pair p : topRevenue) {
+			if (count >= 10)
+				break;
+			topcar.add(p.getName());
+			toprentcar.add(p.getProfit());
+			count++;
+		}
+		int totalRent = 0;
+		int totalRevenue = 0;
+		for (int i = 0; i < 12; i++) {
+			totalRent += monthRent[i];
+			totalRevenue += monthRevenue[i];
+		}
 
-    @Override
-    public List<Rental> getRentals(int id) {
-        User user = this.findById(id);
-        return user.getRentals();
-    }
+		RevenueDTO revenueDTO = new RevenueDTO();
 
-    @Override
-    public Integer getNumOfRental(int id) {
-        User user = this.findById(id);
-        if(user.getRentals() == null)
-        {
-            return 0;
-        }
-        else
-        {
-            return user.getRentals().size();
-        }
-    }
+		revenueDTO.setTotalCar(cars.size());
+		revenueDTO.setTotalRent(totalRent);
+		revenueDTO.setTotalRevenue(totalRevenue);
+		revenueDTO.setMonthRevenue(Arrays.stream(monthRevenue).boxed().collect(Collectors.toList()));
+		revenueDTO.setMonthRent(Arrays.stream(monthRent).boxed().collect(Collectors.toList()));
+		revenueDTO.setTopCar(topcar);
+		revenueDTO.setTopRentCar(toprentcar);
 
-    @Override
-    public List<User> getListNeedCheck(int id) {
-        User user = this.findById(id);
-        if(user.getRole().equals("User")){
-            throw new UnAuthenticated("No permission");
-        }
+		return revenueDTO;
+	}
 
-        List<User> userList = userRepository.findAll();
-        return userList.stream()
-                .filter(user1 -> user1.getDriverLicense() != null && user1.getDriverLicenseCheck() == null)
-                .collect(Collectors.toList());
+	@Override
+	public List<Rental> getRentals(int id) {
+		User user = this.findById(id);
+		return user.getRentals();
+	}
 
-    }
+	@Override
+	public Integer getNumOfRental(int id) {
+		User user = this.findById(id);
+		if (user.getRentals() == null) {
+			return 0;
+		} else {
+			return user.getRentals().size();
+		}
+	}
+
+	@Override
+	public List<User> getListNeedCheck(int id) {
+		User user = this.findById(id);
+		if (user.getRole().equals("User")) {
+			throw new UnAuthenticated("No permission");
+		}
+
+		List<User> userList = userRepository.findAll();
+		return userList.stream()
+				.filter(user1 -> user1.getDriverLicense() != null && user1.getDriverLicenseCheck() == null)
+				.collect(Collectors.toList());
+
+	}
 
 }

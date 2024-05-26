@@ -17,62 +17,61 @@ import java.util.Map;
 @RestController
 public class ReportController {
 
-    private final ReportService reportService;
+	private final ReportService reportService;
 
-    public ReportController(ReportService reportService){
+	public ReportController(ReportService reportService) {
 
-        this.reportService=reportService;
-    }
-    @GetMapping("/reports")
-    public ResponseEntity<List<Report>> retrieveAllReports(){
-        return new ResponseEntity<>(reportService.findAll(),new HttpHeaders(), HttpStatus.OK);
+		this.reportService = reportService;
+	}
 
-    }
+	@GetMapping("/reports")
+	public ResponseEntity<List<Report>> retrieveAllReports() {
+		return new ResponseEntity<>(reportService.findAll(), new HttpHeaders(), HttpStatus.OK);
 
-    @GetMapping("/reports/{id}")
-    public ResponseEntity<Report> retrieveReport(@PathVariable int id){
-        Report report = reportService.findById(id);
+	}
 
+	@GetMapping("/reports/{id}")
+	public ResponseEntity<Report> retrieveReport(@PathVariable int id) {
+		Report report = reportService.findById(id);
 
-        return new ResponseEntity<>(report,new HttpHeaders(), HttpStatus.OK);
-    }
+		return new ResponseEntity<>(report, new HttpHeaders(), HttpStatus.OK);
+	}
 
-    @PostMapping("/rentals/{id}/reports")
-    public ResponseEntity<Report> postReports(@RequestBody @Valid Report report, @PathVariable int id){
+	@PostMapping("/rentals/{id}/reports")
+	public ResponseEntity<Report> postReports(@RequestBody @Valid Report report, @PathVariable int id) {
 
-        Report savedReport =reportService.save(report,id);
+		Report savedReport = reportService.save(report, id);
 
-        return new ResponseEntity<>(savedReport,new HttpHeaders(), HttpStatus.CREATED);
-    }
+		return new ResponseEntity<>(savedReport, new HttpHeaders(), HttpStatus.CREATED);
+	}
 
-    @PatchMapping("/rentals/{id}/reports")
-    public ResponseEntity<Report> patchReport(@RequestParam("status") String status, @PathVariable int id){
+	@PatchMapping("/rentals/{id}/reports")
+	public ResponseEntity<Report> patchReport(@RequestParam("status") String status, @PathVariable int id) {
 
-        Report savedReport =reportService.update(status,id);
+		Report savedReport = reportService.update(status, id);
 
-        return new ResponseEntity<>(savedReport,new HttpHeaders(), HttpStatus.OK);
-    }
+		return new ResponseEntity<>(savedReport, new HttpHeaders(), HttpStatus.OK);
+	}
 
-    @GetMapping("/reports/staff")
-    public ResponseEntity<List<Report>> listForStaff(HttpServletRequest request){
-        int id = getUserIdFromCookie(request);
+	@GetMapping("/reports/staff")
+	public ResponseEntity<List<Report>> listForStaff(HttpServletRequest request) {
+		int id = getUserIdFromCookie(request);
 
-        return new ResponseEntity<>(reportService.listforStaff(id),new HttpHeaders(), HttpStatus.OK);
-    }
-    private int getUserIdFromCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("auth_by_cookie")) {
-                    String cookieValue = cookie.getValue();
-                    String[] parts = cookieValue.split("&");
-                    return Integer.parseInt(parts[0]);
-                }
-            }
-        }
-        return 0;
-    }
+		return new ResponseEntity<>(reportService.listforStaff(id), new HttpHeaders(), HttpStatus.OK);
+	}
 
-
+	private int getUserIdFromCookie(HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("auth_by_cookie")) {
+					String cookieValue = cookie.getValue();
+					String[] parts = cookieValue.split("&");
+					return Integer.parseInt(parts[0]);
+				}
+			}
+		}
+		return 0;
+	}
 
 }

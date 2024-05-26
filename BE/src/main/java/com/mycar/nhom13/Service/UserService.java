@@ -13,27 +13,29 @@ import java.util.Map;
 
 public interface UserService {
 
-    List<User> findAll();
+	List<User> findAll();
 
-    User findById(int id);
-    User save(User user);
+	User findById(int id);
 
-    User update(int id, ChangeUserInfoDTO changeUserInfoDTO);
+	User save(User user);
 
-    User findByEmail(String email);
+	User update(int id, ChangeUserInfoDTO changeUserInfoDTO);
 
-    User saveLicense(MultipartFile file, int id) throws IOException;
-    User saveAvatar(MultipartFile file, int id) throws IOException;
+	User findByEmail(String email);
 
-    User checkLicense(int staffId, int id,boolean check);
+	User saveLicense(MultipartFile file, int id) throws IOException;
 
-    boolean changePassword(ChangePasswordDTO changePasswordDto, int id);
+	User saveAvatar(MultipartFile file, int id) throws IOException;
 
-    RevenueDTO getRevenue(int id);
+	User checkLicense(int staffId, int id, boolean check);
 
-    List<Rental> getRentals(int id);
+	boolean changePassword(ChangePasswordDTO changePasswordDto, int id);
 
-    Integer getNumOfRental(int id);
+	RevenueDTO getRevenue(int id);
 
-    List<User> getListNeedCheck(int id);
+	List<Rental> getRentals(int id);
+
+	Integer getNumOfRental(int id);
+
+	List<User> getListNeedCheck(int id);
 }

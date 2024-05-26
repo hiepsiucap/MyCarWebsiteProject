@@ -8,12 +8,13 @@ import java.util.Map;
 
 public interface ReportService {
 
-    List<Report> findAll();
+	List<Report> findAll();
 
-    Report findById(int id);
-    Report save(Report report, int id);
+	Report findById(int id);
 
-    Report update(String status, int id);
+	Report save(Report report, int id);
 
-    List<Report> listforStaff(int id);
+	Report update(String status, int id);
+
+	List<Report> listforStaff(int id);
 }

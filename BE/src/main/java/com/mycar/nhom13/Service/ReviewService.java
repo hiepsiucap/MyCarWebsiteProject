@@ -8,10 +8,11 @@ import java.util.Map;
 
 public interface ReviewService {
 
-    List<Review> findAll();
+	List<Review> findAll();
 
-    Review findById(int id);
-    Review save(Review review,int rentalId);
+	Review findById(int id);
 
-    Review update(int id, Map<String, Object> fields);
+	Review save(Review review, int rentalId);
+
+	Review update(int id, Map<String, Object> fields);
 }

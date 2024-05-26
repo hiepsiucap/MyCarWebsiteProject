@@ -11,30 +11,28 @@ import java.util.List;
 @Service
 public class CarCalendarServiceImpl implements CarCalendarService {
 
-    @Autowired
-    private CarCalendarRepository carCalendarRepository;
-    @Autowired
-    private CarService carserivce;
+	@Autowired
+	private CarCalendarRepository carCalendarRepository;
+	@Autowired
+	private CarService carserivce;
 
-    @Override
-    public List<CarCalendar> findAll() {
-        return carCalendarRepository.findAll();
-    }
+	@Override
+	public List<CarCalendar> findAll() {
+		return carCalendarRepository.findAll();
+	}
 
+	@Override
+	public CarCalendar save(CarCalendar carCalendar, int carId) {
 
-    @Override
-    public CarCalendar save(CarCalendar carCalendar, int carId) {
-    	
-    	Car car = carserivce.findByCarId(carId);
-    	
-    	carCalendar.setCar(car);
-        return carCalendarRepository.save(carCalendar);
-    }
+		Car car = carserivce.findByCarId(carId);
 
-    @Override
-    public List<CarCalendar> findByCarId(Long carId) {
-        return carCalendarRepository.findAll().stream()
-                .filter(carCalendar -> carCalendar.getCar().getCarId() == carId)
-                .toList();
-    }
+		carCalendar.setCar(car);
+		return carCalendarRepository.save(carCalendar);
+	}
+
+	@Override
+	public List<CarCalendar> findByCarId(Long carId) {
+		return carCalendarRepository.findAll().stream().filter(carCalendar -> carCalendar.getCar().getCarId() == carId)
+				.toList();
+	}
 }

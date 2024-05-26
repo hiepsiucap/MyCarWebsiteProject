@@ -20,105 +20,104 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "Cars")
 @JsonFilter("CarListFilter")
-@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE,
-setterVisibility=JsonAutoDetect.Visibility.NONE, creatorVisibility=JsonAutoDetect.Visibility.NONE)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, creatorVisibility = JsonAutoDetect.Visibility.NONE)
 public class Car {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq")
-    @SequenceGenerator(name = "car_seq", sequenceName = "car_seq", allocationSize = 1)
-    @Column(name = "car_id")
-    private int carId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq")
+	@SequenceGenerator(name = "car_seq", sequenceName = "car_seq", allocationSize = 1)
+	@Column(name = "car_id")
+	private int carId;
 
-    @Column(name = "license_plates", length = 10)
+	@Column(name = "license_plates", length = 10)
 
-    @Size(min = 9, max = 10, message = "Biển số xe phải đúng định dạng.")
+	@Size(min = 9, max = 10, message = "Biển số xe phải đúng định dạng.")
 
-    private String licensePlates;
+	private String licensePlates;
 
-    @Column(name = "brand", length = 255)
-    private String brand;
+	@Column(name = "brand", length = 255)
+	private String brand;
 
-    @Column(name = "model", length = 255)
-    @Size(max = 20, message = "Kiểm tra lại model.")
-    private String model;
+	@Column(name = "model", length = 255)
+	@Size(max = 20, message = "Kiểm tra lại model.")
+	private String model;
 
-    @Column(name = "year")
-    @Min(value = 1886, message = "Xe phải từ năm 1886 trở đi.")
-    @Max(value = 2024, message = "Xe phải từ năm 2024 trở về trước.")
-    private int year;
+	@Column(name = "year")
+	@Min(value = 1886, message = "Xe phải từ năm 1886 trở đi.")
+	@Max(value = 2024, message = "Xe phải từ năm 2024 trở về trước.")
+	private int year;
 
-    @Column(name = "color")
-    private String color;
+	@Column(name = "color")
+	private String color;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User user;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	@JsonBackReference
+	private User user;
 
-    @Column(name = "mileage")
-    @Min(value = 0, message = "Mileage must be at least 0")
-    private int mileage;
+	@Column(name = "mileage")
+	@Min(value = 0, message = "Mileage must be at least 0")
+	private int mileage;
 
-    @Column(name = "type", length = 50)
-    private String type;
+	@Column(name = "type", length = 50)
+	private String type;
 
-    @Column(name = "fuel", length = 10)
-    private String fuel;
+	@Column(name = "fuel", length = 10)
+	private String fuel;
 
-    @Column(name = "gear", length = 20)
-    private String gear;
+	@Column(name = "gear", length = 20)
+	private String gear;
 
-    @Column(name = "consumption")
-    @DecimalMin(value = "0.0", message = "Consumption ít nhất phải là 0.0")
-    private Float consumption;
+	@Column(name = "consumption")
+	@DecimalMin(value = "0.0", message = "Consumption ít nhất phải là 0.0")
+	private Float consumption;
 
-    @Column(name = "description", length = 2000)
-    @Size(max = 2000, message = "Mô tả ngắn gọn, nhiều nhất là 2000 kí tự.")
-    private String description;
+	@Column(name = "description", length = 2000)
+	@Size(max = 2000, message = "Mô tả ngắn gọn, nhiều nhất là 2000 kí tự.")
+	private String description;
 
-    @Column(name = "review")
-    @DecimalMin(value = "0.0", message = "Review must be at least 0.0")
-    @DecimalMax(value = "5.0", message = "Review must be at most 5.0")
-    private Float review;
+	@Column(name = "review")
+	@DecimalMin(value = "0.0", message = "Review must be at least 0.0")
+	@DecimalMax(value = "5.0", message = "Review must be at most 5.0")
+	private Float review;
 
-    @Column(name = "number_of_review")
-    @Min(value = 0, message = "Number of reviews must be at least 0")
-    private int numberOfReview;
+	@Column(name = "number_of_review")
+	@Min(value = 0, message = "Number of reviews must be at least 0")
+	private int numberOfReview;
 
-    @Column(name = "image", length = 255)
-    private String image;
+	@Column(name = "image", length = 255)
+	private String image;
 
-    @Column(name = "status", length = 10)
-    private String status;
+	@Column(name = "status", length = 10)
+	private String status;
 
-    @Column(name = "seat")
-    @Min(value = 1, message = "Seat count must be at least 1")
-    private int seat;
+	@Column(name = "seat")
+	@Min(value = 1, message = "Seat count must be at least 1")
+	private int seat;
 
-    @Column(name = "number_of_rental")
-    private int numberOfRental;
+	@Column(name = "number_of_rental")
+	private int numberOfRental;
 
-    @Column(name = "cost")
-    @Min(value = 0, message = "Cost must be at least 0")
-    private int cost;
+	@Column(name = "cost")
+	@Min(value = 0, message = "Cost must be at least 0")
+	private int cost;
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    @JsonManagedReference(value="location")
-    private Location location;
+	@ManyToOne
+	@JoinColumn(name = "location_id")
+	@JsonManagedReference(value = "location")
+	private Location location;
 
-	@OneToMany( mappedBy ="car")
-	@JsonManagedReference(value="image")
+	@OneToMany(mappedBy = "car")
+	@JsonManagedReference(value = "image")
 	private List<CarImage> images;
-    
-    @OneToMany(mappedBy = "car")
-    @JsonManagedReference(value="rental")
-    private List<Rental> rentals;
 
-    @OneToMany(mappedBy = "car")
-    @JsonManagedReference(value="calendar")
-    private List<CarCalendar> carCalendars;
+	@OneToMany(mappedBy = "car")
+	@JsonManagedReference(value = "rental")
+	private List<Rental> rentals;
+
+	@OneToMany(mappedBy = "car")
+	@JsonManagedReference(value = "calendar")
+	private List<CarCalendar> carCalendars;
 
 	@Override
 	public String toString() {
@@ -130,13 +129,11 @@ public class Car {
 				+ location + ", carCalendars=" + carCalendars + "]";
 	}
 
-
 	public Car() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+
 	public Car(int carId, @Size(min = 9, max = 10, message = "Biển số xe phải đúng định dạng.") String licensePlates,
 			String brand, @Size(max = 20, message = "Kiểm tra lại model.") String model,
 			@Min(value = 1886, message = "Xe phải từ năm 1886 trở đi.") @Max(value = 2024, message = "Xe phải từ năm 2024 trở về trước.") int year,
@@ -344,7 +341,6 @@ public class Car {
 		this.location = location;
 	}
 
-
 	public List<CarImage> getImages() {
 		return images;
 	}
@@ -352,7 +348,6 @@ public class Car {
 	public void setImages(List<CarImage> images) {
 		this.images = images;
 	}
-
 
 	public List<CarCalendar> getCarCalendars() {
 		return carCalendars;
@@ -362,7 +357,6 @@ public class Car {
 		this.carCalendars = carCalendars;
 	}
 
-
 	public List<Rental> getRentals() {
 		return rentals;
 	}
@@ -371,9 +365,4 @@ public class Car {
 		this.rentals = rentals;
 	}
 
-
-
 }
-
-
-

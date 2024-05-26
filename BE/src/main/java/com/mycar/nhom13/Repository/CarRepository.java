@@ -17,6 +17,9 @@ public interface CarRepository extends JpaRepository<Car, Integer>, JpaSpecifica
 
 	Page<Car> findByStatus(String status, Pageable pageable);
 
+	Page<Car> findByStatusIsNull(Pageable pageable);
+
+
 	@Query(value = "SELECT c.* FROM Cars c INNER JOIN Rentals r ON r.car_id = c.car_id WHERE r.customer_id = :userId AND  r.rental_status = :status", nativeQuery = true)
 	List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId);
 

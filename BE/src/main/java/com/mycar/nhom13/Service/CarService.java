@@ -20,6 +20,8 @@ public interface CarService {
 	Car update(int id, Map<String, Object> fields);
 
 	Page<Car> findByStatus(String status, Pageable pageable);
+	
+	Page<Car> findByStatusIsNull(Pageable pageable);
 
 	List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId);
 

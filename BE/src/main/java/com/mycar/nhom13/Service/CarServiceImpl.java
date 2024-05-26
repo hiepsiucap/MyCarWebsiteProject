@@ -74,6 +74,12 @@ public class CarServiceImpl implements CarService {
 	public Page<Car> findByStatus(String status, Pageable pageable) {
 		return carRepository.findByStatus("active", pageable);
 	}
+	
+	@Override
+	public Page<Car> findByStatusIsNull(Pageable pageable){
+		return carRepository.findByStatusIsNull(pageable);
+	}
+
 
 	@Override
 	public List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId) {

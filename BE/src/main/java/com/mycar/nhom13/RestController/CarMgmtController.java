@@ -80,17 +80,22 @@ public class CarMgmtController {
 	}
 	
 	@GetMapping("/null-cars")
-	public ResponseEntity<MappingJacksonValue> getCarsStatusNull(@RequestParam(defaultValue = "0") int page) {
-		Pageable pageable = PageRequest.of(page, 10);
-		Page<Car> carsPage = carService.findByStatus("null", pageable);
-		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "user",
-				"rentals");
-		SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
+	public ResponseEntity<?> getCarsStatusNull(HttpServletRequest request, @RequestParam(defaultValue = "0") int page) {
+	    int userId = getUserIdFromCookie(request);
 
-		MappingJacksonValue mapping = new MappingJacksonValue(carsPage);
-		mapping.setFilters(filters);
+	    if (!userService.findById(userId).getRole().equals("User")) {
+	        Pageable pageable = PageRequest.of(page, 10);
+	        Page<Car> carsPage = carService.findByStatusIsNull(pageable);
+	        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "user", "rentals");
+	        SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
 
-		return ResponseEntity.ok(mapping);
+	        MappingJacksonValue mapping = new MappingJacksonValue(carsPage);
+	        mapping.setFilters(filters);
+
+	        return ResponseEntity.ok(mapping);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User không đủ quyền hạn.");
+	    }
 	}
 
 	@GetMapping("/{id}")

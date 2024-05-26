@@ -8,13 +8,13 @@ import java.util.List;
 
 public class CarSpecification {
     public static Specification<Car> filterByCriteria(
-            String brand, List<String> types, Integer minPrice, Integer maxPrice, 
-            List<String> fuels, String province) {
+    		List<String> brand, List<String> types, Integer minPrice, Integer maxPrice, 
+            List<String> fuels, List<String> province) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (brand != null && !brand.isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get("brand"), brand));
+                predicates.add(root.get("brand").in(brand));
             }
 
             if (types != null && !types.isEmpty()) {
@@ -34,7 +34,7 @@ public class CarSpecification {
             }
 
             if (province != null && !province.isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.join("location").get("province"), province));
+                predicates.add(root.get("provice").in(province));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

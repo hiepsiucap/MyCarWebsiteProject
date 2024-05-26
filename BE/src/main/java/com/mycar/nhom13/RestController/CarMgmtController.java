@@ -42,7 +42,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -59,15 +58,20 @@ public class CarMgmtController {
 	private LocationService locationService;
 
 
-	public CarMgmtController(CarService carService) {
+	
+
+	public CarMgmtController(CarService carService, UserService userService, LocationService locationService) {
+		super();
 		this.carService = carService;
+		this.userService = userService;
+		this.locationService = locationService;
 	}
 
 	@GetMapping("")
     public ResponseEntity<MappingJacksonValue> getActiveCars(@RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Car> carsPage = carService.findByStatus("active", pageable);
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image","images" ,  "user", "rentals");
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars",  "user", "rentals");
         SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
 
         MappingJacksonValue mapping = new MappingJacksonValue(carsPage);
@@ -89,14 +93,14 @@ public class CarMgmtController {
 	
     @GetMapping("/conditions")
     public ResponseEntity<MappingJacksonValue> getCars(
-            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) List<String> brand,
             @RequestParam(required = false) List<String> type,
             @RequestParam(required = false) Integer minprice,
             @RequestParam(required = false) Integer maxprice,
             @RequestParam(required = false) List<String> fuel,
-            @RequestParam(required = false) String province) {
+            @RequestParam(required = false) List<String> province) {
     	
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image","images" ,  "user", "rentals");
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars",  "user", "rentals");
         SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
         MappingJacksonValue mapping = new MappingJacksonValue(carService.filterCars(brand, type, minprice, maxprice, fuel, province));
         mapping.setFilters(filters);

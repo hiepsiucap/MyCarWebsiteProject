@@ -90,8 +90,8 @@ public class CarServiceImpl implements CarService {
     
     @Override
     public List<Car> filterCars(
-            String brand, List<String> types, Integer minPrice, Integer maxPrice, 
-            List<String> fuels, String province) {
+    		List<String> brand, List<String> types, Integer minPrice, Integer maxPrice, 
+            List<String> fuels, List<String> province) {
         return carRepository.findAll(CarSpecification.filterByCriteria(brand, types, minPrice, maxPrice, fuels, province));
     }
     

@@ -29,8 +29,8 @@ public interface CarService {
 	List<Car> findAllCarsByUserIdInRental(@Param("userId") int userId);
 	
     public List<Car> filterCars(
-            String brand, List<String> types, Integer minPrice, Integer maxPrice, 
-            List<String> fuels, String province); 
+            List<String> brand, List<String> types, Integer minPrice, Integer maxPrice, 
+            List<String> fuels, List<String> province); 
     
     public void pauseCar(int id);
 

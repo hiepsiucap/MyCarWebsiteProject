@@ -6,7 +6,7 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
@@ -14,9 +14,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -107,7 +105,7 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "location_id")
-    @JsonBackReference
+    @JsonManagedReference(value="location")
     private Location location;
 
 	@OneToMany( mappedBy ="car")

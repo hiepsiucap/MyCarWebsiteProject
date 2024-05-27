@@ -3,6 +3,7 @@ package com.mycar.nhom13.Mapper;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -61,8 +62,24 @@ public class CarMapper {
 					return dates.stream();
 				})
 				.distinct()
-				.sorted()
 				.collect(Collectors.toList());
+		List<LocalDate> rentalDays = car.getRentals().stream()
+				.flatMap(rental -> {
+					List<LocalDate> dates = new ArrayList<>();
+					LocalDate currentDate = rental.getPickUpDate();
+					LocalDate endDate = rental.getDropOffDate();
+					while (!currentDate.isAfter(endDate)) {
+						dates.add(currentDate);
+						currentDate = currentDate.plusDays(1);
+					}
+					return dates.stream();
+				})
+				.distinct()
+				.collect(Collectors.toList());
+		days.addAll(rentalDays);
+
+		Collections.sort(days);
+
 		carDTOGET.setDays(days);
 		carDTOGET.setReviews(car.getRentals().stream()
 				.map(rental -> rental.getReview() != null ? ReviewMapper.reviewToReviewDTO(rental.getReview()) : null)

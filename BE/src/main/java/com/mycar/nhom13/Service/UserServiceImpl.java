@@ -1,10 +1,8 @@
 package com.mycar.nhom13.Service;
 
-import com.mycar.nhom13.Dto.ChangePasswordDTO;
-import com.mycar.nhom13.Dto.ChangeUserInfoDTO;
-import com.mycar.nhom13.Dto.Pair;
-import com.mycar.nhom13.Dto.RevenueDTO;
+import com.mycar.nhom13.Dto.*;
 import com.mycar.nhom13.Entity.Car;
+import com.mycar.nhom13.Entity.Location;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ChangePasswordException;
@@ -13,11 +11,12 @@ import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
 import com.mycar.nhom13.Repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -190,9 +189,40 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<Rental> getRentals(int id) {
+	public List<UserRentalsDTO> getRentals(int id) {
+		List<UserRentalsDTO> list = new ArrayList<>();
 		User user = this.findById(id);
-		return user.getRentals();
+		int count=0;
+		for(Rental r : user.getRentals()){
+			if(!r.getRentalStatus().equals("pending")) continue;
+			Car car = r.getCar();
+			UserRentalsDTO userRentalsDTO = new UserRentalsDTO();
+			userRentalsDTO.setCarId(car.getCarId());
+			userRentalsDTO.setName(car.getBrand() + " " + car.getModel() + " " + car.getYear());
+			userRentalsDTO.setDropOffDate(r.getDropOffHours() + " " + r.getDropOffDate());
+			userRentalsDTO.setStatus(r.getRentalStatus());
+			userRentalsDTO.setRentCount((int)car.getRentals().stream()
+					.filter(rental -> !"cancelled".equalsIgnoreCase(rental.getRentalStatus()))
+					.count());
+			userRentalsDTO.setGear(car.getGear());
+			userRentalsDTO.setThumbnail(car.getImage());
+			userRentalsDTO.setReview(car.getReview());
+
+			Location location=r.getDropOffLocation();
+			userRentalsDTO.setLocation(location.getDistrict() + ", " +location.getProvince());
+			LocalDate endDate = r.getDropOffDate();
+			String time = r.getDropOffHours();
+
+			String[] parts = time.split(":");
+
+
+			LocalDateTime now = LocalDateTime.now();
+			LocalDateTime end = LocalDateTime.of(endDate.getYear(),endDate.getMonthValue(),endDate.getDayOfMonth(),Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
+
+			userRentalsDTO.setHoursLeft((int)Duration.between(now,end).toHours());
+			list.add(userRentalsDTO);
+		}
+		return list;
 	}
 
 	@Override

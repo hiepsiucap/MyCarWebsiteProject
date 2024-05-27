@@ -1,9 +1,6 @@
 package com.mycar.nhom13.RestController;
 
-import com.mycar.nhom13.Dto.ChangePasswordDTO;
-import com.mycar.nhom13.Dto.ChangeUserInfoDTO;
-import com.mycar.nhom13.Dto.RevenueDTO;
-import com.mycar.nhom13.Dto.StringResponse;
+import com.mycar.nhom13.Dto.*;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ChangePasswordException;
@@ -111,9 +108,9 @@ public class UserController {
 	}
 
 	@GetMapping("/users/rentals")
-	public ResponseEntity<List<Rental>> getRentals(HttpServletRequest request) {
+	public ResponseEntity<List<UserRentalsDTO>> getRentals(HttpServletRequest request) {
 		int id = getUserIdFromCookie(request);
-		List<Rental> rentals = userService.getRentals(id);
+		List<UserRentalsDTO> rentals = userService.getRentals(id);
 		return new ResponseEntity<>(rentals, new HttpHeaders(), HttpStatus.OK);
 
 	}

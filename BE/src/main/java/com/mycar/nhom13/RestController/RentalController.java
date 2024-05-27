@@ -55,7 +55,10 @@ public class RentalController {
 	}
 
 	@DeleteMapping("/rentals/{id}")
-	public ResponseEntity<String> deleteRental(@PathVariable int id) {
+	public ResponseEntity<String> deleteRental(@PathVariable int id, HttpServletRequest request) {
+
+		int userId = getUserIdFromCookie(request);
+
 		String result = rentalService.remove(id);
 
 		return new ResponseEntity<>(result, new HttpHeaders(), HttpStatus.OK);

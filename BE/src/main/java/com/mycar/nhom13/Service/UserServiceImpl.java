@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService {
 		User user = this.findById(id);
 		int count=0;
 		for(Rental r : user.getRentals()){
-			if(!r.getRentalStatus().equals("pending")) continue;
+			if(!r.getRentalStatus().equals("confirmed")) continue;
 			Car car = r.getCar();
 			UserRentalsDTO userRentalsDTO = new UserRentalsDTO();
 			userRentalsDTO.setCarId(car.getCarId());

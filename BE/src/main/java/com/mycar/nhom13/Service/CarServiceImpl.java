@@ -80,7 +80,11 @@ public class CarServiceImpl implements CarService {
 		return carRepository.findByStatusIsNull(pageable);
 	}
 
-
+	@Override
+	public List<Car> findCarsByUserId(@Param("userId") int userId){
+		return carRepository.findMyCarsByUserId(userId);
+	}
+	
 	@Override
 	public List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId) {
 		return carRepository.findCarsByRentalStatus(status, userId);

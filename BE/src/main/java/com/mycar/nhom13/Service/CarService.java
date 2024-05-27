@@ -28,6 +28,8 @@ public interface CarService {
 	List<Car> findAllCarsByUserIdInRentalgnorePending(@Param("userId") int userId);
 
 	List<Car> findAllCarsByUserIdInRental(@Param("userId") int userId);
+	
+	List<Car> findCarsByUserId(@Param("userId") int userId);
 
 	public Page<Car> filterCars(List<String> brand, List<String> types, Integer minPrice, Integer maxPrice,
 			List<String> fuels, List<String> province, Pageable pageable);

@@ -79,6 +79,7 @@ public class CarMgmtController {
 		return ResponseEntity.ok(mapping);
 	}
 	
+
 	@GetMapping("/null-cars")
 	public ResponseEntity<?> getCarsStatusNull(HttpServletRequest request, @RequestParam(defaultValue = "0") int page) {
 	    int userId = getUserIdFromCookie(request);
@@ -154,6 +155,25 @@ public class CarMgmtController {
 			return ResponseEntity.ok(mapping);
 		}
 	}
+	
+	@GetMapping("/mycar")
+	public ResponseEntity<MappingJacksonValue> getMyCars(HttpServletRequest request){
+		int userId = getUserIdFromCookie(request);
+		List<Car> cars = carService.findCarsByUserId(userId);
+		if(cars.isEmpty()) {
+			throw new ResourceNotFoundException("Khong tim thay xe nao.");
+		}
+		
+		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image", "images",
+				"user", "rentals");
+		SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
+
+		MappingJacksonValue mapping = new MappingJacksonValue(cars);
+		mapping.setFilters(filters);
+
+		return ResponseEntity.ok(mapping);
+	}
+	
 
 	@GetMapping("/rental-status")
 	public ResponseEntity<MappingJacksonValue> getAllCarsWithAllStatuses(HttpServletRequest request) {

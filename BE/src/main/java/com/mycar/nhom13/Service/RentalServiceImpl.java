@@ -1,5 +1,6 @@
 package com.mycar.nhom13.Service;
 
+import com.mycar.nhom13.Dto.CarDTOGET;
 import com.mycar.nhom13.Dto.RentalDTO;
 import com.mycar.nhom13.Entity.Car;
 import com.mycar.nhom13.Entity.Rental;
@@ -7,11 +8,13 @@ import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.RentalException;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
+import com.mycar.nhom13.Mapper.CarMapper;
 import com.mycar.nhom13.Mapper.RentalMapper;
 
 import com.mycar.nhom13.Repository.RentalRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 import java.util.List;
@@ -59,6 +62,15 @@ public class RentalServiceImpl implements RentalService {
 		if (!car.getStatus().equals("active")) {
 			throw new RentalException("Không thể thuê xe này");
 		}
+		CarDTOGET carDTO = CarMapper.carToCarDTOGET(car);
+		System.out.println(carDTO.getDays());
+		for(LocalDate d : carDTO.getDays()){
+			if(!d.isBefore(LocalDate.parse(rentalDTO.getPickUpDate())) && !d.isAfter(LocalDate.parse(rentalDTO.getDropOffDate()))){
+				throw new RentalException("Đã có người thuê trong thời gian này");
+			}
+
+		}
+
 		if (user.getDriverLicenseCheck() == null || user.getDriverLicenseCheck().equals("N")) {
 			throw new RentalException("Chưa có bằng lái");
 		}
@@ -104,8 +116,12 @@ public class RentalServiceImpl implements RentalService {
 	}
 
 	@Override
-	public String remove(int id) {
+	public String remove(int id, int userId) {
+		User user = userService.findById(userId);
 		Rental rental = this.findById(id);
+		if(user.getUserId()!=rental.getUser().getUserId()){
+			throw new RentalException("No permission");
+		}
 		rentalRepository.delete(rental);
 		return new String("Deleted rental with Id: " + id);
 

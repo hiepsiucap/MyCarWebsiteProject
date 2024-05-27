@@ -116,8 +116,12 @@ public class RentalServiceImpl implements RentalService {
 	}
 
 	@Override
-	public String remove(int id) {
+	public String remove(int id, int userId) {
+		User user = userService.findById(userId);
 		Rental rental = this.findById(id);
+		if(user.getUserId()!=rental.getUser().getUserId()){
+			throw new RentalException("No permission");
+		}
 		rentalRepository.delete(rental);
 		return new String("Deleted rental with Id: " + id);
 

@@ -18,6 +18,6 @@ public interface RentalService {
 
 	Rental updateStatus(int rentalId, String status, int userId);
 
-	String remove(int id);
+	String remove(int id, int userId);
 
 }

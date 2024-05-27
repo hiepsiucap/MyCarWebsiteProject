@@ -1,6 +1,7 @@
 package com.mycar.nhom13.RestController;
 
 import com.mycar.nhom13.Dto.RentalDTO;
+import com.mycar.nhom13.Dto.StringResponse;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Service.RentalService;
 import jakarta.servlet.http.Cookie;
@@ -55,13 +56,13 @@ public class RentalController {
 	}
 
 	@DeleteMapping("/rentals/{id}")
-	public ResponseEntity<String> deleteRental(@PathVariable int id, HttpServletRequest request) {
+	public ResponseEntity<StringResponse> deleteRental(@PathVariable int id, HttpServletRequest request) {
 
 		int userId = getUserIdFromCookie(request);
 
-		String result = rentalService.remove(id);
+		String result = rentalService.remove(id,userId);
 
-		return new ResponseEntity<>(result, new HttpHeaders(), HttpStatus.OK);
+		return new ResponseEntity<>(new StringResponse(result), new HttpHeaders(), HttpStatus.OK);
 	}
 
 	private int getUserIdFromCookie(HttpServletRequest request) {

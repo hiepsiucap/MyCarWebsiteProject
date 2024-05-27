@@ -1,6 +1,7 @@
 package com.mycar.nhom13.Service;
 
 import com.mycar.nhom13.Dto.CarDTOGET;
+import com.mycar.nhom13.Dto.RentalBrowse;
 import com.mycar.nhom13.Dto.RentalDTO;
 import com.mycar.nhom13.Entity.Car;
 import com.mycar.nhom13.Entity.Rental;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -125,6 +127,27 @@ public class RentalServiceImpl implements RentalService {
 		rentalRepository.delete(rental);
 		return new String("Deleted rental with Id: " + id);
 
+	}
+
+	@Override
+	public List<RentalBrowse> getRentalToCheck(int id) {
+		User user = userService.findById(id);
+
+		if(user.getRole().equals("User")){
+			throw new UnAuthenticated("No permission");
+		}
+		List<RentalBrowse> browseList = new ArrayList<>();
+		List<Rental> list = this.findAll();
+		for (Rental r : list){
+			if(r.getRentalStatus().equals("pending")){
+				RentalBrowse rentalBrowse = new RentalBrowse();
+				rentalBrowse.setRentalId(r.getRentalId());
+				rentalBrowse.setCarDTO(CarMapper.carToCarDTO(r.getCar()));
+				rentalBrowse.setUser(r.getUser());
+				browseList.add(rentalBrowse);
+			}
+		}
+		return browseList;
 	}
 
 }

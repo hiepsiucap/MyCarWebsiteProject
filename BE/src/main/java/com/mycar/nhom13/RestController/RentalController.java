@@ -1,5 +1,6 @@
 package com.mycar.nhom13.RestController;
 
+import com.mycar.nhom13.Dto.RentalBrowse;
 import com.mycar.nhom13.Dto.RentalDTO;
 import com.mycar.nhom13.Dto.StringResponse;
 import com.mycar.nhom13.Entity.Rental;
@@ -63,6 +64,12 @@ public class RentalController {
 		String result = rentalService.remove(id,userId);
 
 		return new ResponseEntity<>(new StringResponse(result), new HttpHeaders(), HttpStatus.OK);
+	}
+
+	@GetMapping("/rentals/staff")
+	public ResponseEntity<List<RentalBrowse>> getRentalToCheck(HttpServletRequest request){
+		int id = getUserIdFromCookie(request);
+		return new ResponseEntity<>(rentalService.getRentalToCheck(id), new HttpHeaders(), HttpStatus.OK);
 	}
 
 	private int getUserIdFromCookie(HttpServletRequest request) {

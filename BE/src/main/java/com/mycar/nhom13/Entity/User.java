@@ -25,11 +25,11 @@ public class User {
 	@Column(name = "user_id")
 	private int userId;
 	@Column(name = "first_name")
-	@Size(min = 1, message = "Tên không đươợc trống")
+	@Size(min = 1, message = "Tên không đươc trống")
 	private String firstName;
 
 	@Column(name = "last_name")
-	@Size(min = 1, message = "Họ không đươợc trống")
+	@Size(min = 1, message = "Họ không đươc trống")
 	private String lastName;
 
 	@Column(name = "email")

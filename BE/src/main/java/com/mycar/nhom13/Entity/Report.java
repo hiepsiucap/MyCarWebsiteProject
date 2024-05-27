@@ -23,7 +23,7 @@ public class Report {
 	@Column(name = "state")
 	private String state;
 	@Column(name = "details")
-	@Size(min = 1, message = "Nội dung không được để trống")
+	@Size(min = 1, message = "Nội dung không được để trống.")
 	private String details;
 
 	@Column(name = "report_date")

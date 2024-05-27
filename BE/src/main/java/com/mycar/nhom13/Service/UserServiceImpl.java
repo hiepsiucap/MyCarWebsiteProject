@@ -197,6 +197,7 @@ public class UserServiceImpl implements UserService {
 			if(!r.getRentalStatus().equals("confirmed")) continue;
 			Car car = r.getCar();
 			UserRentalsDTO userRentalsDTO = new UserRentalsDTO();
+			userRentalsDTO.setRentalId(r.getRentalId());
 			userRentalsDTO.setCarId(car.getCarId());
 			userRentalsDTO.setName(car.getBrand() + " " + car.getModel() + " " + car.getYear());
 			userRentalsDTO.setDropOffDate(r.getDropOffHours() + " " + r.getDropOffDate());

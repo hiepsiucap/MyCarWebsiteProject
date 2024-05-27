@@ -2,6 +2,8 @@ package com.mycar.nhom13.Dto;
 
 public class UserRentalsDTO {
     private int carId;
+
+    private int rentalId;
     private String name;
     private String dropOffDate;
     private String location;
@@ -17,8 +19,9 @@ public class UserRentalsDTO {
 
     }
 
-    public UserRentalsDTO(int carId, String name, String dropOffDate, String location, Integer rentCount, String status, int hoursLeft, float review, String gear, String thumbnail) {
+    public UserRentalsDTO(int carId, int rentalId, String name, String dropOffDate, String location, int rentCount, String status, int hoursLeft, float review, String gear, String thumbnail) {
         this.carId = carId;
+        this.rentalId = rentalId;
         this.name = name;
         this.dropOffDate = dropOffDate;
         this.location = location;
@@ -28,6 +31,14 @@ public class UserRentalsDTO {
         this.review = review;
         this.gear = gear;
         this.thumbnail = thumbnail;
+    }
+
+    public int getRentalId() {
+        return rentalId;
+    }
+
+    public void setRentalId(int rentalId) {
+        this.rentalId = rentalId;
     }
 
     public int getCarId() {

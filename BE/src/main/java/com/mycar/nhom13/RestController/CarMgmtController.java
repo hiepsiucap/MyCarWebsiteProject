@@ -208,6 +208,21 @@ public class CarMgmtController {
 
 		return ResponseEntity.ok(mapping);
 	}
+	
+	@GetMapping("/vacant")
+    public ResponseEntity<MappingJacksonValue> getCarsByCalendar(
+            @RequestParam String startDate, @RequestParam String endDate, @RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Car> carsPage = carService.findByCalendar(startDate, endDate, pageable);
+        
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "user", "rentals");
+        SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(carsPage);
+        mapping.setFilters(filters);
+
+        return ResponseEntity.ok(mapping);
+    }
 
 	private int getUserIdFromCookie(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();

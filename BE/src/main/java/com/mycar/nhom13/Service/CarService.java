@@ -22,6 +22,8 @@ public interface CarService {
 	Page<Car> findByStatus(String status, Pageable pageable);
 	
 	Page<Car> findByStatusIsNull(Pageable pageable);
+	
+	Page<Car> findByCalendar(String startDate, String endDate, Pageable pageable);
 
 	List<Car> findCarsByRentalStatus(@Param("status") String status, @Param("userId") int userId);
 

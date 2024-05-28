@@ -106,6 +106,11 @@ public class CarServiceImpl implements CarService {
 		return carRepository.findAll(
 				CarSpecification.filterByCriteria(brand, types, minPrice, maxPrice, fuels, province), pageable);
 	}
+	
+	@Override
+	public Page<Car> findByCalendar(String startDate, String endDate, Pageable pageable) {
+        return carRepository.findByCalendar(startDate, endDate, pageable);
+    }
 
 	@Override
 	public void pauseCar(int id) {

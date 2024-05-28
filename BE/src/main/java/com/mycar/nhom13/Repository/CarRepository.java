@@ -18,6 +18,9 @@ public interface CarRepository extends JpaRepository<Car, Integer>, JpaSpecifica
 	Page<Car> findByStatus(String status, Pageable pageable);
 
 	Page<Car> findByStatusIsNull(Pageable pageable);
+	
+	@Query(value = "SELECT c.* FROM Cars c INNER JOIN car_calendars s ON s.car_id = c.car_id WHERE s.start_date >= TO_DATE(:startDate, 'YYYY-MM-DD') AND s.end_date <= TO_DATE(:endDate, 'YYYY-MM-DD')", nativeQuery = true)
+	Page<Car> findByCalendar(@Param("startDate") String startDate, @Param("endDate") String endDate, Pageable pageable);
 
 
 	@Query(value = "SELECT c.* FROM Cars c INNER JOIN Rentals r ON r.car_id = c.car_id WHERE r.customer_id = :userId AND  r.rental_status = :status", nativeQuery = true)

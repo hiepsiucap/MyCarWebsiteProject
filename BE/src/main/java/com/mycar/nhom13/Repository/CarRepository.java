@@ -19,7 +19,28 @@ public interface CarRepository extends JpaRepository<Car, Integer>, JpaSpecifica
 
 	Page<Car> findByStatusIsNull(Pageable pageable);
 	
-	@Query(value = "SELECT c.* FROM Cars c INNER JOIN car_calendars s ON s.car_id = c.car_id WHERE s.start_date >= TO_DATE(:startDate, 'YYYY-MM-DD') AND s.end_date <= TO_DATE(:endDate, 'YYYY-MM-DD')", nativeQuery = true)
+	@Query(value = "SELECT \r\n"
+			+ "    c.car_id, \r\n"
+			+ "    c.license_plates, \r\n"
+			+ "    c.brand, \r\n"
+			+ "    c.model, \r\n"
+			+ "    c.year, \r\n"
+			+ "    c.color, \r\n"
+			+ "    c.user_id, \r\n"
+			+ "    c.mileage, \r\n"
+			+ "    c.type, \r\n"
+			+ "    c.fuel, \r\n"
+			+ "    c.gear, \r\n"
+			+ "    c.consumption, \r\n"
+			+ "    c.description, \r\n"
+			+ "    c.review, \r\n"
+			+ "    c.number_of_review, \r\n"
+			+ "    c.image, \r\n"
+			+ "    c.status, \r\n"
+			+ "    c.seat, \r\n"
+			+ "    c.number_of_rental, \r\n"
+			+ "    c.cost, \r\n"
+			+ "    c.location_id  FROM Cars c WHERE NOT EXISTS (SELECT 1 FROM car_calendars s WHERE s.car_id = c.car_id AND (s.start_date <= TO_DATE(:endDate, 'DD-MON-YY') AND s.end_date >= TO_DATE(:startDate, 'DD-MON-YY')))", nativeQuery = true)
 	Page<Car> findByCalendar(@Param("startDate") String startDate, @Param("endDate") String endDate, Pageable pageable);
 
 

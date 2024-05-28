@@ -141,9 +141,8 @@ public class RentalServiceImpl implements RentalService {
 		for (Rental r : list){
 			if(r.getRentalStatus().equals("pending")){
 				RentalBrowse rentalBrowse = new RentalBrowse();
-				rentalBrowse.setRentalId(r.getRentalId());
+				rentalBrowse.setRental(r);
 				rentalBrowse.setCarDTO(CarMapper.carToCarDTO(r.getCar()));
-				rentalBrowse.setUser(r.getUser());
 				browseList.add(rentalBrowse);
 			}
 		}

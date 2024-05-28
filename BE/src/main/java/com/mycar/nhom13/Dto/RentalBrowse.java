@@ -1,29 +1,29 @@
 package com.mycar.nhom13.Dto;
 
+import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
 
 public class RentalBrowse {
-    private int rentalId;
+    private Rental rental;
     private CarDTO carDTO;
 
-    private User user;
 
     public RentalBrowse(){
 
     }
 
-    public RentalBrowse(int rentalId, CarDTO carDTO, User user) {
-        this.rentalId = rentalId;
+
+    public RentalBrowse(Rental rental, CarDTO carDTO) {
+        this.rental = rental;
         this.carDTO = carDTO;
-        this.user = user;
     }
 
-    public int getRentalId() {
-        return rentalId;
+    public Rental getRental() {
+        return rental;
     }
 
-    public void setRentalId(int rentalId) {
-        this.rentalId = rentalId;
+    public void setRental(Rental rental) {
+        this.rental = rental;
     }
 
     public CarDTO getCarDTO() {
@@ -32,13 +32,5 @@ public class RentalBrowse {
 
     public void setCarDTO(CarDTO carDTO) {
         this.carDTO = carDTO;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

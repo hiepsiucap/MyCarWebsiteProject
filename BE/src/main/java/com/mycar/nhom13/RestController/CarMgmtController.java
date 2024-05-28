@@ -165,7 +165,7 @@ public class CarMgmtController {
 			throw new ResourceNotFoundException("Khong tim thay xe nao.");
 		}
 		
-		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "image",
+		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars",
 				"user", "rentals");
 		SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
 

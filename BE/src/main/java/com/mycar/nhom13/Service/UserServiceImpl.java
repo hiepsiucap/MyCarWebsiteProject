@@ -6,6 +6,7 @@ import com.mycar.nhom13.Entity.Location;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ChangePasswordException;
+import com.mycar.nhom13.ExceptionHandler.RentalException;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
 import com.mycar.nhom13.Repository.UserRepository;
@@ -29,11 +30,14 @@ public class UserServiceImpl implements UserService {
 
 	private final PasswordEncoder passwordEncoder;
 
+	private final CarService carService;
+
 	public UserServiceImpl(UserRepository userRepository, CloudinaryService cloudinaryService,
-			PasswordEncoder passwordEncoder) {
+			PasswordEncoder passwordEncoder, CarService carService) {
 		this.userRepository = userRepository;
 		this.cloudinaryService = cloudinaryService;
 		this.passwordEncoder = passwordEncoder;
+		this.carService=carService;
 	}
 
 	@Override
@@ -300,7 +304,7 @@ public class UserServiceImpl implements UserService {
 				RentalHistory rentalHistory = new RentalHistory();
 				rentalHistory.setCarId(c.getCarId());
 				rentalHistory.setName(c.getBrand() + " " + c.getModel() + " " + c.getYear());
-				rentalHistory.setCarStatus(c.getStatus());
+				rentalHistory.setRentalStatus(r.getRentalStatus());
 				rentalHistory.setTotalCost(r.getTotalCost());
 				rentalHistory.setTotalDay(r.getTotalDay());
 				rentalHistory.setRentalDate(r.getPickUpDate().toString() +" - " + r.getDropOffDate());
@@ -311,7 +315,31 @@ public class UserServiceImpl implements UserService {
 		return list;
 	}
 
-	Comparator<RentalHistory> carIDComparator = new Comparator<RentalHistory>() {
+    @Override
+    public List<RentalHistory> getCarHistory(int id, int userId) {
+		Car car = carService.findByCarId(id);
+		if(car.getUser().getUserId()!=userId){
+			throw new RentalException("Không phải xe của bạn");
+		}
+		List<RentalHistory> list = new ArrayList<>();
+			List<Rental> rentals =car.getRentals();
+			for(Rental r : car.getRentals()){
+				RentalHistory rentalHistory = new RentalHistory();
+				rentalHistory.setCarId(car.getCarId());
+				rentalHistory.setName(car.getBrand() + " " + car.getModel() + " " + car.getYear());
+				rentalHistory.setRentalStatus(r.getRentalStatus());
+				rentalHistory.setTotalCost(r.getTotalCost());
+				rentalHistory.setTotalDay(r.getTotalDay());
+				rentalHistory.setRentalDate(r.getPickUpDate().toString() +" - " + r.getDropOffDate());
+				list.add(rentalHistory);
+			}
+			Collections.sort(list,comparator);
+
+			return list;
+
+	}
+
+    Comparator<RentalHistory> carIDComparator = new Comparator<RentalHistory>() {
 		@Override
 		public int compare(RentalHistory o1, RentalHistory o2) {
 			return Integer.compare(o1.getCarId(), o2.getCarId());
@@ -340,5 +368,28 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 	};
+
+	Comparator<RentalHistory> comparator = new Comparator<RentalHistory>() {
+		@Override
+		public int compare(RentalHistory r1, RentalHistory r2) {
+			return getStatusOrder(r1.getRentalStatus()) - getStatusOrder(r2.getRentalStatus());
+		}
+
+		private int getStatusOrder(String status) {
+			switch (status) {
+				case "pending":
+					return 1;
+				case "confirmed":
+					return 2;
+				case "completed":
+					return 3;
+				case "cancelled":
+					return 4;
+				default:
+					return 5;
+			}
+		}
+	};
+
 
 }

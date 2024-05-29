@@ -4,18 +4,18 @@ public class RentalHistory {
     private int carId;
     private String name;
     private String rentalDate;
-    private String carStatus;
+    private String rentalStatus;
     private int totalDay;
     private int totalCost;
     public RentalHistory(){
 
     }
 
-    public RentalHistory(int carId, String name, String rentalDate, String carStatus, int totalDay, int totalCost) {
+    public RentalHistory(int carId, String name, String rentalDate, String rentalStatus, int totalDay, int totalCost) {
         this.carId = carId;
         this.name = name;
         this.rentalDate = rentalDate;
-        this.carStatus = carStatus;
+        this.rentalStatus = rentalStatus;
         this.totalDay = totalDay;
         this.totalCost = totalCost;
     }
@@ -60,12 +60,12 @@ public class RentalHistory {
         this.rentalDate = rentalDate;
     }
 
-    public String getCarStatus() {
-        return carStatus;
+    public String getRentalStatus() {
+        return rentalStatus;
     }
 
-    public void setCarStatus(String carStatus) {
-        this.carStatus = carStatus;
+    public void setRentalStatus(String rentalStatus) {
+        this.rentalStatus = rentalStatus;
     }
 
 

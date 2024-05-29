@@ -68,7 +68,7 @@ public class CarMgmtController {
 
 	@GetMapping("")
 	public ResponseEntity<MappingJacksonValue> getActiveCars(@RequestParam(defaultValue = "0") int page) {
-		Pageable pageable = PageRequest.of(page, 10);
+		Pageable pageable = PageRequest.of(page, 12);
 		Page<Car> carsPage = carService.findByStatus("active", pageable);
 		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "user",
 				"rentals");
@@ -86,7 +86,7 @@ public class CarMgmtController {
 	    int userId = getUserIdFromCookie(request);
 
 	    if (!userService.findById(userId).getRole().equals("User")) {
-	        Pageable pageable = PageRequest.of(page, 10);
+	        Pageable pageable = PageRequest.of(page, 12);
 	        Page<Car> carsPage = carService.findByStatusIsNull(pageable);
 	        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "user", "rentals");
 	        SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("CarListFilter", filter);
@@ -116,7 +116,7 @@ public class CarMgmtController {
 			@RequestParam(required = false) Integer maxprice, @RequestParam(required = false) List<String> fuel,
 			@RequestParam(required = false) List<String> province, @RequestParam(required = false) List<String> district, @RequestParam(defaultValue = "0") int page) {
 
-		Pageable pageable = PageRequest.of(page, 10);
+		Pageable pageable = PageRequest.of(page, 12);
 		Page<Car> carsPage = carService.filterCars(brand, type, minprice, maxprice, fuel, province, district, pageable);
 
 		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "user",
@@ -212,7 +212,7 @@ public class CarMgmtController {
 	@GetMapping("/vacant")
     public ResponseEntity<MappingJacksonValue> getCarsByCalendar(
             @RequestParam String startDate, @RequestParam String endDate, @RequestParam(defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 12);
         Page<Car> carsPage = carService.findByCalendar(startDate, endDate, pageable);
         
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("carCalendars", "user", "rentals");

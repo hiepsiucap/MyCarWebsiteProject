@@ -250,4 +250,64 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+    @Override
+    public List<UserRentalsDTO> getAllRentals(int id) {
+		List<UserRentalsDTO> list = new ArrayList<>();
+		User user = this.findById(id);
+		int count=0;
+		for(Rental r : user.getRentals()){
+
+			Car car = r.getCar();
+			UserRentalsDTO userRentalsDTO = new UserRentalsDTO();
+			userRentalsDTO.setRentalId(r.getRentalId());
+			userRentalsDTO.setCarId(car.getCarId());
+			userRentalsDTO.setName(car.getBrand() + " " + car.getModel() + " " + car.getYear());
+			userRentalsDTO.setDropOffDate(r.getDropOffHours() + " " + r.getDropOffDate());
+			userRentalsDTO.setStatus(r.getRentalStatus());
+			userRentalsDTO.setRentCount((int)car.getRentals().stream()
+					.filter(rental -> !"cancelled".equalsIgnoreCase(rental.getRentalStatus()))
+					.count());
+			userRentalsDTO.setGear(car.getGear());
+			userRentalsDTO.setThumbnail(car.getImage());
+			userRentalsDTO.setReview(car.getReview());
+
+			Location location=r.getDropOffLocation();
+			userRentalsDTO.setLocation(location.getDistrict() + ", " +location.getProvince());
+			LocalDate endDate = r.getDropOffDate();
+			String time = r.getDropOffHours();
+
+			String[] parts = time.split(":");
+
+
+			LocalDateTime now = LocalDateTime.now();
+			LocalDateTime end = LocalDateTime.of(endDate.getYear(),endDate.getMonthValue(),endDate.getDayOfMonth(),Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
+
+			userRentalsDTO.setHoursLeft(((int)Duration.between(now,end).toHours()));
+			list.add(userRentalsDTO);
+		}
+		Collections.sort(list, statusComparator);
+		return list;
+	}
+	Comparator<UserRentalsDTO> statusComparator = new Comparator<UserRentalsDTO>() {
+		@Override
+		public int compare(UserRentalsDTO o1, UserRentalsDTO o2) {
+			return getStatusOrder(o1.getStatus()) - getStatusOrder(o2.getStatus());
+		}
+
+		private int getStatusOrder(String status) {
+			switch (status) {
+				case "pending":
+					return 1;
+				case "confirmed":
+					return 2;
+				case "completed":
+					return 3;
+				case "cancelled":
+					return 4;
+				default:
+					return 5;
+			}
+		}
+	};
+
 }

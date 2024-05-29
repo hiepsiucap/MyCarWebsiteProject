@@ -115,6 +115,14 @@ public class UserController {
 
 	}
 
+	@GetMapping("/users/allrentals")
+	public ResponseEntity<List<UserRentalsDTO>> getAllRentals(HttpServletRequest request) {
+		int id = getUserIdFromCookie(request);
+		List<UserRentalsDTO> rentals = userService.getAllRentals(id);
+		return new ResponseEntity<>(rentals, new HttpHeaders(), HttpStatus.OK);
+
+	}
+
 	@GetMapping("/users/numofrentals")
 	public ResponseEntity<StringResponse> getNumOfRental(HttpServletRequest request) {
 		int id = getUserIdFromCookie(request);

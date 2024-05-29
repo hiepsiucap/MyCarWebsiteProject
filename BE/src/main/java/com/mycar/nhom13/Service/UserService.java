@@ -39,4 +39,6 @@ public interface UserService {
 	Integer getNumOfRental(int id);
 
 	List<User> getListNeedCheck(int id);
+
+	List<UserRentalsDTO> getAllRentals(int id);
 }

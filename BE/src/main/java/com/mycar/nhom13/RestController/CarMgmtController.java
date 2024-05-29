@@ -255,7 +255,9 @@ public class CarMgmtController {
 		}
 
 		Car car = PostCarMapper.dtoToCar(postCarDTO, user, location);
-
+		car.setReview(5F);
+		car.setNumberOfRental(0);
+		car.setNumberOfReview(0);
 		Car savedCar = carService.save(car);
 
 		PostCarDTO savedPostCarDTO = PostCarMapper.carToCarDTO(savedCar);

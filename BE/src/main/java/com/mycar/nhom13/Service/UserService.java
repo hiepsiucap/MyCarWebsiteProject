@@ -1,9 +1,6 @@
 package com.mycar.nhom13.Service;
 
-import com.mycar.nhom13.Dto.ChangePasswordDTO;
-import com.mycar.nhom13.Dto.ChangeUserInfoDTO;
-import com.mycar.nhom13.Dto.RevenueDTO;
-import com.mycar.nhom13.Dto.UserRentalsDTO;
+import com.mycar.nhom13.Dto.*;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,4 +38,6 @@ public interface UserService {
 	List<User> getListNeedCheck(int id);
 
 	List<UserRentalsDTO> getAllRentals(int id);
+
+    List<RentalHistory> getRentalsHistory(int id);
 }

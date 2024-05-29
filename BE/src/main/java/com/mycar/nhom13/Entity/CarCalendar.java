@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class CarCalendar {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "calendar_seq")
+	@SequenceGenerator(name = "calendar_seq", sequenceName = "calendar_seq", initialValue = 50, allocationSize = 1)
 	@Column(name = "calendar_id")
 	private int calendarId;
 

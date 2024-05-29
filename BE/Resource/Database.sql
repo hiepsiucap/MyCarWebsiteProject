@@ -31,9 +31,9 @@ CREATE TABLE Cars (
     type VARCHAR2(50),
     fuel VARCHAR2(10) CHECK(fuel IN ('Xang', 'Dau', 'Dien')),
     gear VARCHAR2(20) CHECK(gear IN ('Tu dong', 'So san')),
-    consumption NUMBER,
+    consumption FLOAT,
     description VARCHAR2(2000),
-    review DECIMAL(10,2),
+    review FLOAT,
     number_of_review INT,
     image VARCHAR2(255),
     status VARCHAR2(10) CHECK(status IN ('pending', 'active', 'pause')),
@@ -52,11 +52,11 @@ CREATE TABLE Car_Images (
 );
 
 CREATE TABLE Car_calendars (
-    calender_id INT,
+    calendar_id INT,
     car_id INT,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    PRIMARY KEY (calender_id, car_id),
+    PRIMARY KEY (calendar_id),
     FOREIGN KEY (car_id) REFERENCES Cars(car_id)
 );
 

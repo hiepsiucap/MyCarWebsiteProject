@@ -1,17 +1,22 @@
 package com.mycar.nhom13.Service;
 
+import com.mycar.nhom13.Dto.ReportDTO;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.Report;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
+import com.mycar.nhom13.Mapper.CarMapper;
 import com.mycar.nhom13.Repository.RentalRepository;
 import com.mycar.nhom13.Repository.ReportRepository;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -61,13 +66,33 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public List<Report> listforStaff(int id) {
+	public List<ReportDTO> listforStaff(int id) {
 		User user = userService.findById(id);
 		if (user.getRole().equals("User")) {
 			throw new UnAuthenticated("No permission");
 		}
-		List<Report> reportList = repository.findAll();
-		return reportList.stream().filter(report -> report.getState().equals("Pending")).collect(Collectors.toList());
+		List<ReportDTO> list = new ArrayList<>();
+		List<Report> reportList = this.findAll();
+		for (Report r : reportList) {
+			ReportDTO reportDTO  = new ReportDTO();
+			reportDTO.setReport(r);
+			reportDTO.setRental(r.getRental());
+			reportDTO.setCarDTO(CarMapper.carToCarDTO(r.getRental().getCar()));
+			list.add(reportDTO);
+		}
+		Collections.sort(list, (o1, o2) -> {
+			String status1 = o1.getReport().getState();
+			String status2 = o2.getReport().getState();
+
+			if (status1.equals("Pending") && status2.equals("completed")) {
+				return -1;
+			} else if (status1.equals("completed") && status2.equals("Pending")) {
+				return 1;
+			} else {
+				return status1.compareTo(status2);
+			}
+		});
+		return list;
 
 	}
 

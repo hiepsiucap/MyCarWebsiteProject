@@ -1,5 +1,6 @@
 package com.mycar.nhom13.Service;
 
+import com.mycar.nhom13.Dto.ReportDTO;
 import com.mycar.nhom13.Entity.Report;
 import com.mycar.nhom13.Entity.User;
 
@@ -16,5 +17,5 @@ public interface ReportService {
 
 	Report update(String status, int id);
 
-	List<Report> listforStaff(int id);
+	List<ReportDTO> listforStaff(int id);
 }

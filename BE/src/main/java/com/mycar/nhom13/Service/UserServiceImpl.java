@@ -288,6 +288,37 @@ public class UserServiceImpl implements UserService {
 		Collections.sort(list, statusComparator);
 		return list;
 	}
+
+	@Override
+	public List<RentalHistory> getRentalsHistory(int id) {
+		User user = this.findById(id);
+		List<Car> cars = user.getCars();
+		List<RentalHistory> list = new ArrayList<>();
+		for(Car c : cars){
+			List<Rental> rentals =c.getRentals();
+			for(Rental r : rentals){
+				RentalHistory rentalHistory = new RentalHistory();
+				rentalHistory.setCarId(c.getCarId());
+				rentalHistory.setName(c.getBrand() + " " + c.getModel() + " " + c.getYear());
+				rentalHistory.setCarStatus(c.getStatus());
+				rentalHistory.setTotalCost(r.getTotalCost());
+				rentalHistory.setTotalDay(r.getTotalDay());
+				rentalHistory.setRentalDate(r.getPickUpDate().toString() +" - " + r.getDropOffDate());
+				list.add(rentalHistory);
+			}
+		}
+		Collections.sort(list, carIDComparator);
+		return list;
+	}
+
+	Comparator<RentalHistory> carIDComparator = new Comparator<RentalHistory>() {
+		@Override
+		public int compare(RentalHistory o1, RentalHistory o2) {
+			return Integer.compare(o1.getCarId(), o2.getCarId());
+		}
+	};
+
+
 	Comparator<UserRentalsDTO> statusComparator = new Comparator<UserRentalsDTO>() {
 		@Override
 		public int compare(UserRentalsDTO o1, UserRentalsDTO o2) {

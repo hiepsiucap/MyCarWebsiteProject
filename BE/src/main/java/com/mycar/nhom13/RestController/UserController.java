@@ -142,6 +142,16 @@ public class UserController {
 		return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
 	}
 
+	@GetMapping("/users/cars/history")
+	public ResponseEntity<List<RentalHistory>> getCarHistory(HttpServletRequest request) {
+
+		int id = getUserIdFromCookie(request);
+
+		List<RentalHistory> list = userService.getRentalsHistory(id);
+
+		return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
+	}
+
 	private int getUserIdFromCookie(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {

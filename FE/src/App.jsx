@@ -1,7 +1,7 @@
 import { createBrowserRouter,RouterProvider } from "react-router-dom";
 
 import './App.css'
-import { RootLayout, HomePage, HowToRent, DetailCar, ListCar, AccountDetail, SideBarAccountLayout, FavouriteCar,MyCar, MyRentCar, Revenue ,RegisterCar } from "./Page";
+import { RootLayout, HomePage,RegisterCarForm, HowToRent, DetailCar, ListCar, AccountDetail, SideBarAccountLayout, FavouriteCar,MyCar,Complete, MyRentCar, Revenue, ComplainCheck ,RegisterCar, Booking, UpdateCar, Calendar, LicensePage } from "./Page";
 function App() {
  const router = createBrowserRouter([
     {
@@ -11,6 +11,14 @@ function App() {
         {
           path: "/",
           element: <HomePage></HomePage>,
+        },
+        {
+         path: "/complete/:id",
+         element: <Complete></Complete>
+        },
+        {
+         path: "/registercarform",
+         element: <RegisterCarForm></RegisterCarForm>
         },
          {
           path: "/howtorent",
@@ -29,6 +37,11 @@ function App() {
           element: <RegisterCar></RegisterCar>,
         },
         {
+          path: "/booking/:id",
+          element: <Booking></Booking>
+        },
+        
+        {
           path: "/user",
           element: <SideBarAccountLayout></SideBarAccountLayout>,
           children: [
@@ -40,10 +53,25 @@ function App() {
           path: "/user/favouritecar",
           element: <FavouriteCar></FavouriteCar>,
            },
+            {
+          path: "/user/license",
+          element: <LicensePage></LicensePage>,
+           },
+            {
+          path: "/user/complain",
+          element: <ComplainCheck></ComplainCheck>,
+           },
+           
              {
           path: "/user/mycar",
+          children: [
+              {
+          path: "/user/mycar/",
           element: <MyCar></MyCar>,
            },
+          ]
+           },
+           
             {
           path: "/user/myrentcar",
           element: <MyRentCar></MyRentCar>,
@@ -53,6 +81,14 @@ function App() {
           element: <Revenue></Revenue>,
            },
           ]
+        },
+        {
+          path: "/updatecar/:id",
+          element:<UpdateCar></UpdateCar>
+        },
+        {
+          path: "/calendar/:id",
+          element:<Calendar></Calendar>
         }
       ],
     },

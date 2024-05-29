@@ -1,14 +1,26 @@
 import React from 'react';
 import 'photoswipe/dist/photoswipe.css';
 import { Gallery, Item } from 'react-photoswipe-gallery'
-import detail5 from "../assets/detail5.jpg"
-import detail6 from "../assets/detail6.jpg"
-import detail7 from "../assets/detail7.jpg"
-import detail8 from "../assets/detail8.jpg"
+import { DetailCar } from '../Utiliz/Constants';
+import { useParams } from 'react-router';
+import { useEffect, useState } from 'react';
+import { getRequest } from '../Utiliz/services';
 const storyMeta = {
   title: 'Demo/Basic',
 };
+
  const Basic =()=> {
+  const [data, changedata]=useState([]);
+  const { id } = useParams();
+  useEffect(()=>{
+   const fetchData=async()=>
+    {
+      const responsedata= await getRequest(`http://localhost:8080/api/cars/${id}`)
+      changedata(responsedata.images);
+    }
+    fetchData();
+    
+  },[id, useParams])
     const smallItemStyles = {
       cursor: 'pointer',
       objectFit: 'fill',
@@ -26,8 +38,8 @@ const storyMeta = {
           }}
         >
           <Item
-            original={detail8}
-            thumbnail={detail8}
+            original={data[0]?.image}
+            thumbnail={data[0]?.image}
             width="1200"
             height="800"
             alt="Photo of seashore by Folkert Gorter"
@@ -35,15 +47,15 @@ const storyMeta = {
             {({ ref, open }) => (
               <img
                 style={{ cursor: 'pointer', width: "700px" , height:"450px"  }}
-                src={detail8}
+                src={data[0]?.image}
                 ref={ref}
                 onClick={open}
               />
             )}
           </Item>
           <Item
-            original={detail5}
-            thumbnail={detail5}
+            original={data[1]?.image}
+            thumbnail={data[1]?.image}
             width="1600"
             height="1068"
             alt="Photo of mountain lake by Samuel Rohl"
@@ -51,15 +63,15 @@ const storyMeta = {
             {({ ref, open }) => (
               <img
                 style={smallItemStyles}
-                src={detail5}
+                src={data[1]?.image}
                 ref={ref}
                 onClick={open}
               />
             )}
           </Item>
           <Item
-            original={detail6}
-            thumbnail={detail6}
+            original={data[2]?.image}
+            thumbnail={data[2]?.image}
             width="1600"
             height="1066"
             alt="Photo of fog in the village by Ales Krivec"
@@ -67,15 +79,15 @@ const storyMeta = {
             {({ ref, open }) => (
               <img
                 style={smallItemStyles}
-                src={detail6}
+                src={data[2]?.image}
                 ref={ref}
                 onClick={open}
               />
             )}
           </Item>
           <Item
-            original={detail7}
-            thumbnail={detail7}
+            original={data[3]?.image}
+            thumbnail={data[3]?.image}
             width="1600"
             height="1066"
             alt="Photo of river sunset by Michael Hull"
@@ -83,15 +95,15 @@ const storyMeta = {
             {({ ref, open }) => (
               <img
                 style={{ ...smallItemStyles, gridColumnStart: 2 }}
-                src={detail7}
+                src={data[3]?.image}
                 ref={ref}
                 onClick={open}
               />
             )}
           </Item>
           <Item
-            original={detail7}
-            thumbnail={detail7}
+            original={data[4]?.image}
+            thumbnail={data[4]?.image}
             width="1600"
             height="1066"
             alt="Photo of bear by Thomas Lefebvre"
@@ -99,7 +111,7 @@ const storyMeta = {
             {({ ref, open }) => (
               <img
                 style={smallItemStyles}
-                src={detail7}
+                src={data[4]?.image}
                 ref={ref}
                 onClick={open}
               />

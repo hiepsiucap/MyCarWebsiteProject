@@ -10,4 +10,12 @@ import FavouriteCar from "./FavouriteCar";
 import MyCar from "./MyCar";
 import Revenue from "./Revenue";
 import RegisterCar from "./RegisterCar";
-export {RootLayout, HomePage,DetailCar, HowToRent, ListCar, AccountDetail, SideBarAccountLayout, FavouriteCar, RegisterCar,MyRentCar, Revenue, MyCar}
+import Booking from "./Booking";
+import Calendar from "./Calendar";
+import Complete from "./Complete";
+import Report from "./Report";
+import RegisterCarForm from "./RegisterCarForm";
+import UpdateCar from "./UpdateCar";
+import LicensePage from "./LicenseCheck";
+import ComplainCheck from "./ComplainHandle";
+export {RootLayout, HomePage,DetailCar, HowToRent, ListCar, AccountDetail, SideBarAccountLayout,UpdateCar, FavouriteCar, RegisterCar,MyRentCar,Report,ComplainCheck, Revenue,Booking, MyCar,RegisterCarForm,Calendar,LicensePage, Complete}

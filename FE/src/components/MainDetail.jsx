@@ -27,10 +27,19 @@ import start from "../assets/start.svg"
 import "react-datepicker/dist/react-datepicker.css";
 import Modal from 'react-modal';
 import CarSlick from "./CarSlick";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { addDays } from "date-fns";
+import heart from "../assets/heart2.svg"
 import { TimeNow } from "../Utiliz/Constants";
+import { DetailCar } from "../Utiliz/Constants";
+import { useParams } from "react-router-dom";
+import { getRequest } from "../Utiliz/services";
+import { createacart } from "../features/carcart/cartSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Swal } from "sweetalert2/dist/sweetalert2";
+import 'sweetalert2/src/sweetalert2.scss'
 const customStyles = {
    content: {
     top: '50%',
@@ -47,35 +56,122 @@ const customStyles = {
   }
 
 };
+
 Modal.setAppElement('#root');
 const MainDetail = () => {
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
+const [data, changedata]=useState(
+  {
+
+address: "",
+consumption: "",
+cost: "",
+days: [],
+description: "",
+district: "",
+fuel :"", 
+gear: "", 
+images: [],
+name: "",
+province: "",
+reviews: [],
+seat: ""}
+);
+console.log(data.days);
+const { id } = useParams();
+  useEffect(()=>{
+   const fetchData=async()=>
+    {
+      const responsedata= await getRequest(`http://localhost:8080/api/cars/${id}`)
+      changedata(responsedata);
+    }
+    fetchData();
+    
+  },[id, useParams])
   let subtitle;
   const [modalIsOpen, setIsOpen] = useState(false);
-
+  const [totalerror, changetotalerror] =useState(null);
+ const renderStars = (num) => {
+    return [...Array(num)].map((_, index) =>   <img src={start} alt="" key={index} />);
+  }
   function openModal() {
     setIsOpen(true);
   }
+  const [total, setTotal] = useState();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [MaxDate, setMaxDate] = useState(addDays(new Date()+365));
+  const [DateError,setDateError]= useState("");
+    useEffect(()=>{
+   setTotal(tinhSoNgay(startDate,endDate)* data.cost);
+  },[startDate, endDate, data])
+    const verifyDay =({start,end})=> {
+      if(!start || !end)
+        {
+          return;
+        }
+    for( var a of DetailCar.days)
+      {
+           
+        const days= new Date(a);
+         console.log("Hello",days)
+            if(days.getTime()>start.getTime() && days.getTime()<end.getTime())
+              {
+                setDateError("Lịch bạn chọn đã có ngày xe bận, vui lòng chọn lại ngày nhận và trả xe")
+                return;
+              }
+      }
+      setDateError("");
+
+  }
   const onChange = (dates) => {
     const [start, end] = dates;
+    verifyDay({start,end});
     setStartDate(start);
     setEndDate(end);
   };
+
   const [startHour, ChangeStart] =  useState("08:00");
     const [EndHour, ChangeEnd] =  useState("20:00");
-    console.log(TimeNow(startDate));
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
     subtitle.style.color = '##000000';
   }
-  console.log(startDate, endDate)
   function closeModal() {
     setIsOpen(false);
   }
-  console.log(startHour);
+    useEffect(()=>{
+    if(total<=0)
+      {
+       changetotalerror("Vui lòng");
+      }
+      else
+      {
+        changetotalerror(null);
+      }
+  },[total])
+  const AddCartHandler =()=>{
+    if(total ===0)
+      {
+      return;
+      }
+    const adddata={
+      carId: id,
+      pickUpDate: startDate,
+      pickUpHours: startHour,
+      dropOffDate: endDate,
+      dropOffHours: EndHour,
+      totalCost: total,
+      location: `${data.address}, ${data.district}, ${data.province}`
+    }
+    dispatch(createacart(adddata));
+    navigate(`/booking/${id}`)
+
+  }
   return (
-    <section className=" md:container mx-auto pt-8">
+    <>
+    {data ? <section className=" md:container mx-auto pt-8">
        
         <Basic></Basic>
          <Modal
@@ -97,10 +193,11 @@ const MainDetail = () => {
           onChange={onChange}
           startDate={startDate}
           endDate={endDate}
-          excludeDates={[addDays(new Date(), 1), addDays(new Date(), 5)]}
+          excludeDates={data.days.map((r)=> {return new Date(r) })}
           selectsRange
           locale={vi} 
           minDate={new Date()}
+          maxDate={MaxDate}
           monthsShown={2} // Display two months
           selectsDisabledDaysInRange
           inline
@@ -140,15 +237,18 @@ const MainDetail = () => {
         <div className=" flex space-x-10 pt-10">
         <div className=" flex flex-col text-start w-2/3">
             <div>
-            <h2 className=" text-3xl font-manrope font-bold">Mercedes-AMG G63 2021</h2>
+            <h2 className=" text-3xl font-manrope font-bold">{data.name}</h2>
              <div className=" flex justify-between border-b-2 pb-6 border-gray-200">
                 <div className=" flex space-x-2 items-center">
                 <img src={diadiem} alt="" />
-                <p className=" font-manrope text-gray-500">Thành phố Thủ Đức</p>
+                <p className=" font-manrope text-gray-500">Thành phố {data.province}</p>
                 </div>
                   <div className=" flex space-x-2 items-center">
-                <p className=" font-manrope font-bold text-lg text-gray-800">Chia sẻ</p>
+                <button className=" font-manrope font-bold text-lg text-gray-800">Chia sẻ</button>
                  <img src={chiase} alt="" />
+                 <div className=" px-2"></div>
+                  <button className=" font-manrope font-bold text-lg text-gray-800">Yêu thích</button>
+                 <img src={heart} alt="" />
                 </div>
              </div>
                <div className=" flex flex-col space-y-8 py-8">
@@ -160,7 +260,7 @@ const MainDetail = () => {
                                   <img src={car} alt="" />
                                   <div>
                                   <p className=" text-gray-600">Số ghế</p>
-                                    <p className=" text-xl font-bold ">5 Chỗ</p>
+                                    <p className=" text-xl font-medium ">{data.seat} Chỗ</p>
                                   </div>
                     
                             </div>
@@ -168,7 +268,7 @@ const MainDetail = () => {
                                   <img src={dongco} alt="" />
                                   <div>
                                   <p className=" text-gray-600">Truyền động</p>
-                                    <p className=" text-xl font-bold ">Số tự động</p>
+                                    <p className=" text-xl font-medium ">{data.gear ==="Tu dong" ? "Tự động" : "Số sàn"}</p>
                                   </div>
                     
                             </div>
@@ -176,7 +276,7 @@ const MainDetail = () => {
                                   <img src={cayxang} alt="" />
                                   <div>
                                   <p className=" text-gray-600">Nhiên liệu</p>
-                                    <p className=" text-xl font-bold ">Dầu</p>
+                                    <p className=" text-xl font-medium">{data.fuel ==="Xang" && "Xăng"}  {data.fuel === "Dau" && "Dầu"}  {data.fuel ==="Dien" && "Điện"}</p>
                                   </div>
                     
                             </div>
@@ -184,7 +284,7 @@ const MainDetail = () => {
                                   <img src={tieuhoa} alt="" />
                                   <div>
                                   <p className=" text-gray-600">Tiêu hao</p>
-                                    <p className=" text-xl font-bold ">7L/100KM</p>
+                                    <p className=" text-xl font-medium ">{data.consumption}L/100KM</p>
                                   </div>
                     
                             </div>
@@ -193,7 +293,7 @@ const MainDetail = () => {
                                <div className=" flex flex-col space-y-2">
                         <h5 className=" font-bold font-manrope text-xl">Mô tả</h5>
                           <div className="pt-1 px-1 rounded-sm bg-primary w-12"></div>
-                            <div className=" pt-3 leading-relaxed">Mercedes-Benz G63 là một dòng xe SUV cao cấp của hãng xe Đức Mercedes-Benz, nổi tiếng với thiết kế mạnh mẽ và sang trọng. Xe được trang bị động cơ V8 tăng áp kép mạnh mẽ, hệ thống lái và treo được cải tiến để vận hành linh hoạt trên mọi loại địa hình. Nội thất của G63 được trang bị với các vật liệu cao cấp và tính năng tiện nghi hiện đại. Đặc biệt, Mercedes-Benz cung cấp các phiên bản đặc biệt và tùy chọn cá nhân hóa cho G63, giúp khách hàng có nhiều sự lựa chọn phong phú. Tóm lại, G63 là một dòng xe SUV mạnh mẽ, đa năng và sang trọng, phù hợp cho những người đam mê khám phá và yêu thích tiện nghi cao cấp.</div>
+                            <div className=" pt-3 leading-relaxed font-manrope">{data.description}</div>
                           </div>
                           <div className=" flex flex-col space-y-2">
                         <h5 className=" font-bold font-manrope text-xl">Các tiện nghi khác</h5>
@@ -244,7 +344,7 @@ const MainDetail = () => {
                         <div className=" flex flex-col space-y-2">
                         <h5 className=" font-bold font-manrope text-xl">Điều khoản</h5>
                           <div className="pt-1 px-1 rounded-sm bg-primary w-12"></div>
-                            <div className=" pt-3 leading-relaxed"> <h2>Quy định khác:</h2>
+                            <div className=" pt-3 leading-relaxed font-manrope"> <h2>Quy định khác:</h2>
     <ul>
         <li>-Sử dụng xe đúng mục đích.</li>
         <li>-Không sử dụng xe thuê vào mục đích phi pháp, trái pháp luật.</li>
@@ -259,114 +359,54 @@ const MainDetail = () => {
                          <div className=" border"></div>
                          <div className=" text-3xl font-manrope font-bold">Đánh giá</div> 
                          <div className="class flex flex-col space-y-4">
+                           {
+                            data.reviews.map((r)=>
+                              {
+                                return(
                             <motion.div
     initial={{ opacity: 0, y: 50 }}
     whileInView={{ opacity: 1, y:0 }}
-    transition={{ duration: 0.5 }} className=" flex flex-col px-6 py-4 space-y-3 border rounded-lg border-slate-300 ">
+    transition={{ duration: 0.5 }}  key={r.name}className=" flex flex-col px-6 py-4 space-y-3 border rounded-lg border-slate-300 ">
                             <div className=" flex justify-between">
                             <div className=" flex space-x-4">
-                                <img src="https://res.cloudinary.com/dhhuv7n0h/image/upload/v1710901348/rfb0bgnjivk8cujez1ft.jpg" className=" w-20 h-20 rounded-full" alt="" />
+                                <img src={r.ava} className=" w-20 h-20 rounded-full" alt="" />
                                 <div className=" flex flex-col space-y-2">
-                                    <h2 className=" font-medium text-xl font-manrope">Alex Hiệp Nguyễn</h2>
+                                    <h2 className=" font-medium text-xl font-manrope">{r.name}</h2>
                                      <div className=" flex ">
-                                     <img src={start} alt="" />
-                                      <img src={start} alt="" />
-                                       <img src={start} alt="" />
-                                        <img src={start} alt="" />
-                                         <img src={start} alt="" />
+                                    {renderStars(r.rate)}
                                      </div>    
                                 </div>
                                 </div>
-                                  <p className=" text-gray-600">23/04/2024</p>
+                                  <p className=" text-gray-600">{r.date}</p>
                                 </div>
-                                 <div className=" font-manrope text-gray-600">chủ xe giao xe sạch sẽ, xe chạy êm, ổn định.</div>
+                                 <div className=" font-manrope text-gray-600">{r.details}</div>
                                 </motion.div>
-                                <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y:0 }}
-    transition={{ duration: 0.5 }} className=" flex flex-col px-6 py-4 space-y-3 border rounded-lg border-slate-300 ">
-                            <div className=" flex justify-between">
-                            <div className=" flex space-x-4">
-                                <img src="https://res.cloudinary.com/dhhuv7n0h/image/upload/v1710901348/rfb0bgnjivk8cujez1ft.jpg" className=" w-20 h-20 rounded-full" alt="" />
-                                <div className=" flex flex-col space-y-2">
-                                    <h2 className=" font-medium text-xl font-manrope">Alex Hiệp Nguyễn</h2>
-                                     <div className=" flex ">
-                                     <img src={start} alt="" />
-                                      <img src={start} alt="" />
-                                       <img src={start} alt="" />
-                                        <img src={start} alt="" />
-                                         <img src={start} alt="" />
-                                     </div>    
-                                </div>
-                                </div>
-                                  <p className=" text-gray-600">23/04/2024</p>
-                                </div>
-                                 <div className=" font-manrope text-gray-600">chủ xe giao xe sạch sẽ, xe chạy êm, ổn định.</div>
-                                </motion.div>
-                                <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y:0 }}
-    transition={{ duration: 0.5 }} className=" flex flex-col px-6 py-4 space-y-3 border rounded-lg border-slate-300 ">
-                            <div className=" flex justify-between">
-                            <div className=" flex space-x-4">
-                                <img src="https://res.cloudinary.com/dhhuv7n0h/image/upload/v1710901348/rfb0bgnjivk8cujez1ft.jpg" className=" w-20 h-20 rounded-full" alt="" />
-                                <div className=" flex flex-col space-y-2">
-                                    <h2 className=" font-medium text-xl font-manrope">Alex Hiệp Nguyễn</h2>
-                                     <div className=" flex ">
-                                     <img src={start} alt="" />
-                                      <img src={start} alt="" />
-                                       <img src={start} alt="" />
-                                        <img src={start} alt="" />
-                                         <img src={start} alt="" />
-                                     </div>    
-                                </div>
-                                </div>
-                                  <p className=" text-gray-600">23/04/2024</p>
-                                </div>
-                                 <div className=" font-manrope text-gray-600">chủ xe giao xe sạch sẽ, xe chạy êm, ổn định.</div>
-                                </motion.div>
-                                <div className=" flex flex-col px-6 py-4 space-y-3 border rounded-lg border-slate-300 ">
-                            <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y:0 }}
-    transition={{ duration: 0.5 }} className=" flex justify-between">
-                            <div className=" flex space-x-4">
-                                <img src="https://res.cloudinary.com/dhhuv7n0h/image/upload/v1710901348/rfb0bgnjivk8cujez1ft.jpg" className=" w-20 h-20 rounded-full" alt="" />
-                                <div className=" flex flex-col space-y-2">
-                                    <h2 className=" font-medium text-xl font-manrope">Alex Hiệp Nguyễn</h2>
-                                     <div className=" flex ">
-                                     <img src={start} alt="" />
-                                      <img src={start} alt="" />
-                                       <img src={start} alt="" />
-                                        <img src={start} alt="" />
-                                         <img src={start} alt="" />
-                                     </div>    
-                                </div>
-                                </div>
-                                  <p className=" text-gray-600">23/04/2024</p>
-                                </motion.div>
-                                 <div className=" font-manrope text-gray-600">chủ xe giao xe sạch sẽ, xe chạy êm, ổn định.</div>
-                                </div>
+                                )
+})     
+}
                                 </div> 
                 </div>
              </div>
         </div>
         <div className=" shadow-md bg-slate-50 flex flex-col space-y-5 items-center p-5 w-1/3 h-min">
-            <h1 className=" text-3xl font-manrope text-primary font-bold">390.000/1 Ngày</h1>
+            <h1 className=" text-3xl font-manrope text-primary font-bold">{formatPrice(data.cost)}/1 Ngày</h1>
+            <div className=" w-full">
             <div className=" flex w-full">
-            <button className="bg-white border rounded-l-md p-3 w-1/2" onClick={openModal}>
+            <button className={DateError ?"bg-white border border-red-400 rounded-l-md p-3 w-1/2" :"bg-white border rounded-l-md p-3 w-1/2"} onClick={openModal}>
                 <p className="text-sm font-manrope text-gray-600 text-start">Nhận xe </p>
-                <p className=" font-manrope tracking-wide font-medium w-full text-start">{startDate?.getDate() <10 && 0}{startDate?.getDate()}/{startDate?.getMonth() <10 && 0 }{startDate?.getMonth()}/{startDate?.getFullYear()} &nbsp; {startHour}</p>
-
+                <p className=" font-manrope tracking-wide font-medium w-full text-start">{startDate?.getDate() <10 && 0}{startDate?.getDate()}/{startDate?.getMonth()+1 <10 && 0 }{startDate?.getMonth()+1}/{startDate?.getFullYear()} &nbsp; {startHour}</p>
+   
             </button>
-            <button className="bg-white border rounded-r-md p-3  w-1/2" onClick={openModal}>
+            <button className={DateError ?"bg-white border border-red-400 rounded-r-md p-3  w-1/2" :"bg-white border rounded-r-md p-3  w-1/2"} onClick={openModal}>
                 <p className="text-sm font-manrope text-gray-600 text-start"> Trả xe</p>
-                <p className=" font-manrope tracking-wide font-medium text-start">{endDate?.getDate() <10 && 0 }{endDate?.getDate()}/{startDate?.getMonth() <10 && 0 }{endDate?.getMonth()}/{endDate?.getFullYear()} &nbsp; {EndHour}</p>
+                <p className=" font-manrope tracking-wide font-medium text-start">{endDate?.getDate() <10 && 0 }{endDate?.getDate()}/{startDate?.getMonth()+1 <10 && 0 }{endDate?.getMonth()+1}/{endDate?.getFullYear()} &nbsp; {EndHour}</p>
             </button>
+            </div>
+               <p className=" text-red-500 text-xs italic text-start pt-1">{DateError}</p>
             </div>
             <button className="bg-white border flex flex-col space-y-2 rounded-md p-5 w-full">
                 <p className="text-sm font-manrope text-gray-600 text-start">Địa điểm nhận xe: </p>
-                <p className=" font-manrope tracking-wide font-medium text-start"> Quận Bình Thạnh, TP. Hồ Chí Minh</p>
+                <p className=" font-manrope tracking-wide font-medium text-start"> {data.address}, {data.district}, {data.province}</p>
                    <p className="text-sm font-manrope text-gray-400 text-start">Rất tiếc, chủ xe không hỗ trợ giao xe tận nơi </p>
             </button>
             <div className=" w-full border"></div>
@@ -378,8 +418,8 @@ const MainDetail = () => {
 </svg>
                 </div>
                 <div className=" flex space-x-2 items-end">
-                     <p className=" text-sm font-manrope text-gray-600 pb-1 ">{tinhSoNgay(startDate,endDate)}*390.000=</p>
-                <p className=" font-bold font-manrope text-lg">{formatPrice(tinhSoNgay(startDate,endDate)*390000)}</p>
+                     <p className=" text-sm font-manrope text-gray-600 pb-1 ">{tinhSoNgay(startDate,endDate)}*{formatPrice(data.cost)}=</p>
+                <p className=" font-bold font-manrope text-lg">{formatPrice(total)}</p>
              
                 </div>
             </div>
@@ -390,7 +430,7 @@ const MainDetail = () => {
   <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
 </svg>
                 </div>
-                <p className=" font-bold font-manrope text-lg">{formatPrice(125000)}</p>
+                <p className=" font-bold font-manrope text-lg">{formatPrice(0)}</p>
             </div>
               <div className=" w-full border"></div>
                 <div className=" flex w-full justify-between">
@@ -398,7 +438,7 @@ const MainDetail = () => {
                     <p className=" font-manrope text-lg">Tổng cộng</p>
                    
                 </div>
-                <p className=" font-bold font-manrope text-lg">{formatPrice(tinhSoNgay(startDate,endDate)*390000+125000)}</p>
+                <p className=" font-bold font-manrope text-lg">{formatPrice(total)}</p>
             </div>
                 <div className=" w-full border"></div>
                  <div className=" flex w-full justify-between">
@@ -415,10 +455,14 @@ const MainDetail = () => {
                     <p className=" font-manrope text-lg font-bold">Thành tiền</p>
                    
                 </div>
-                <p className=" font-bold font-manrope text-lg ">{formatPrice(tinhSoNgay(startDate,endDate)*390000+125000)}</p>
+                <p className=" font-bold font-manrope text-lg ">{formatPrice(total)}</p>
             </div>
             <div className=" pt-4"></div>
-            <button className=" bg-primary rounded-md p-4 w-1/2 mx-auto font-manrope text-lg font-bold text-white">Thanh toán</button>
+            {DateError || totalerror ?
+            <button to="/booking" disabled className=" bg-primary opacity-60 rounded-md p-4 w-1/2 mx-auto font-manrope text-lg font-bold text-white" onClick={AddCartHandler}>Thanh toán</button>
+            :
+            <button to="/booking" className=" bg-primary rounded-md p-4 w-1/2 mx-auto font-manrope text-lg font-bold text-white" onClick={AddCartHandler}>Thanh toán</button>
+}
         </div>
 
         </div>
@@ -426,7 +470,9 @@ const MainDetail = () => {
           <h5 className=" text-4xl font-bold font-manrope text-center pb-12">Xe tương tự</h5>
         <CarSlick></CarSlick>
         </div>
-    </section>
+    </section> : null
+}   
+</>
   );
 };
 export default MainDetail;

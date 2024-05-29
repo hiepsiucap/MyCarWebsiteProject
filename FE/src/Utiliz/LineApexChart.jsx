@@ -1,5 +1,6 @@
  import React from "react";
 import Chart from "react-apexcharts";
+import { revenue } from "./Constants";
  class LineApexChart extends React.Component {
         constructor(props) {
           super(props);
@@ -7,8 +8,8 @@ import Chart from "react-apexcharts";
           this.state = {
           
             series: [{
-                name: "Desktops",
-                 data: [100, 120, 150, 200, 250, 300, 350, 200, 450, 500, 525 , 550]
+                name: "Lượt đặt",
+                 data: this.props.monthrent
             }],
             options: {
               chart: {

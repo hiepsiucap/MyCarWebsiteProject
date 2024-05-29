@@ -1,7 +1,7 @@
 
 import  { Component } from "react";
 import Chart from "react-apexcharts";
-
+import { revenue } from "./Constants";
 class BarChart extends Component {
   constructor(props) {
     super(props);
@@ -9,7 +9,11 @@ class BarChart extends Component {
      this.state = {
           
             series: [{
-              data: [1380, 1200, 1100, 690, 580, 540, 470, 448, 430, 400]
+              data: this.props.toprentcar.map((m)=>{
+                const tempmoney= m/1000000;
+                return tempmoney.toFixed(2);
+              }),
+              name: "Doanh thu (tr)",
             }],
             options: {
               chart: {
@@ -27,19 +31,14 @@ class BarChart extends Component {
                 enabled: false
               },
               xaxis: {
-                categories: [
-  "Toyota Vios",
-  "Toyota Innova",
-  "Toyota Fortuner",
-  "Hyundai Accent",
-  "Kia Morning",
-  "Hyundai Grand i10",
-  "VinFast Lux A2.0",
-  "Honda CR-V",
-  "Mazda CX-5",
-  "Toyota Camry"
-],
-              }
+                categories: this.props.topcar,
+          
+          title: {
+            text: "Triệu đồng"
+          }
+        }
+              ,
+              
             },
           
           

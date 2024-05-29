@@ -2,9 +2,12 @@
 
 import { useState } from "react";
 import { NavBar, Footer, Modal , ChooseDate, Modals} from "../components";
-
+import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 const RootLayout = () => {
+    const {userInfo} = useSelector(
+    (state) => state.auth
+  )
   const [login, openlogin]= useState(false);
     const [register, openregister]= useState(false);
     const [forgot, changeforgot]=useState(false);

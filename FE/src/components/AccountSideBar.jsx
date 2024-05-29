@@ -5,12 +5,20 @@ import rent from "../assets/rent.svg"
 import heart from "../assets/heart.svg"
 import tien from "../assets/tien.svg"
 import Swal from 'sweetalert2'
+import complain from  "../assets/complain.svg"
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion"
+import { postRequest } from "../Utiliz/services"
+import {signout} from "../features/auth/authSlice"
+import { useDispatch ,  } from "react-redux"
+import license from "../assets/license.svg"
+import { useNavigate } from "react-router-dom"
 const AccountSideBar = () => {
+  const dispatch = useDispatch();
     const url =useLocation();
+    const navigate= useNavigate();
     console.log(url.pathname);
-    const onClickHandler =()=>{
+    const onClickHandler = async()=>{
         Swal.fire({
   title: "Bạn có muốn đăng xuất?",
   text: "Tất cả các trang làm việc đều đăng xuất",
@@ -19,13 +27,19 @@ const AccountSideBar = () => {
   confirmButtonColor: "#04ABFF",
   cancelButtonColor: "#d33",
   confirmButtonText: "Đăng xuất"
-}).then((result) => {
+}).then(async (result) => {
   if (result.isConfirmed) {
-    Swal.fire({
-      title: "Đăng xuất thành công!",
-      text: "Tài khoản của bạn đã được đăng xuất",
-      icon: "success"
-    });
+       
+   const response=await fetch("http://localhost:8080/signOut",{
+    method: "POST",
+    withCredntials: true,
+    credentials: "include",
+    headers: {
+        Accept: "application/json",  // Đặt Accept header thành application/json
+        "Content-Type": "application/json",
+      }} );
+     dispatch(signout());
+     navigate("/");
   }
 });
     }
@@ -41,7 +55,11 @@ const AccountSideBar = () => {
             </Link>
            <Link to="/user/favouritecar" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
                 <img src={heart}  className={url.pathname==="/user/favouritecar"? " border-l-2 w-8  h-8 border-primary scale-125 pl-2 py-1" :"border-l-2 w-8 h-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
-                <div className={url.pathname==="/user/favouritecar" ?" font-manrope font-bold": " font-manrope font-medium"}>Xe ưu thích</div>
+                <div className={url.pathname==="/user/favouritecar" ?" font-manrope font-bold": " font-manrope font-medium"}>Duyệt đơn hàng</div>
+            </Link >
+             <Link to="/user/complain" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
+                <img src={complain}  className={url.pathname==="/user/complain"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
+                <div className={url.pathname==="/user/complain" ?" font-manrope font-bold": " font-manrope font-medium"}>Xử lý khiếu nại</div>
             </Link >
               <Link to="/user/mycar" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
                 <img src={car}  className={url.pathname==="/user/mycar"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
@@ -50,6 +68,10 @@ const AccountSideBar = () => {
               <Link to="/user/myrentcar" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
                 <img src={rent}  className={url.pathname==="/user/myrentcar"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
                 <div className={url.pathname==="/user/myrentcar" ?" font-manrope font-bold": " font-manrope font-medium"}>Xe đang thuê</div>
+            </Link >
+              <Link to="/user/license" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
+                <img src={license}  className={url.pathname==="/user/license"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
+                <div className={url.pathname==="/user/license" ?" font-manrope font-bold": " font-manrope font-medium"}>Duyệt bằng lái</div>
             </Link >
                 <Link to="/user/revenue" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
                 <img src={tien}  className={url.pathname==="/user/revenue"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />

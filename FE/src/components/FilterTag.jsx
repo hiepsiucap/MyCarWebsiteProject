@@ -17,6 +17,9 @@ import company from "../assets/company.svg"
 import ChooseModel from "./ModelCar"
 import FilterPrice from "./FilterPrice"
 import DateFilter from "./DateFilter"
+import { resetfilter } from "../features/listcar/CarSlice"
+import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 const customStyles = {
    content: {
     top: '50%',
@@ -36,6 +39,14 @@ const customStyles = {
 };
 Modal.setAppElement('#root');
 const FilterTag = () => {
+      const {     
+        rangeprice,
+        brand,
+        fuel ,
+        error,
+        province,
+        district,
+        type } = useSelector(state => state.listcar);
     const [active, setactive] = useState(false);
     window.addEventListener("scroll", function ()
 {
@@ -48,14 +59,20 @@ const FilterTag = () => {
         setactive(false)
     }
 })
+console.log(rangeprice,
+        brand,
+        fuel ,
+        error,
+        province,
+        district,
+        type );
    const [modalIsOpen, setIsOpen] = useState(false);
+   const dispatch =useDispatch();
    const [filtername, setfilter ]= useState("");
   function  openModal ({name} ) {
     setfilter(name);
     setIsOpen(true);
-
   }
-
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
     subtitle.style.color = '#f00';
@@ -85,7 +102,7 @@ const FilterTag = () => {
         <div className=" flex space-x-6 justify-center pb-4">
             <button onClick={()=>{openModal({name:"location"})}}  className=" flex space-x-2">
                 <img src={location} alt="" />
-                <p className=" font-manrope">Hồ Chí Minh</p>
+                <p className=" font-manrope">{province ? `${district || ""},${province}`: "Chọn địa điểm nhận xe"}</p>
             </button>
              <button className=" flex space-x-2" onClick={()=>{openModal({name:"date"})}}>
                 <img src={calendar} alt="" />
@@ -99,31 +116,31 @@ const FilterTag = () => {
     scale: 1.1,
     transition: { duration: 0.2 },
   }}
-  whileTap={{ scale: 0.9 }} className="px-5 py-2 bg-primary text-white text-sm rounded-3xl font-medium font-manrope border">Tất cả</motion.button>
+  whileTap={{ scale: 0.9 }} onClick={()=>{dispatch(resetfilter())}}   className={brand || type.length>0 || rangeprice[0] !=0 || rangeprice[1]!=100 || fuel.length>0 ? "px-5 py-2  text-black  text-sm rounded-3xl font-medium font-manrope border" : "px-5 py-2 bg-primary text-white text-sm rounded-3xl font-medium font-manrope border"}>Tất cả</motion.button>
                           <motion.button initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}  transition={{ delay: 0.2, duration: 0.5 }}     whileHover={{
     scale: 1.1,
     transition: { duration: 0.2 },
   }}
-  whileTap={{ scale: 0.9 }} onClick={()=>{openModal({name:"company"})}} className="flex space-x-1 items-center px-5 py-2 bg-white rounded-3xl border "><img src={company} className=" w-6 h-6" alt="" /><p>Hãng xe</p></motion.button>
+  whileTap={{ scale: 0.9 }} onClick={()=>{openModal({name:"company"})}} className={brand ? "flex space-x-1 items-center px-5 py-2 bg-white border-primary rounded-3xl border " : "flex space-x-1 items-center px-5 py-2 bg-white rounded-3xl border "}><img src={company} className=" w-6 h-6" alt="" /><p>Hãng xe</p></motion.button>
                         <motion.button initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}  transition={{ delay: 0.2, duration: 0.5 }}     whileHover={{
     scale: 1.1,
     transition: { duration: 0.2 },
   }}
-  whileTap={{ scale: 0.9 }} onClick={()=>{openModal({name:"model"})}} className="flex space-x-1 items-center px-5 py-2 bg-white rounded-3xl border"><img src={caricon} alt="" /><p>Loại xe</p></motion.button>
+  whileTap={{ scale: 0.9 }} onClick={()=>{openModal({name:"model"})}} className={type.length>0 ? "flex space-x-1 items-center px-5 py-2 bg-white border-primary rounded-3xl border " : "flex space-x-1 items-center px-5 py-2 bg-white rounded-3xl border "}><img src={caricon} alt="" /><p>Loại xe</p></motion.button>
    <motion.button onClick={()=>{openModal({name:"price"})}}  initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}   transition={{ delay: 0.2, duration: 0.5 }}  whileHover={{
     scale: 1.1,
     transition: { duration: 0.2 },
   }}
-  whileTap={{ scale: 0.9 }} className="flex space-x-1 items-center px-5 py-2 bg-white rounded-3xl border"><img src={giamgia} alt="" /><p>Giá tiền</p></motion.button>
+  whileTap={{ scale: 0.9 }} className={rangeprice[0]!==0 || rangeprice[1]!=100 ? "flex space-x-1 items-center px-5 py-2 bg-white border-primary rounded-3xl border " : "flex space-x-1 items-center px-5 py-2 bg-white rounded-3xl border "}><img src={giamgia} alt="" /><p>Giá tiền</p></motion.button>
                         <motion.button initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}   transition={{ delay: 0.2, duration: 0.5 }}    whileHover={{
     scale: 1.1,
     transition: { duration: 0.2 },
   }}
-  whileTap={{ scale: 0.9 }} onClick={()=>{openModal({name:"fuel"})}} className="flex space-x-1 items-center px-5 py-2 bg-white rounded-3xl border"><img src={cayxang} alt="" /><p>Nhiên liệu</p></motion.button>
+  whileTap={{ scale: 0.9 }} onClick={()=>{openModal({name:"fuel"})}} className={fuel.length>0? "flex space-x-1 items-center px-5 py-2 bg-white border-primary rounded-3xl border " : "flex space-x-1 items-center px-5 py-2 bg-white rounded-3xl border "}><img src={cayxang} alt="" /><p>Nhiên liệu</p></motion.button>
                         <motion.button  initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}  transition={{ delay: 0.2, duration: 0.5 }}   whileHover={{
     scale: 1.1,

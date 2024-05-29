@@ -4,6 +4,7 @@ import phonecall from "../assets/phonecall.png"
 import imagegallery from "../assets/imagegallery.png"
 import registercar from "../assets/registercar.jpg"
 import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
 const RegisterCar = () => {
   return (
     <motion.section   initial={{ opacity: 0, x: -50 }}
@@ -11,7 +12,7 @@ const RegisterCar = () => {
           transition={{ delay: 0.2, duration: 0.5 }} className=" flex flex-col items-center space-y-2  py-12">
         <h1 className=" text-4xl font-manrope font-bold">Đăng ký xe</h1>
         <img src={registercar} alt="" className="w-1/4" />
-        <button className=" font-manrope py-3 px-8 bg-primary text-white font-bold rounded-md">Đăng kí xe tự lái</button>
+        <Link to="/registercarform" className=" font-manrope py-3 px-8 bg-primary text-white font-bold rounded-md">Đăng kí xe tự lái</Link>
          <p className=" font-manrope font-medium text-xl pt-5 pb-10">Gia tăng thu nhập từ 5-12 tr/tháng cùng MyCar</p>
          <div className=" border  px-4 py-6 rounded-lg ">
                <p className=" font-manrope font-bold">

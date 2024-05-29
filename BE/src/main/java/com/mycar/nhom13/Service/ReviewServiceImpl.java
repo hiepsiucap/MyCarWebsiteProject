@@ -1,5 +1,6 @@
 package com.mycar.nhom13.Service;
 
+import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.Review;
 import com.mycar.nhom13.Entity.User;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
@@ -18,10 +19,12 @@ public class ReviewServiceImpl implements ReviewService {
 
 	private final ReviewRepository reviewRepository;
 	private final RentalService rentalService;
+	private final UserService userService;
 
-	public ReviewServiceImpl(ReviewRepository reviewRepository, RentalService rentalService) {
+	public ReviewServiceImpl(ReviewRepository reviewRepository, RentalService rentalService, UserService userService) {
 		this.reviewRepository = reviewRepository;
 		this.rentalService = rentalService;
+		this.userService=userService;
 	}
 
 	@Override
@@ -38,8 +41,12 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public Review save(Review review, int rentalId) {
-		if (rentalService.findById(rentalId).getReview() != null)
+	public Review save(Review review, int rentalId, int userId) {
+		Rental rental = rentalService.findById(rentalId);
+		User user = userService.findById(userId);
+		if(rental.getUser().getUserId()!=user.getUserId())
+			throw new ReviewException("Chỉ có người thuê xe mới có thể đánh giá");
+		if (rental.getReview() != null)
 			throw new ReviewException("Mỗi lần thuê chỉ được đánh giá một lần");
 		review.setDate(LocalDate.now());
 		review.setRental(rentalService.findById(rentalId));

@@ -25,11 +25,7 @@ public class ReportController {
 		this.reportService = reportService;
 	}
 
-	@GetMapping("/reports")
-	public ResponseEntity<List<Report>> retrieveAllReports() {
-		return new ResponseEntity<>(reportService.findAll(), new HttpHeaders(), HttpStatus.OK);
 
-	}
 
 	@GetMapping("/reports/{id}")
 	public ResponseEntity<Report> retrieveReport(@PathVariable int id) {
@@ -39,17 +35,17 @@ public class ReportController {
 	}
 
 	@PostMapping("/rentals/{id}/reports")
-	public ResponseEntity<Report> postReports(@RequestBody @Valid Report report, @PathVariable int id) {
-
-		Report savedReport = reportService.save(report, id);
+	public ResponseEntity<Report> postReports(@RequestBody @Valid Report report, @PathVariable int id, HttpServletRequest request) {
+		int userId = getUserIdFromCookie(request);
+		Report savedReport = reportService.save(report, id,userId);
 
 		return new ResponseEntity<>(savedReport, new HttpHeaders(), HttpStatus.CREATED);
 	}
 
 	@PatchMapping("/rentals/{id}/reports")
-	public ResponseEntity<Report> patchReport(@RequestParam("status") String status, @PathVariable int id) {
-
-		Report savedReport = reportService.update(status, id);
+	public ResponseEntity<Report> patchReport(@RequestParam("status") String status, @PathVariable int id,HttpServletRequest request) {
+		int userId= getUserIdFromCookie(request);
+		Report savedReport = reportService.update(status, id, userId);
 
 		return new ResponseEntity<>(savedReport, new HttpHeaders(), HttpStatus.OK);
 	}

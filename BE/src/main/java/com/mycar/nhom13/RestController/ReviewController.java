@@ -4,6 +4,8 @@ import com.mycar.nhom13.Entity.Review;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.ReviewService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,11 +37,24 @@ public class ReviewController {
 	}
 
 	@PostMapping("/rentals/{id}/reviews")
-	public ResponseEntity<Review> postReview(@RequestBody @Valid Review review, @PathVariable int id) {
+	public ResponseEntity<Review> postReview(@RequestBody @Valid Review review, @PathVariable int id, HttpServletRequest request) {
 
-		Review savedReview = reviewService.save(review, id);
+		int userId = getUserIdFromCookie(request);
+		Review savedReview = reviewService.save(review, id,userId);
 
 		return new ResponseEntity<>(savedReview, new HttpHeaders(), HttpStatus.CREATED);
 	}
-
+	private int getUserIdFromCookie(HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("auth_by_cookie")) {
+					String cookieValue = cookie.getValue();
+					String[] parts = cookieValue.split("&");
+					return Integer.parseInt(parts[0]);
+				}
+			}
+		}
+		return 0;
+	}
 }

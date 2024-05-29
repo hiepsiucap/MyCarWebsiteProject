@@ -4,6 +4,7 @@ import com.mycar.nhom13.Dto.ReportDTO;
 import com.mycar.nhom13.Entity.Rental;
 import com.mycar.nhom13.Entity.Report;
 import com.mycar.nhom13.Entity.User;
+import com.mycar.nhom13.ExceptionHandler.RentalException;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.ExceptionHandler.UnAuthenticated;
 import com.mycar.nhom13.Mapper.CarMapper;
@@ -50,17 +51,29 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public Report save(Report report, int id) {
-		report.setState("Pending");
-		report.setDate(LocalDate.now());
-		report.setRental(rentalRepository.findById(id));
-		return repository.save(report);
+	public Report save(Report report, int id,int userId) {
+		User user=userService.findById(userId);
+		Rental rental = rentalRepository.findById(id);
+		if(user.getUserId()==rental.getUser().getUserId() || user.getUserId()==rental.getCar().getUser().getUserId()){
+			report.setState("Pending");
+			report.setDate(LocalDate.now());
+			report.setRental(rentalRepository.findById(id));
+			return repository.save(report);
+		}
+		else {
+			throw new RentalException("Chỉ có người thuê hoặc chủ xe mới được khiếu nại");
+
+		}
 	}
 
 	@Override
-	public Report update(String status, int id) {
+	public Report update(String status, int id,int userId) {
+		User user=userService.findById(userId);
+		if(user.getRole().equals("User")){
+			throw new UnAuthenticated("No permission");
+		}
 		Report report = this.findById(id);
-		report.setState("status");
+		report.setState(status);
 
 		return repository.save(report);
 	}

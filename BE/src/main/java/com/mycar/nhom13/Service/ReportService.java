@@ -13,9 +13,9 @@ public interface ReportService {
 
 	Report findById(int id);
 
-	Report save(Report report, int id);
+	Report save(Report report, int id, int userId);
 
-	Report update(String status, int id);
+	Report update(String status, int id, int userId);
 
 	List<ReportDTO> listforStaff(int id);
 }

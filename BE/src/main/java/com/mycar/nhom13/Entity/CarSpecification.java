@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CarSpecification {
 	public static Specification<Car> filterByCriteria(List<String> brand, List<String> types, Integer minPrice,
-			Integer maxPrice, List<String> fuels, List<String> province) {
+			Integer maxPrice, List<String> fuels, List<String> province, List<String> district) {
 		return (root, query, criteriaBuilder) -> {
 			List<Predicate> predicates = new ArrayList<>();
 
@@ -34,6 +34,10 @@ public class CarSpecification {
 
 			if (province != null && !province.isEmpty()) {
 				predicates.add(root.join("location").get("province").in(province));
+			}
+			
+			if (district != null && !district.isEmpty()) {
+				predicates.add(root.join("location").get("district").in(district));
 			}
 
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

@@ -6,6 +6,7 @@ import FilterLocation from "./FilterLocation"
 import { useState } from "react"
 import Modal from "react-modal"
 import DateFilter from "./DateFilter"
+import { Link } from "react-router-dom";
 const customStyles = {
    content: {
     top: '50%',
@@ -74,12 +75,12 @@ const Hero = () => {
           className="title"
         >
           <h1 className="w-3/4 mx-auto text-6xl font-bold font-manrope text-white leading-relaxed">
-          Mycar - Dẫn đường cho cuộc phiêu lưu của bạn
+          Mycar - Đồng hành cùng bạn trên mọi nẻo
           </h1>
         </motion.div>
       </AnimatePresence>
       <div className=" border bottom-2 border-white w-1/2"></div>
-     <p className=" text-white text-xl font-manrope flex items-end"> Trải nghiệm sự khác biệt từ hơn <div className=" w-20 font-manrope text-2xl"> <Number n={10000}></Number> </div> xe gia đình đời mới khắp Việt Nam</p>
+     <p className=" text-white text-xl font-manrope flex items-end"> Được sự tin tưởng đặt biệt với hơn <div className=" w-20 font-manrope text-2xl"> <Number n={10000}></Number> </div> khách hàng khắp thế giới</p>
        <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -123,12 +124,8 @@ const Hero = () => {
              </button>
          </div>
          <div className="pl-10">
-         <motion.button  
-         whileHover={{
-    scale: 1.1,
-    transition: { duration: 0.2 },
-  }}
-  whileTap={{ scale: 0.9 }} className=" bg-primary text-white px-8 py-3 rounded-lg">Tìm xe</motion.button>
+          <div className=" pb-3"></div>
+         <Link to="/car" className=" bg-primary text-white px-8 py-3 rounded-lg" >Tìm xe</Link>
          </div>
       </motion.div>
 </motion.div>

@@ -56,7 +56,7 @@ const CheckRegisterCar = () => {
       }
     }
     getData();
-  },[])
+  },[reload])
   console.log(cardata);
   const  onClickHandler=async(e)=>{
   Swal.fire({
@@ -78,17 +78,17 @@ const CheckRegisterCar = () => {
       {
      return Swal.fire('Duyệt đơn  không thành công!', '', 'error')
       } 
-    Swal.fire('Dừng cho thuê thành công!', '', 'success')
+    Swal.fire('Duyệt đơn thành công!', '', 'success')
   } 
 })
  }
   const  onClickOpenHandler=async(e)=>{
   Swal.fire({
-  title: 'Chắc chắn bạn muốn tiếp tục cho thuê ?',
+  title: 'Chắc chắn bạn muốn duyệt đơn ?',
   showDenyButton: true,
     icon: "warning",
   confirmButtonText: "Chắc chắn",
-  denyButtonText: 'tiếp tục dừng cho thuê',
+  denyButtonText: 'không duyệt đơn',
   customClass: {
     actions: 'my-actions',
     cancelButton: 'order-1 right-gap',
@@ -100,20 +100,20 @@ const CheckRegisterCar = () => {
      const response=  await patchRequest(`http://localhost:8080/api/cars/${e.target.id}`,{status: "active"})
      if(response.error)
       {
-     return Swal.fire('Dừng cho thuê không thành công!', '', 'error')
+     return Swal.fire('duyệt xe không thành công!', '', 'error')
       }      
-    Swal.fire('Dừng cho thuê thành công!', '', 'success')
-    changereload("Hiiii");
+    Swal.fire('duyệt đơn đăng kí thành công!', '', 'success')
+    changereload(e.target.id);
   } 
 })
  }
  const onClickCloseHandler =async(e)=>{
   Swal.fire({
-  title: 'Chắc chắn bạn muốn tiếp tục cho thuê ?',
+  title: 'Chắc chắn bạn muốn huỷ duyệt đơn ?',
   showDenyButton: true,
     icon: "warning",
   confirmButtonText: "Chắc chắn",
-  denyButtonText: 'tiếp tục dừng cho thuê',
+  denyButtonText: 'duyệt đơn đăng kí',
   customClass: {
     actions: 'my-actions',
     cancelButton: 'order-1 right-gap',
@@ -125,9 +125,9 @@ const CheckRegisterCar = () => {
      const response=  await patchRequest(`http://localhost:8080/api/cars/${e.target.id}`,{status: "pending"})
      if(response.error)
       {
-     return Swal.fire('Dừng cho thuê không thành công!', '', 'error')
+     return Swal.fire('Huỷ Duyệt xe không thành công!', '', 'error')
       }      
-    Swal.fire('Dừng cho thuê thành công!', '', 'success')
+    Swal.fire('Huỷ đơn thuê xe thành công!', '', 'success')
     changereload("Hiiii");
   } 
 })

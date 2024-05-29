@@ -55,7 +55,7 @@ const LicensePage = () => {
         title: "Xác nhận thành công",
         icon: "success"
       });
-      changereload("reload");
+      changereload(e.target.id);
   }
     const onUnCheckHandler=async(e)=>{
     const response = await postRequest(`http://localhost:8080/users/licensecheck?id=${e.target.id}&check=false`,{});
@@ -71,7 +71,7 @@ const LicensePage = () => {
         title: "Xác nhận huỷ thành công",
         icon: "success"
       });
-      changereload("reload");
+      changereload(e.target.id);
   }
   const [data, changedata]= useState(null);
   useEffect(()=>{

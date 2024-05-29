@@ -140,7 +140,7 @@ const MyCar = () => {
                                   <button id={car.carId} className=" p-2 px-8 border border-primary rounded-md font-manrope  text-sm font-medium"onClick={onClickHandler}>Dừng cho thuê</button> 
                                   }
                                    
-                                              <Link to="/calendar/12" className=" p-2 px-9 border border-primary rounded-md font-manrope  text-sm font-medium">Lịch cho thuê</Link> 
+                                              <Link to={`/calendar/${car.carId}`} className=" p-2 px-9 border border-primary rounded-md font-manrope  text-sm font-medium">Lịch cho thuê</Link> 
         </div>
                 </div>
                 </>

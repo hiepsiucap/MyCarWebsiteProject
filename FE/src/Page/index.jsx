@@ -19,4 +19,5 @@ import UpdateCar from "./UpdateCar";
 import LicensePage from "./LicenseCheck";
 import ComplainCheck from "./ComplainHandle";
 import CheckRegisterCar from "./CheckRegisterCar";
-export {RootLayout,CheckRegisterCar, HomePage,DetailCar, HowToRent, ListCar, AccountDetail, SideBarAccountLayout,UpdateCar, FavouriteCar, RegisterCar,MyRentCar,Report,ComplainCheck, Revenue,Booking, MyCar,RegisterCarForm,Calendar,LicensePage, Complete}
+import AllRental from "./AllRental";
+export {RootLayout,CheckRegisterCar, HomePage,DetailCar, HowToRent, ListCar, AccountDetail, SideBarAccountLayout,UpdateCar, FavouriteCar, RegisterCar,MyRentCar,Report,ComplainCheck, Revenue,Booking, MyCar,RegisterCarForm,Calendar,LicensePage,AllRental, Complete}

@@ -1,7 +1,7 @@
 import { createBrowserRouter,RouterProvider } from "react-router-dom";
 
 import './App.css'
-import { RootLayout, HomePage,RegisterCarForm,CheckRegisterCar, HowToRent, DetailCar, ListCar, AccountDetail, SideBarAccountLayout, FavouriteCar,MyCar,Complete, MyRentCar, Revenue, ComplainCheck ,RegisterCar, Booking, UpdateCar, Calendar, LicensePage } from "./Page";
+import { RootLayout,AllRental, HomePage,RegisterCarForm,CheckRegisterCar, HowToRent, DetailCar, ListCar, AccountDetail, SideBarAccountLayout, FavouriteCar,MyCar,Complete, MyRentCar, Revenue, ComplainCheck ,RegisterCar, Booking, UpdateCar, Calendar, LicensePage } from "./Page";
 function App() {
  const router = createBrowserRouter([
     {
@@ -48,6 +48,10 @@ function App() {
             {
           path: "/user/account",
           element: <AccountDetail></AccountDetail>,
+           },
+            {
+          path: "/user/allrental",
+          element: <AllRental></AllRental>,
            },
             {
           path: "/user/favouritecar",

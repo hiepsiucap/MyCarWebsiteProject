@@ -36,14 +36,14 @@ const ChooseModel =({close})=>
         <li>
           <input
             type="checkbox"
-            id="SUV"
-            checked={type.length >0 && type.includes('SUV')||false}
+            id="suv"
+            checked={type.length >0 && type.includes('suv')||false}
         
             className="hidden peer"
             onChange={handleCheckboxChange}
           />
           <label
-            htmlFor="SUV"
+            htmlFor="suv"
             className="flex-col flex items-center justify-center w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
           >
             <img src={xe4mini} alt="4 chỗ (Mini)" className="w-1/2" />
@@ -71,18 +71,35 @@ const ChooseModel =({close})=>
         <li>
           <input
             type="checkbox"
-            id="CUV"
+            id="cuv"
             className="hidden peer"
-             checked={type.length >0 &&type.includes('CUV')}
+             checked={type.length >0 &&type.includes('cuv')}
             onChange={handleCheckboxChange}
           />
           <label
-            htmlFor="CUV"
+            htmlFor="cuv"
             className="flex-col flex items-center justify-center w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
           >
             <img src={xe5suv} alt="5 chỗ (CUV Gầm cao)" className="w-1/2" />
             <div className="w-full text-lg font-medium text-xl font-manrope text-center">CUV</div>
             <div className="w-full text-lg font-medium  font-manrope text-center">(6 chỗ)</div>
+          </label>
+        </li>
+         <li>
+          <input
+            type="checkbox"
+            id="semi_truck"
+            className="hidden peer"
+             checked={type.length >0 &&type.includes('semi_truck')}
+            onChange={handleCheckboxChange}
+          />
+          <label
+            htmlFor="semi_truck"
+            className="flex-col flex items-center justify-center w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+          >
+            <img src={xe7minivan} alt="5 chỗ (CUV Gầm cao)" className="w-1/2" />
+            <div className="w-full text-lg font-medium text-xl font-manrope text-center">Bán tải</div>
+            <div className="w-full text-lg font-medium  font-manrope text-center">(4 chỗ)</div>
           </label>
         </li>
       </ul>

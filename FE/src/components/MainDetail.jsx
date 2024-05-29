@@ -396,7 +396,7 @@ const { id } = useParams();
                                 </div>
                                   <p className=" text-gray-600">{r.date}</p>
                                 </div>
-                                 <div className=" font-manrope text-gray-600">{r.details}</div>
+                                 <div className=" font-manrope text-gray-600">{r.detail}</div>
                                 </motion.div>
                                 )
 })     

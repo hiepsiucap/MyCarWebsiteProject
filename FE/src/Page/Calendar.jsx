@@ -1,7 +1,28 @@
 /** @format */
-import { RenToCar, HeroRentCar, RentCarBlog } from "../components";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { getRequest } from "../Utiliz/services";
+import { formatPrice } from "../Utiliz/Constants";
+import { useParams } from "react-router";
 const Calendar = () => {
+    const {id}= useParams();
+       const [cardata, changecardata]= useState(null);
+       console.log(cardata);
+  useEffect(()=>{
+    const getData=async()=>{
+    const responsedata= await getRequest(`http://localhost:8080/users/cars/${id}/history`);
+    if(responsedata.error)
+      {
+        console.log(responsedata.message);
+      } 
+      else
+      {
+         changecardata(responsedata);
+      }
+    }
+    getData();
+  },[])
+  
   return (
     <>
     <motion.section initial={{ opacity: 0, scale: 0 }}
@@ -40,76 +61,35 @@ const Calendar = () => {
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Mercedes-Benz G63 AMG 2023
+            {cardata?.length>0 && cardata.map((car)=>{
+                return(
+ <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={cardata.carId}>
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                   {car.name}
                 </th>
-                <td class="px-6 py-4">
-                    27/02/2024 - 28/02/2024
+                <td className="px-6 py-4">
+                    {car.rentalDate}
                 </td>
-                  <td class="px-6 py-4">
-                    7 ngày
+                  <td className="px-6 py-4">
+                    {car.totalDay}
                 </td>
-                <td class="px-6 py-4">
-                    390.000
+                <td className="px-6 py-4">
+                    {formatPrice(car.totalCost)}
                 </td>
                 
-                <td class="px-6 py-4">
-                    Đang cho thuê
+                <td className="px-6 py-4">
+                    {car.rentalStatus ==="completed" && "Hoàn thành"  } {car.rentalStatus ==="confirmed" && "Đang cho thuê"  } {car.rentalStatus ==="pause" && "Ngưng cho thuê"  }
                 </td>
-                  <td class="px-6 py-4">
-                    350.000
+                  <td className="px-6 py-4">
+                    {formatPrice(car.totalCost*0.6)}
                 </td>
-                <td class="px-6 py-4 ">
+                <td className="px-6 py-4 ">
                     <button className=" underline text-primary">Huỷ</button>
                 </td>
-            </tr>
-           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Mercedes-Benz G63 AMG 2023
-                </th>
-                <td class="px-6 py-4">
-                    27/02/2024 - 28/02/2024
-                </td>
-                    <td class="px-6 py-4">
-                    7 ngày
-                </td>
-                <td class="px-6 py-4">
-                    390.000
-                </td>
-                <td class="px-6 py-4">
-                    Đang cho thuê
-                </td>
-                  <td class="px-6 py-4">
-                    350.000
-                </td>
-                 <td class="px-6 py-4 ">
-                    <button className=" underline text-primary">Huỷ</button>
-                </td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Mercedes-Benz G63 AMG 2023
-                </th>
-                <td class="px-6 py-4">
-                    27/02/2024 - 28/02/2024
-                </td>
-                    <td class="px-6 py-4">
-                    7 ngày
-                </td>
-                <td class="px-6 py-4">
-                    390.000
-                </td>
-                <td class="px-6 py-4">
-                    Đang cho thuê
-                </td>
-                  <td class="px-6 py-4">
-                    350.000
-                </td>
-                 <td class="px-6 py-4 ">
-                    <button className=" underline text-primary">Huỷ</button>
-                </td>
-            </tr>
+            </tr>)
+            })
+        }
+         
         </tbody>
     </table>
 </div>

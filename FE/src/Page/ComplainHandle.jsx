@@ -5,78 +5,16 @@ import discount from "../assets/discount.svg"
 import diadiem from "../assets/diadiem.svg"
 import { motion } from "framer-motion"
 import { favouritecar, formatDate, formatPrice } from "../Utiliz/Constants"
-import { useEffect, useState } from "react"
 import Swal, { swal } from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
-import { getRequest, postRequest } from "../Utiliz/services"
-import Modal from "react-modal"
-const customStyles = {
-   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-     border: '0',
-     padding: '0',
-     zIndex: '50',
-      width: '50%',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)' // Adjust the color and opacity here
-  }
-};
+import { useEffect, useState } from "react"
+import { getRequest, patchRequest, postRequest } from "../Utiliz/services"
 const ComplainCheck = () => {
-     const [modalIsOpen, setIsOpen] = useState(false);
-  function  openModal () {
-    setIsOpen(true);
-  }
-     function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  } 
-  const [reload, changereload] =useState("");
-  const onCheckHandler=async(e)=>{
-    const response = await postRequest(`http://localhost:8080/users/licensecheck?id=${e.target.id}&check=true`,{});
-    if(response.error)
-        {
-            return Swal.fire({
-        title: "Xác nhận thất bại",
-        text: response.message,
-        icon: "error"
-      });
-        }
-      Swal.fire({
-        title: "Xác nhận thành công",
-        icon: "success"
-      });
-      changereload("reload");
-  }
-    const onUnCheckHandler=async(e)=>{
-    const response = await postRequest(`http://localhost:8080/users/licensecheck?id=${e.target.id}&check=false`,{});
-    if(response.error)
-        {
-            return Swal.fire({
-        title: "Huỷ Xác nhận thất bại",
-        text: response.message,
-        icon: "error"
-      });
-        }
-      Swal.fire({
-        title: "Xác nhận huỷ thành công",
-        icon: "success"
-      });
-      changereload("reload");
-  }
   const [data, changedata]= useState(null);
+  const [reload, changereload]= useState("");
   useEffect(()=>{
     const getData=async()=>{
-    const responsedata= await getRequest("http://localhost:8080/users/staff/license");
+    const responsedata= await getRequest("http://localhost:8080/reports/staff");
     if(responsedata.error)
       {
         console.log(responsedata.message);
@@ -86,57 +24,63 @@ const ComplainCheck = () => {
          changedata(responsedata);
       }
     }
-    getData();
+     getData();
   },[reload])
-  const [urlimage, changeurl] = useState("");
+  const onclickHandler =async(e)=>{
+    const responsedata= await patchRequest(`http://localhost:8080/rentals/${e.target.id}/reports?status=complete`,{});
+   if(responsedata.error)
+        {
+            return Swal.fire({
+        title: "Xác nhận xử lý khiếu nại thất bại",
+        text: responsedata.message,
+        icon: "error"
+      });
+        }
+      Swal.fire({
+        title: "Xác nhận xử lý khiếu nại thành công",
+        icon: "success"
+      });
+      changereload(e.target.id);
+  }
+    
   console.log(data);
   return (
     <motion.section  initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }} className=" w-full">
-     <h1 className=" text-3xl font-manrope font-bold text-start pb-5">Khiếu nại cần xử lý</h1>
+     <h1 className=" text-3xl font-manrope font-bold text-start pb-5">Khiếu nại khách hàng</h1>
      <div className=" flex flex-col space-y-5 w-full">
-       {data?.map((user)=>
+       {data?.map((d)=>
        {
         return (
             <>
-             <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-      style={modalIsOpen ? { ...customStyles, content: { ...customStyles.content, transform: 'translate(-50%, -50%) scale(1)', opacity: 1 } } : customStyles}
-        contentLabel="Example Modal"
-      >
-      <img src={urlimage} alt="" />
-      </Modal>
-        <div className=" p-5 pb-10 flex bg-white w-full rounded-lg shadow-sm">
-            <div className=" w-3/4 flex items-center space-x-5 border-r-2 border-primary border-opacity-40 ">
-                <img src={user.avatar} alt="" className=" w-48 h-48 border-2 border-primary rounded-full" />
-                <div className=" flex flex-col space-y-2 w-full">
-                    <h5 className=" font-manrope font-bold text-start text-2xl pb-2">  {user.firstName} {user.lastName}</h5>
-                     <div className=" flex space-x-1">
-                          <p className=" text-gray-500 text-sm font-manrope pr-2"></p>
-                            <p className=" text-gray-500 text-sm font-manrope pr-2">Email: {user.email}</p>
-                     </div>
-                      <div className=" flex space-x-1">
-                          <p className=" text-gray-500 text-sm font-manrope pr-2"></p>
-                            <p className=" text-gray-500 text-sm font-manrope pr-2">Điện thoại: {user.phoneNumber}</p>
-                     </div>
-                        <div className=" flex space-x-1">
-                          <p className=" text-gray-500 text-sm font-manrope pr-2"></p>
-                            <p className=" text-gray-500 text-sm font-manrope pr-2">Ngày tạo: {formatDate(user.create_date)}</p>
-                     </div>
-                       <div className=" flex space-x-1">
-                          <p className=" text-gray-500 text-sm font-manrope pr-2"></p>
-                            <p className=" text-gray-500 text-sm font-manrope pr-2 text-red-500">Trạng thái: {user.driverLicenseCheck == null && "Chưa xét duyệt"}</p>
-                     </div>
-                       
+        <div className=" p-5 pb-5 flex bg-white w-full rounded-lg shadow-sm">
+            <div className=" w-3/4 flex space-x-5 border-r-2 border-primary  ">
+                <div className=" flex flex-col space-y-2 border-r-2 w-1/2 border-primary ">
+                   <h5 className=" text-start font-bold font-manrope ">Thông tin đơn thuê</h5>
+                      <div className=" text-sm text-gray-600 font-manrope text-start">Ngày nhận: {d.rental.pickUpHours}, {formatDate(d.rental.pickUpDate)}</div>
+                      <div className=" text-sm text-gray-600 font-manrope text-start ">Ngày trả: {d.rental.dropOffHours}, {formatDate(d.rental.dropOffDate)} </div>
+                    <h5 className="  text-sm font-manrope text-gray-600 text-start">Địa chỉ: {d.carDTO.address}, {d.carDTO.district}, {d.carDTO.province}</h5>
+                     <h5 className=" text-sm font-manrope text-gray-600 text-start">Tên xe : {d.carDTO.name}</h5>
                 </div>
+               
+                   <div className=" flex flex-col space-y-2">
+                 
+                          <h5 className=" text-start font-bold font-manrope ">Nội dung khiếu nại</h5>
+                          <h5 className=" text-gray-500 text-sm font-manrope text-start">mã số : {d.report.reportId}</h5>
+                           <h5 className=" text-gray-500 text-sm font-manrope text-start">Nội dung: {d.report.details}</h5>
+                            <h5 className=" text-gray-500 text-sm font-manrope text-start">Ngày khiếu nại: {formatDate(d.report.date)}</h5>
+                   </div>
+                
+          
             </div>
-               <div className=" flex flex-col justify-center items-center w-1/4 space-y-3"> 
-                 <button className=" p-2 px-5 w-40 bg-primary rounded-md font-manrope text-white text-sm font-medium" onClick={()=>{changeurl(user.driverLicense);openModal();}}>Xem bằng lái</button> 
-                <button className=" p-2 px-8 border w-40 border-primary rounded-md font-manrope  text-sm font-medium" onClick={onUnCheckHandler}>Từ chối duyệt</button> 
-                <button id={user.userId} className=" p-2 px-8 border w-40 border-primary rounded-md font-manrope  text-sm font-medium" onClick={onCheckHandler}>Duyệt bằng lái</button> 
+               <div className=" flex flex-col justify-center items-center w-1/4 space-y-2">
+             
+                <div className=" text-sm text-gray-600 font-manrope text-start">Khách hàng: {d.rental.user.firstName} {d.rental.user.lastName}</div>
+                      <div className=" text-sm text-black font-bold font-manrope text-start ">Số điện thoại: {d.rental.user.phoneNumber}</div>
+                 <button disabled id={d.rental.rentalId} className=" w-44 p-2 px-5 bg-primary rounded-md font-manrope text-white text-sm font-medium" onClick={onclickHandler}>Chi tiết khách hàng</button> 
+                 <button id={d.report.reportId} className=" w-44 p-2 px-5 bg-primary rounded-md font-manrope text-white text-sm font-medium" onClick={onclickHandler}>Đã xử lý</button> 
+                    
         </div>
                 </div>
                 </>

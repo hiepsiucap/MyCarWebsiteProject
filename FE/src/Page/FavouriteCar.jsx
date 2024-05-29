@@ -40,7 +40,7 @@ const FavouriteCar = () => {
         title: "Xác nhận đơn hàng thành công",
         icon: "success"
       });
-      changereload("reload");
+      changereload(e.target.id);
   }
     
   console.log(data);

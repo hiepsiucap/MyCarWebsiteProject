@@ -4,23 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4489e08f-cef2-4fed-9b98-9791f4fb654c" name="Changes" comment="reportreview">
+    <list default="true" id="4489e08f-cef2-4fed-9b98-9791f4fb654c" name="Changes" comment="hello world">
+      <change afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserServiceImpl$4.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FE/src/Page/AllRental.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FE/src/assets/allrental.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mycar/nhom13/Dto/RentalHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mycar/nhom13/Dto/RentalHistory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mycar/nhom13/RestController/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mycar/nhom13/RestController/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mycar/nhom13/Service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mycar/nhom13/Service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mycar/nhom13/Service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mycar/nhom13/Service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/RestController/ReportController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/RestController/ReportController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/RestController/ReviewController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/RestController/ReviewController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/ReportService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/ReportService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Dto/RentalHistory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Dto/RentalHistory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/RestController/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/RestController/UserController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/ReportServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/ReportServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/ReviewService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/ReviewService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/ReviewServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/ReviewServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserServiceImpl$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserServiceImpl$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserServiceImpl$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserServiceImpl$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserServiceImpl$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserServiceImpl$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mycar/nhom13/Service/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/Page/Calendar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/Page/Calendar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/Page/CheckRegisterCar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/Page/CheckRegisterCar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/Page/ComplainHandle.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/Page/ComplainHandle.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/Page/MyCar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/Page/MyCar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/Page/Report.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/Page/Report.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/Page/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/Page/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/components/AccountSideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/components/AccountSideBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/components/Hero.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/components/Hero.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/components/MainDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/components/MainDetail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FE/src/components/ModelCar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FE/src/components/ModelCar.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/main" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -33,16 +52,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Nhom13Application.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/MyCarWebsiteProject/BE&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Nhom13Application.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/MyCarWebsiteProject/BE",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Nhom13Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.mycar.nhom13.Nhom13Application" />
@@ -90,6 +112,17 @@
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="reportreview" />

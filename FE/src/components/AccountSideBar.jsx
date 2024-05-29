@@ -11,6 +11,7 @@ import { motion } from "framer-motion"
 import { postRequest } from "../Utiliz/services"
 import {signout} from "../features/auth/authSlice"
 import { useDispatch ,  } from "react-redux"
+import allrentalsvg from "../assets/allrental.svg"
 import license from "../assets/license.svg"
 import applicant from "../assets/applicant.svg"
 import { useNavigate } from "react-router-dom"
@@ -69,6 +70,10 @@ const AccountSideBar = () => {
              <Link to="/user/complain" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
                 <img src={complain}  className={url.pathname==="/user/complain"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
                 <div className={url.pathname==="/user/complain" ?" font-manrope font-bold": " font-manrope font-medium"}>Xử lý khiếu nại</div>
+            </Link >
+             <Link to="/user/allrental" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
+                <img src={allrentalsvg}  className={url.pathname==="/user/allrental"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
+                <div className={url.pathname==="/user/allrental" ?" font-manrope font-bold": " font-manrope font-medium"}>Tất cả đơn hàng</div>
             </Link >
               <Link to="/user/mycar" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
                 <img src={car}  className={url.pathname==="/user/mycar"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />

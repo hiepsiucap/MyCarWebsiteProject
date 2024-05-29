@@ -10,6 +10,7 @@ import Modal from "react-modal"
 import Swal, { swal } from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
 import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 import { getRequest, patchRequest, postRequest } from "../Utiliz/services"
 const customStyles = {
    content: {
@@ -29,7 +30,7 @@ const customStyles = {
   }
 };
 Modal.setAppElement('#root');
-const MyRentCar = () => {
+const AllRental = () => {
   const [reload, changereload] = useState("");
    const [provincess, setProvinces] = useState([]);
     const [districts, setDistrict] = useState([]);
@@ -41,7 +42,7 @@ const MyRentCar = () => {
       province: "",
       district: "",
       address: "",
-      state: "",
+      rate: "",
       details: "",
       giahandate: "",
     }
@@ -56,7 +57,7 @@ const MyRentCar = () => {
     const [cardata, changecardata]= useState(null);
   useEffect(()=>{
     const getData=async()=>{
-    const responsedata= await getRequest("http://localhost:8080/users/rentals");
+    const responsedata= await getRequest("http://localhost:8080/users/allrentals");
     if(responsedata.error)
       {
         console.log(responsedata.message);
@@ -150,13 +151,13 @@ const MyRentCar = () => {
         title: "Xác nhận thành công",
         icon: "success"
       });
-      changereload(rentalID);
+      changereload("relaodddd");
       closeModal();
         }
    }
    if(openmodal==="khieunai")
     {
-       if(!datasubmit.details|| !datasubmit.state)
+       if(!datasubmit.details|| !datasubmit.rate)
         {
           isError(true);
            Swal.fire({
@@ -167,8 +168,8 @@ const MyRentCar = () => {
         }
         else
       {
-        const details = `${datasubmit.state} - ${datasubmit.details}`
-      const response = await postRequest(`http://localhost:8080/rentals/${rentalID}/reports`,{details});
+
+      const response = await postRequest(`http://localhost:8080/rentals/${rentalID}/reviews`,{details: datasubmit.details, rate: Number(datasubmit.rate) ,review_date: new Date()});
     if(response.error)
         {
             return Swal.fire({
@@ -178,10 +179,10 @@ const MyRentCar = () => {
       });
         }
       Swal.fire({
-        title: "khiếu nại thành công",
+        title: "Đánh giá thành công",
         icon: "success"
       });
-      changereload(rentalID);
+      changereload("relaodddd");
       closeModal();
         }
     }
@@ -290,22 +291,24 @@ const MyRentCar = () => {
 }
 {openmodal === "khieunai" &&
  <>
-  <p className=" font-bold text-2xl font-manrope">Khiếu nại</p>
+  <p className=" font-bold text-2xl font-manrope">Đánh giá</p>
   <div className=" border border-slate-200 w-full"></div>
    <form className=" flex flex-col space-y-5 w-full px-7 py-12 " onSubmit={onSubmitHandler}>
          
             <div className=" flex flex-col space-y-1 items-start">
-               <label htmlFor="pn" className=" font-manrope font-medium px-1 text-gray-600 text-sm">Vấn đề gặp phải:</label>
-             <select type="text" id="state" name="fname" value={datasubmit.state} onChange={onChangeHandlerr} className={ !datasubmit.hour && error ?"px-1 py-2.5 border border-red-600 w-full rounded-lg": "px-2 py-2.5 border border-slate-300 w-full rounded-lg"} >
+               <label htmlFor="pn" className=" font-manrope font-medium px-1 text-gray-600 text-sm">Số sao:</label>
+             <select type="text" id="rate" name="fname" value={datasubmit.rate} onChange={onChangeHandlerr} className={ !datasubmit.hour && error ?"px-1 py-2.5 border border-red-600 w-full rounded-lg": "px-2 py-2.5 border border-slate-300 w-full rounded-lg"} >
               <option value="" ></option>
-              {rentalIssues.map((t)=>{
-                return (<option value={t} key={t}>{t}</option>)
-              })}
+              <option value="1" >1</option>
+               <option value="2" >2</option>
+                <option value="3" >3</option>
+                 <option value="4" >4</option>
+                  <option value="5" >5</option>
               </select> 
             </div>
          
              <div className=" flex flex-col space-y-1 items-start">
-               <label htmlFor="pn" className=" font-manrope font-medium px-1 text-gray-600 text-sm">Chi tiết:</label>
+               <label htmlFor="pn" className=" font-manrope font-medium px-1 text-gray-600 text-sm">Nội dung:</label>
              <textarea rows={6} type="text" id="details" name="fname" value={datasubmit.details} onChange={onChangeHandlerr} className={!datasubmit.address && error ?"px-2 py-2.5 border border-red-600 w-full rounded-lg": "px-1 py-2.5 border border-slate-300 w-full rounded-lg"} />
             <div className=" flex justify-end w-full space-x-2 pt-2 pb-5">
             </div>
@@ -339,7 +342,7 @@ const MyRentCar = () => {
 }
           </motion.div>
       </Modal>
-     <h1 className=" text-3xl font-manrope font-bold text-start pb-5">Xe đang thuê <span className=" text-primary font-4xl">({cardata?.length})</span></h1>
+     <h1 className=" text-3xl font-manrope font-bold text-start pb-5">Tất cả đơn hàng <span className=" text-primary font-4xl">({cardata?.length})</span></h1>
      <div className=" flex flex-col space-y-5 w-full">
        { cardata?.map((car)=> { return (
         <>
@@ -367,14 +370,14 @@ const MyRentCar = () => {
                 </div>
             </div>
                <div className=" flex flex-col justify-center items-center w-1/4 space-y-2">
-                {car.hoursLeft <0 ?
-                <h5 className=" text-2xl font-manrope text-red-500 font-bold">Đã quá hạn </h5> 
-                :
-            <div className=" flex space-x-2  items-end"> <p className=" pb-1 font-manrope text-gray-500 text-sm">Thời gian còn lại:</p>  <h5 className=" text-2xl font-manrope text-primary font-bold">{car.hoursLeft} giờ</h5> </div>}
+                
+                <h5 className=" text-2xl font-manrope text-primary font-bold">{car.status==="confirmed" && "Đang thuê xe"} {car.status==="completed" &&"Đã hoàn thành"} {car.status==="pending" &&"Đang chờ duyệt"}</h5> 
+                
+            
                     <p className="font-manrope text-gray-500 text-sm">Ngày trả: {car.dropOffDate}</p>
-                 <button id={car.rentalId} className=" p-2 px-5 bg-primary rounded-md font-manrope text-white text-sm font-medium w-3/4" onClick={(e)=>{openModal();changerentalid(e.target.id); changeopenmodal("traxe")}}>Trả xe</button> 
-                                  <button id={car.rentalId} className=" p-2 px-8 border border-primary rounded-md font-manrope  text-sm font-medium w-3/4" onClick={(e)=>{openModal();changerentalid(e.target.id); changeopenmodal("khieunai")}}>Khiếu nại</button> 
-                                              <button className=" p-2 px-9 border border-primary rounded-md font-manrope  text-sm font-medium w-3/4"  onClick={()=>{openModal(); changeopenmodal("giahan")}}>Gia hạn thuê</button> 
+                 <button id={car.rentalId} className=" p-2 px-5 bg-primary rounded-md font-manrope text-white text-sm font-medium w-3/4" onClick={(e)=>{openModal();changerentalid(e.target.id); changeopenmodal("khieunai")}}>Đánh giá</button> 
+                                  <button id={car.rentalId} disabled className=" p-2 px-8 border border-primary rounded-md font-manrope  text-sm font-medium w-3/4" onClick={(e)=>{openModal();changerentalid(e.target.id); changeopenmodal("khieunai")}}>Xem chi tiết</button> 
+                                              <Link to={`/car/${car.carId}`} className=" p-2 px-9 border border-primary rounded-md font-manrope  text-sm font-medium w-3/4"  onClick={()=>{openModal(); changeopenmodal("giahan")}}>Tiếp tục thuê</Link> 
         </div>
                 </div>
                 </>
@@ -385,4 +388,4 @@ const MyRentCar = () => {
     </motion.section>
   );
 };
-export default MyRentCar;
+export default AllRental;

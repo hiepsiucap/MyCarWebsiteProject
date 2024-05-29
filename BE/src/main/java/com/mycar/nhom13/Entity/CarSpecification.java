@@ -40,6 +40,7 @@ public class CarSpecification {
 				predicates.add(root.join("location").get("district").in(district));
 			}
 
+			predicates.add(criteriaBuilder.equal(root.get("status"), "active"));
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 		};
 	}

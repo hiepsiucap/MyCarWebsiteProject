@@ -1,5 +1,6 @@
 package com.mycar.nhom13.RestController;
 
+import com.mycar.nhom13.Dto.ReportDTO;
 import com.mycar.nhom13.Entity.Report;
 import com.mycar.nhom13.ExceptionHandler.ResourceNotFoundException;
 import com.mycar.nhom13.Service.ReportService;
@@ -54,7 +55,7 @@ public class ReportController {
 	}
 
 	@GetMapping("/reports/staff")
-	public ResponseEntity<List<Report>> listForStaff(HttpServletRequest request) {
+	public ResponseEntity<List<ReportDTO>> listForStaff(HttpServletRequest request) {
 		int id = getUserIdFromCookie(request);
 
 		return new ResponseEntity<>(reportService.listforStaff(id), new HttpHeaders(), HttpStatus.OK);

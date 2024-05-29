@@ -12,7 +12,7 @@ public interface ReviewService {
 
 	Review findById(int id);
 
-	Review save(Review review, int rentalId);
+	Review save(Review review, int rentalId, int userId);
 
 	Review update(int id, Map<String, Object> fields);
 }

@@ -40,4 +40,6 @@ public interface UserService {
 	List<UserRentalsDTO> getAllRentals(int id);
 
     List<RentalHistory> getRentalsHistory(int id);
+
+    List<RentalHistory> getCarHistory(int id, int userId);
 }

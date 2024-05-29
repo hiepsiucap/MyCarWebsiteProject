@@ -20,4 +20,5 @@ import AccountSideBar from "./AccountSideBar";
 import Modal from "./Modal"; 
 import ChooseDate from "./ChooseDate";
 import Modals from "./Modals";
-export {Modal,Footer, NavBar, SideBar, Hero, FindCar, CarComponent, ListCarComponent, Testimonial, Features, EachFaq, ListOfFag, Fag, RenToCar, HeroRentCar,MainDetail,AccountSideBar, RentCarBlog, Modals, FilterTag,AllCar, ChooseDate}
+import DetailCarReview from "./DetailCarReview";
+export {Modal,Footer, NavBar, SideBar, Hero, FindCar, CarComponent, ListCarComponent, Testimonial, Features, EachFaq,DetailCarReview, ListOfFag, Fag, RenToCar, HeroRentCar,MainDetail,AccountSideBar, RentCarBlog, Modals, FilterTag,AllCar, ChooseDate}

@@ -130,7 +130,7 @@ const MyCar = () => {
                 </div>
             </div>
                <div className=" flex flex-col justify-center items-center w-1/4 space-y-2.5">
-              <h5 className=" text-2xl font-manrope font-bold text-primary pb-3">{!car.status && "Đang xét duyệt"} {car.status == "active" && "Đang cho thuê" } {car.status == "pending" && "Đang cho thuê"} <span className=" text-red-600">{car.status == "pause" && "Dừng cho thuê"}</span></h5>
+              <h5 className=" text-2xl font-manrope font-bold text-primary pb-3">{!car.status && "Đang xét duyệt"} {car.status == "active" && "Đang cho thuê" }  <span className=" text-red-600">{car.status == "pause" && "Dừng cho thuê"} {car.status == "pending" && "Đăng kí thất bại"}</span></h5>
                  <Link to="/updatecar/1" className=" p-2.5 px-5 bg-primary  rounded-md font-manrope text-white text-sm font-medium">cập nhật thông tin </Link> 
                                    {
                                     car.status == "pause" &&

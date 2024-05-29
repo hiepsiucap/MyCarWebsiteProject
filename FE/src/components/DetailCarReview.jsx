@@ -37,9 +37,8 @@ import { useParams } from "react-router-dom";
 import { getRequest } from "../Utiliz/services";
 import { createacart } from "../features/carcart/cartSlice";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import  Swal  from "sweetalert2/dist/sweetalert2";
+import { Swal } from "sweetalert2/dist/sweetalert2";
 import 'sweetalert2/src/sweetalert2.scss'
 const customStyles = {
    content: {
@@ -59,10 +58,7 @@ const customStyles = {
 };
 
 Modal.setAppElement('#root');
-const MainDetail = () => {
-      const { 
-        userInfo  
-       } = useSelector(state => state.auth);
+const DetailCarReview = ({id, onClose}) => {
   const dispatch=useDispatch();
   const navigate=useNavigate();
 const [data, changedata]=useState(
@@ -83,7 +79,6 @@ reviews: [],
 seat: ""}
 );
 console.log(data.days);
-const { id } = useParams();
   useEffect(()=>{
    const fetchData=async()=>
     {
@@ -155,20 +150,7 @@ const { id } = useParams();
         changetotalerror(null);
       }
   },[total])
-  const AddCartHandler =async()=>{
-     const dt= await getRequest("http://localhost:8080/users/current");
-    if(dt?.driverLicenseCheck =='N' ||!dt?.driverLicenseCheck)
-      {
-        return  Swal.fire({
-      title: "Bạn chưa xác minh bằng lại",
-      text: "Vui lòng xác minh bằng lái để được thuê xe",
-      icon: "error"}).then((result) => {
-  /* Read more about isConfirmed, isDenied below */
-  if (result.isConfirmed) {
-    console.log("hello");
-    navigate("/user/account")
-  }}); 
-      }
+  const AddCartHandler =()=>{
     if(total ===0)
       {
       return;
@@ -188,9 +170,17 @@ const { id } = useParams();
   }
   return (
     <>
-    {data ? <section className=" md:container mx-auto pt-8">
+      <button onClick={onClose} className=" fixed right-2 ">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class=" w-12 h-12">
+  <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+</svg>
+
+      </button>
+    {data ? <section className=" md:container mx-auto pt-8 bg-slate-50 z-50 overflow-hidden">
        
-        <Basic></Basic>
+
+        <Basic sameid={id}></Basic>
+
          <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -251,7 +241,7 @@ const { id } = useParams();
       </div>
           </motion.div>
       </Modal>
-        <div className=" flex space-x-10 pt-10">
+        <div className=" flex space-x-10 px-5 pt-10">
         <div className=" flex flex-col text-start w-2/3">
             <div>
             <h2 className=" text-3xl font-manrope font-bold">{data.name}</h2>
@@ -373,35 +363,8 @@ const { id } = useParams();
     </ul>
     <p>Trân trọng cảm ơn, chúc quý khách hàng có những chuyến đi tuyệt vời!</p></div>
                           </div>
-                         <div className=" border"></div>
-                         <div className=" text-3xl font-manrope font-bold">Đánh giá</div> 
-                         <div className="class flex flex-col space-y-4">
-                           {
-                            data.reviews.map((r)=>
-                              {
-                                return(
-                            <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y:0 }}
-    transition={{ duration: 0.5 }}  key={r.name}className=" flex flex-col px-6 py-4 space-y-3 border rounded-lg border-slate-300 ">
-                            <div className=" flex justify-between">
-                            <div className=" flex space-x-4">
-                                <img src={r.ava} className=" w-20 h-20 rounded-full" alt="" />
-                                <div className=" flex flex-col space-y-2">
-                                    <h2 className=" font-medium text-xl font-manrope">{r.name}</h2>
-                                     <div className=" flex ">
-                                    {renderStars(r.rate)}
-                                     </div>    
-                                </div>
-                                </div>
-                                  <p className=" text-gray-600">{r.date}</p>
-                                </div>
-                                 <div className=" font-manrope text-gray-600">{r.details}</div>
-                                </motion.div>
-                                )
-})     
-}
-                                </div> 
+                        
+                        
                 </div>
              </div>
         </div>
@@ -475,21 +438,15 @@ const { id } = useParams();
                 <p className=" font-bold font-manrope text-lg ">{formatPrice(total)}</p>
             </div>
             <div className=" pt-4"></div>
-            {DateError || totalerror ?
+       
             <button to="/booking" disabled className=" bg-primary opacity-60 rounded-md p-4 w-1/2 mx-auto font-manrope text-lg font-bold text-white" onClick={AddCartHandler}>Thanh toán</button>
-            :
-            <button to="/booking" className=" bg-primary rounded-md p-4 w-1/2 mx-auto font-manrope text-lg font-bold text-white" onClick={AddCartHandler}>Thanh toán</button>
-}
         </div>
 
         </div>
-        <div className=" py-16">
-          <h5 className=" text-4xl font-bold font-manrope text-center pb-12">Xe tương tự</h5>
-        <CarSlick></CarSlick>
-        </div>
+        
     </section> : null
 }   
 </>
   );
 };
-export default MainDetail;
+export default DetailCarReview;

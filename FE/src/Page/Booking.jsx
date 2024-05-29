@@ -41,7 +41,7 @@ const Booking = () => {
         }
         else
         {
-          const responsedata= await getRequest("http://localhost:8080/api/cars/77");
+          const responsedata= await getRequest(`http://localhost:8080/api/cars/${carId}`);
           if( responsedata.error) 
             {
              Swal.fire({
@@ -64,6 +64,7 @@ const Booking = () => {
       dropOffDate,
       dropOffHours,
       totalCost,
+      location,
     } = useSelector((state)=> state.cartcar)
     console.log(userInfo, carId)
     console.log(pickUpDate)
@@ -129,7 +130,7 @@ if(!pickUpDate || !dropOffDate || !userInfo)
 
                <div className=" flex flex-col text-start space-y-1">
                   <p className=" text-xs text-gray-500 font-manrope">Địa điểm nhận xe</p>
-                   <p className=" font-manrope  font-bold">{carinfo.address} {carinfo.district} {carinfo.province}</p>
+                   <p className=" font-manrope  font-bold">{location}</p>
                </div>
            </div>
            </div>

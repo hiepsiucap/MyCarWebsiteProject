@@ -221,7 +221,7 @@ const RegisterCarForm = () => {
       if (!response2s.ok) {
         closeModal();
        return Swal.fire({
-      title: "Thay đổi ảnh giấy phép không thành công",
+      title: "Đăng kí xe không thành công",
       text: "Vui lòng kiểm tra lại kết nối!",
       icon: "error"
     }

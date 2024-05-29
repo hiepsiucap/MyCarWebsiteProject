@@ -9,9 +9,15 @@ const storyMeta = {
   title: 'Demo/Basic',
 };
 
- const Basic =()=> {
+ const Basic =({sameid})=> {
+  console.log(sameid)
+  let {id}= useParams();
+  console.log(sameid)
+  if(!id)
+    {
+      id=sameid;
+    }
   const [data, changedata]=useState([]);
-  const { id } = useParams();
   useEffect(()=>{
    const fetchData=async()=>
     {

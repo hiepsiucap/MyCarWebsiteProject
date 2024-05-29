@@ -12,6 +12,7 @@ import { postRequest } from "../Utiliz/services"
 import {signout} from "../features/auth/authSlice"
 import { useDispatch ,  } from "react-redux"
 import license from "../assets/license.svg"
+import applicant from "../assets/applicant.svg"
 import { useNavigate } from "react-router-dom"
 const AccountSideBar = () => {
   const dispatch = useDispatch();
@@ -57,6 +58,14 @@ const AccountSideBar = () => {
                 <img src={heart}  className={url.pathname==="/user/favouritecar"? " border-l-2 w-8  h-8 border-primary scale-125 pl-2 py-1" :"border-l-2 w-8 h-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
                 <div className={url.pathname==="/user/favouritecar" ?" font-manrope font-bold": " font-manrope font-medium"}>Duyệt đơn hàng</div>
             </Link >
+            <Link to="/user/checkregistercar" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
+                <img src={applicant}  className={url.pathname==="/user/checkregistercar"? " border-l-2 w-8  h-8 border-primary scale-125 pl-2 py-1" :"border-l-2 w-8 h-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
+                <div className={url.pathname==="/user/checkregistercar" ?" font-manrope font-bold": " font-manrope font-medium"}>Duyệt đơn đăng kí xe</div>
+            </Link >
+             <Link to="/user/license" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
+                <img src={license}  className={url.pathname==="/user/license"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
+                <div className={url.pathname==="/user/license" ?" font-manrope font-bold": " font-manrope font-medium"}>Duyệt bằng lái</div>
+            </Link >
              <Link to="/user/complain" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
                 <img src={complain}  className={url.pathname==="/user/complain"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
                 <div className={url.pathname==="/user/complain" ?" font-manrope font-bold": " font-manrope font-medium"}>Xử lý khiếu nại</div>
@@ -69,10 +78,7 @@ const AccountSideBar = () => {
                 <img src={rent}  className={url.pathname==="/user/myrentcar"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
                 <div className={url.pathname==="/user/myrentcar" ?" font-manrope font-bold": " font-manrope font-medium"}>Xe đang thuê</div>
             </Link >
-              <Link to="/user/license" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
-                <img src={license}  className={url.pathname==="/user/license"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
-                <div className={url.pathname==="/user/license" ?" font-manrope font-bold": " font-manrope font-medium"}>Duyệt bằng lái</div>
-            </Link >
+          
                 <Link to="/user/revenue" className=" flex space-x-4 items-center  py-4  border-t border-gray-200 text-gray-700">
                 <img src={tien}  className={url.pathname==="/user/revenue"? " border-l-2 border-primary w-8  scale-125 pl-2 py-1" :"border-l-2 w-8  border-slate-50 scale-125 pl-2 py-1"} alt="" />
                 <div className={url.pathname==="/user/revenue" ?" font-manrope font-bold": " font-manrope font-medium"}>Quản lý tài chính</div>

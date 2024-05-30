@@ -14,7 +14,7 @@ export const faq = [
     id: 3,
     title: "Vị trí nhận xe ở đâu ?",
     description:
-      "<p>Chúng tôi có xe cho thuê tại gần như tất cả các quận nội thành và có dịch vụ giao nhận xe trong Tp.HCM. Đội ngũ CSKH của BonbonCar sẽ tư vấn mẫu xe và sắp xếp việc nhận trả xe tối ưu nhất cho bạn.</p>",
+      "<p>Chúng tôi có xe cho thuê tại gần như tất cả các quận nội thành và có dịch vụ giao nhận xe trong Tp.HCM. Đội ngũ CSKH của Mycar sẽ tư vấn mẫu xe và sắp xếp việc nhận trả xe tối ưu nhất cho bạn.</p>",
   },
   {
     id: 4,
@@ -26,13 +26,13 @@ export const faq = [
     id: 5,
     title: "Tôi có cần vệ sinh hay đổ xăng khi trả xe?",
     description:
-      "<p>Bạn cần trả xe theo hiện trạng ban đầu để tránh các chi phí phát sinh. Do đó, vui lòng vệ sinh, rửa xe nếu cần thiết hoặc BonbonCar sẽ tính thêm phí vệ sinh trong trường hợp xe quá dơ, nhiều bụi bẩn. Tương tự, vui lòng đảm bảo xăng khi trả ở mức ban đầu hoặc BonbonCar sẽ tính thêm phụ phí về nhiên liệu ở mức giá 30.000 đồng / lít xăng</p>",
+      "<p>Bạn cần trả xe theo hiện trạng ban đầu để tránh các chi phí phát sinh. Do đó, vui lòng vệ sinh, rửa xe nếu cần thiết hoặc Mycar sẽ tính thêm phí vệ sinh trong trường hợp xe quá dơ, nhiều bụi bẩn. Tương tự, vui lòng đảm bảo xăng khi trả ở mức ban đầu hoặc Mycar sẽ tính thêm phụ phí về nhiên liệu ở mức giá 30.000 đồng / lít xăng</p>",
   },
   {
     id: 6,
     title: "Trường hợp xe xảy ra sự cố tôi cần phải làm gì?",
     description:
-      "<p>Vui lòng liên hệ đội ngũ chăm sóc khách hàng càng sớm càng tốt để được hướng dẫn xử lí, vui lòng không tự ý đưa xe vào garage sửa chữa hoặc khi chưa có sự đồng ý bằng văn bản của phía BonbonCar.</p>",
+      "<p>Vui lòng liên hệ đội ngũ chăm sóc khách hàng càng sớm càng tốt để được hướng dẫn xử lí, vui lòng không tự ý đưa xe vào garage sửa chữa hoặc khi chưa có sự đồng ý bằng văn bản của phía Mycar.</p>",
   },
 ];
 export const time=[

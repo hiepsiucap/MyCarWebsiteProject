@@ -75,7 +75,7 @@ const Hero = () => {
           className="title"
         >
           <h1 className="w-3/4 mx-auto text-6xl font-bold font-manrope text-white leading-relaxed">
-          Mycar - Đồng hành cùng bạn trên mọi nẻo
+          Mycar - Đồng hành cùng bạn trên mọi nẻo đường
           </h1>
         </motion.div>
       </AnimatePresence>

@@ -100,11 +100,10 @@ public class RentalServiceImpl implements RentalService {
 	@Override
 	public Rental updateStatus(int rentalId, String status, int userId) {
 		User user = userService.findById(userId);
-		if (user.getRole().equals("User")) {
-			throw new UnAuthenticated("No permission");
-		}
 		Rental rental = this.findById(rentalId);
-		String rentalStatus = rental.getRentalStatus();
+		if(user.getUserId()==rental.getUser().getUserId()||!user.getRole().equals("User"))
+		{
+			String rentalStatus = rental.getRentalStatus();
 		if (rentalStatus.equals("pending") && status.equals("completed"))
 			throw new RentalException("Không hợp lệ");
 		if (rentalStatus.equals("completed"))
@@ -114,7 +113,8 @@ public class RentalServiceImpl implements RentalService {
 		if (rentalStatus.equals("cancelled"))
 			throw new RentalException("Không hợp lệ");
 		rental.setRentalStatus(status);
-		return rentalRepository.save(rental);
+		return rentalRepository.save(rental);}
+		else throw new RentalException("No permission");
 	}
 
 	@Override

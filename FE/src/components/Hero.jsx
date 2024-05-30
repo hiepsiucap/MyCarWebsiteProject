@@ -116,7 +116,7 @@ const Hero = () => {
                 <p className=" text-sm text-slate-400">Thời gian thuê</p>
              </div>
              <button onClick={()=>{openModal({name:"date"})}} className=" flex justify-between items-center space-x-2">
-                <p>21:00, 31/03/2024 - 20:00, 01/04/2024</p>
+                <p>8:00, 30/05/2024 - 20:00, 31/05/2024</p>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
   <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 </svg>

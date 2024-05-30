@@ -75,7 +75,7 @@ const ComplainCheck = () => {
           
             </div>
                <div className=" flex flex-col justify-center items-center w-1/4 space-y-2">
-             
+                 <div className=" text-2xl font-bold text-primary font-manrope text-start">{d.report.state==="complete" ? "Đã hoàn thành" : "Đang xử lý"}</div>
                 <div className=" text-sm text-gray-600 font-manrope text-start">Khách hàng: {d.rental.user.firstName} {d.rental.user.lastName}</div>
                       <div className=" text-sm text-black font-bold font-manrope text-start ">Số điện thoại: {d.rental.user.phoneNumber}</div>
                  <button disabled id={d.rental.rentalId} className=" w-44 p-2 px-5 bg-primary rounded-md font-manrope text-white text-sm font-medium" onClick={onclickHandler}>Chi tiết khách hàng</button> 

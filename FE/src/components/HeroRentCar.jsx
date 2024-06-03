@@ -19,7 +19,7 @@ const HeroRentCar = () => {
         <h1 className=" text-4xl font-manrope font-bold"> Bạn muốn biết thêm
 về Mycar?</h1>
    <p className=" font-manrope w-5/6 mx-auto  ">
-    Mioto kết nối khách hàng có nhu cầu thuê xe với hàng ngàn chủ
+    Mycar kết nối khách hàng có nhu cầu thuê xe với hàng ngàn chủ
 xe ô tô ở TPHCM, Hà Nội & các tỉnh thành khác. Mycar hướng đến
 việc xây dựng cộng đồng người dùng ô tô văn minh & uy tín tại
 Việt Nam.

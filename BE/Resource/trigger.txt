@@ -215,7 +215,7 @@ COMPOUND TRIGGER
         FOR rec IN (SELECT pick_up_date
                     FROM Rentals
                     WHERE customer_id = KHACH) LOOP
-            IF Ncreate_date >= rec.pick_up_date THEN
+            IF Ncreate_date > rec.pick_up_date THEN
                 RAISE_APPLICATION_ERROR(-20002, 'Ngày tạo tài khoản phải nhỏ hơn ngày thuê xe.');
             END IF;
         END LOOP;

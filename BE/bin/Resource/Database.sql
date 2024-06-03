@@ -19,6 +19,7 @@ CREATE TABLE Locations (
     province VARCHAR2(255) NOT NULL,
     district VARCHAR2(50) NOT NULL
 );
+
 CREATE TABLE Cars (
     car_id INT PRIMARY KEY,
     license_plates VARCHAR2(10) NOT NULL,

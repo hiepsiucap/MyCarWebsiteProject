@@ -111,8 +111,11 @@ public class UserServiceImpl implements UserService {
 		if (staff.getRole().equals("User")) {
 			throw new UnAuthenticated("No permission");
 		} else {
+
 			String checked = (check) ? "Y" : "N";
 			User user = userRepository.findById(id);
+			if(user.getDriverLicenseCheck()!=null)
+				throw new RuntimeException("Bằng lái này đã được xử lí");
 			user.setDriverLicenseCheck(checked);
 			return userRepository.save(user);
 		}

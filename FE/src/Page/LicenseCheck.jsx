@@ -135,7 +135,7 @@ const LicensePage = () => {
             </div>
                <div className=" flex flex-col justify-center items-center w-1/4 space-y-3"> 
                  <button className=" p-2 px-5 w-40 bg-primary rounded-md font-manrope text-white text-sm font-medium" onClick={()=>{changeurl(user.driverLicense);openModal();}}>Xem bằng lái</button> 
-                <button className=" p-2 px-8 border w-40 border-primary rounded-md font-manrope  text-sm font-medium" onClick={onUnCheckHandler}>Từ chối duyệt</button> 
+                <button id={user.userId} className=" p-2 px-8 border w-40 border-primary rounded-md font-manrope  text-sm font-medium" onClick={onUnCheckHandler}>Từ chối duyệt</button> 
                 <button id={user.userId} className=" p-2 px-8 border w-40 border-primary rounded-md font-manrope  text-sm font-medium" onClick={onCheckHandler}>Duyệt bằng lái</button> 
         </div>
                 </div>

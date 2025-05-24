@@ -1,0 +1,20 @@
+spring.application.name=nhom13
+
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+spring.servlet.multipart.max-file-size=2MB
+
+cloudinary.cloud_name=
+cloudinary.api_key=
+cloudinary.api_secret=
+
+# Logging configuration
+logging.level.com.mycar.nhom13.Config=DEBUG
+logging.level.root=INFO

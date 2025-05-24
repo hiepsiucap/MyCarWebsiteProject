@@ -5,9 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="39e88963-312c-47e2-bca6-1adc1ab63dad" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/MyCarWebsiteProject.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BE/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/BE/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BE/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/BE/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BE/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BE/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BE/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BE/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/BE/target/classes/com/mycar/nhom13/Service/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BE/target/test-classes/com/mycar/nhom13/Nhom13ApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/BE/target/test-classes/com/mycar/nhom13/Nhom13ApplicationTests.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,14 +44,12 @@
     &quot;assignee&quot;: &quot;nguyenphan407&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="d42d3a24-bdb5-48f0-8fe7-379329a5c801" />
-        <option name="url" value="https://github.com/hiepsiucap/MyCarWebsiteProject.git" />
-      </UrlAndAccount>
-    </option>
-  </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/hiepsiucap/MyCarWebsiteProject.git",
+    "accountId": "94f6a6f4-0569-4bd3-ba63-bd22fdaff5d6"
+  }
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -55,21 +64,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Nhom13Application.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/phanhoangnguyen/UIT/Lập trình Java/Project&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Nhom13Application.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.Nhom13Application.executor": "Run",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/MyCarWebsiteProject/BE",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.preferences.tabs",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RunManager" selected="Spring Boot.Nhom13Application">
     <configuration name="Nhom13Application" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.mycar.nhom13.Nhom13Application" />
       <extension name="coverage">
@@ -95,11 +118,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Nhom13Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="nhom13" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.mycar.nhom13.Nhom13Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.10-corretto-17.0.10-3183f394aec4-96c0d24d" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
       </set>
     </attachedChunks>
   </component>
@@ -111,6 +143,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1716394258088</updated>
+      <workItem from="1748101465593" duration="323000" />
     </task>
     <task id="LOCAL-00001" summary="Revert &quot;change user password&quot;&#10;&#10;This reverts commit 4351c544">
       <option name="closed" value="true" />
@@ -154,6 +187,9 @@
     </task>
     <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
